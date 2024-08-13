@@ -1,48 +1,176 @@
-html, body {
-    height: 100%;
+/* General Reset */
+* {
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
 
 }
 
-svg {
-  width: 100%;
-  max-width: 1920px;
-  height: auto;
-}
 
-
-img{
-  width: 100%;
-  max-width: 1920px;
-  height: auto;
-}
-
-
-#headerbackground{
+/* Header */
+.headerContainer{
+  width: 1920px;
+  height: 60px;
   position: fixed;
     top: 0;
     left: 0;
     z-index: 1;
-    opacity: 0.35;
 }
-#header{
-  position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
+
+#logo{
+  position: absolute;
+    left: 1.5%;
+    top: 50%;
     opacity: 1;
     height: auto;
 }
-#landingImage{
+
+#rectangle{
   position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
+  opacity: 0.0;
+  transition: opacity 0.2s;
 }
 
-p{
+.page-selector{
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: large;
 
-    z-index: 0;
 }
+
+.selected{
+    text-decoration: none;
+    position: absolute;
+    font-weight: bold;
+    color: #B07B1F;
+    text-align: center;
+
+}
+
+.non-selected{
+    text-decoration: none;
+    position: absolute;
+    font-weight: lighter;
+    transition: all 0.2s;
+    color: white;
+    text-align: center;
+
+
+    &:hover{
+        color: #B07B1F;
+    }
+}
+
+#page1{
+    right: 480px;
+}
+#page2{
+    right: 365px;
+}
+#page3{
+    right: 180px;
+}
+#page4{
+    right: 25px;
+}
+
+
+/* Landing Page Background */
+.landing-page {
+    background-image: url('/static/landingpage/LandingBackground.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    padding: 20px;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    max-width: 90%;
+    color: white;
+}
+
+/* Heading Styling */
+.landing-page h1 {
+    font-size: 8rem; /* Adjust based on design */
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5); /* Drop shadow for text */
+}
+
+/* Subheading Styling */
+.landing-page p {
+
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5); /* Drop shadow for text */
+}
+
+/* Call-to-Action Button */
+.cta-button {
+    display: inline-block;
+    padding: 25px 60px;
+    background-color: white;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: normal;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Drop shadow for button */
+    transition: 0.3s ease
+}
+
+.cta-button:hover {
+    background-color: #B07B1F;
+    color: whitesmoke;
+    transform: translateY(3px);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .landing-page h1 {
+        font-size: 3rem;
+    }
+
+    .landing-page p {
+        font-size: 1.2rem;
+    }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 12px 24px;
+    }
+}
+
+.about-section {
+    background-image: url('/static/landingpage/GoldenStructure.png'); /* Replace with your image path */
+    background-size: cover; /* Ensure the image covers the entire section */
+    background-position: center center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    text-align: left;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included in height calculation */
+    overflow: hidden; /* Hide any overflow issues */
+    position: relative; /* Allows stacking with z-index if needed */
+    z-index: 0; /* Ensure it's below other content if needed */
+

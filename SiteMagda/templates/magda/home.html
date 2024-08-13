@@ -6,30 +6,35 @@
     <title>Your Title</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div id="headerContainer">
+    <div class="headerContainer">
         <svg id="rectangle" width="1920" height="170" viewBox="0 0 1920 170" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="1920" height="90" fill="#242424" fill-opacity="1"/>
         </svg>
         <object id= "logo" type="image/svg+xml" data="{% static 'landingpage/Magda Leal.svg' %}"></object>
+        <div class= "page-selector">
+            <a href="#" class="selected" id="page1"> Início </a>
+            <a href="#" class= "non-selected" id="page2">Sobre</a>
+            <a href="#" class="non-selected" id="page3">Propriedades</a>
+            <a href="#" class="non-selected" id="page4">Contactos</a>
+        </div>
     </div>
-    
-    <img id="landingImage" src="{% static 'landingpage/BackGround.svg' %}">
-    <p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<p>gggggggggggggg</p>
-<script src="{% static 'scripts/landingpage.js' %}"></script>
+
+    <div class="landing-page">
+        <div class="content-wrapper">
+            <h1>Encontre o seu novo lar connosco</h1>
+            <p>O seu futuro pode estar a um clique de distância.</p>
+             <a href="#" class="cta-button" > Ver imóveis 🏠︎ </a>
+        </div>
+
+    </div>
+    <div class="about-section">
+
+    </div>
+
+    <script src="{% static 'scripts/landingpage.js' %}"></script>
 </body>
 </html>
