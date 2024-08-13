@@ -12,7 +12,7 @@
 <body>
     <div class="headerContainer">
         <svg id="rectangle" width="1920" height="170" viewBox="0 0 1920 170" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="1920" height="90" fill="#242424" fill-opacity="1"/>
+            <rect width="100vw" height="90" fill="#242424" fill-opacity="1"/>
         </svg>
         <object id= "logo" type="image/svg+xml" data="{% static 'landingpage/Magda Leal.svg' %}"></object>
         <div class= "page-selector">
@@ -31,8 +31,37 @@
         </div>
 
     </div>
-    <div class="about-section">
+    <div class="about-section" >
+        <div class="left">
+            <div class="top-left">
+                <h2 class="hidden">SOBRE</h2>
+                <h1 class="hidden">Excelência na realização dos seus sonhos imobiliários.</h1>
+                <p class="hidden">
+                Com mais de 9 anos de experiência no mercado imobiliário e duas décadas de engenharia civil,
+                ofereço um serviço de consultoria especializado. A minha dedicação e compromisso com a excelência
+                destacam o meu trabalho, e quero ajudá-lo a realizar os seus sonhos imobiliários com uma confiança e
+                profissionalismo incomparáveis.
+                </p>
+                <a href="#" class="about-button cta-button hidden">Ler Mais</a>
 
+                <div class="bottom-left">
+                    <div class="info-box hidden" >
+                        <span class="info-number">22</span>
+                        <span class="info-text">Imóveis em venda</span>
+                    </div>
+                    <div class="info-box hidden" >
+                        <span class="info-number">250</span>
+                        <span class="info-text">Imóveis vendidos</span>
+                    </div>
+                    <div class="info-box hidden" >
+                        <span class="info-number">9+</span>
+                        <span class="info-text">Anos de Experiência</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+        </div>
     </div>
 
     <script src="{% static 'scripts/landingpage.js' %}"></script>

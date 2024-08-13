@@ -158,19 +158,125 @@ body, html {
     }
 }
 
+
 .about-section {
     background-image: url('/static/landingpage/GoldenStructure.png'); /* Replace with your image path */
     background-size: cover; /* Ensure the image covers the entire section */
     background-position: center center; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
     height: 100vh; /* Full viewport height */
-    display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    text-align: left;
-    padding: 20px;
     box-sizing: border-box; /* Ensure padding is included in height calculation */
     overflow: hidden; /* Hide any overflow issues */
     position: relative; /* Allows stacking with z-index if needed */
-    z-index: 0; /* Ensure it's below other content if needed */
+    display: flex;
+    flex-direction: row;
+}
 
+
+.left{
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-left{
+    flex: 5;
+
+}
+
+.top-left h2 {
+    color: #666;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    margin: 50px 0 5px 30px;
+    font-weight: normal;
+}
+
+.top-left h1 {
+    color: #222;
+    font-size: 3rem;
+    margin: 0 0 0 30px;
+    font-weight: normal;
+    line-height: 60px;
+}
+
+.top-left p {
+    font-size: 1.6rem;
+    line-height: 1.4;
+    margin: 10px 0 20px 30px;
+    font-weight: lighter;
+}
+
+.about-button {
+    background-color: #B07B1F; /* Gold color */
+    margin: 20px 0 50px 30px;
+    padding: 25px 45px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: whitesmoke;
+}
+
+.bottom-left {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+
+
+}
+
+.info-box {
+    flex: 1;
+    text-align: center;
+    margin: 120px;
+    margin-top: 200px;
+
+}
+
+.info-number {
+    display: block;
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.info-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .bottom-left {
+        flex-direction: column;
+    }
+
+    .info-box {
+        margin-bottom: 20px;
+    }
+}
+
+.right{
+    background-image: url('/static/landingpage/FotoMagda.png'); /* Replace with your image path */
+    background-size: cover; /* Ensure the image covers the entire section */
+    background-position: center center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    width: 50%;
+    margin: 50px 50px 50px 50px ;
+    box-sizing: border-box; /* Ensure padding is included in height calculation */
+    overflow: hidden; /* Hide any overflow issues */
+    flex: 5;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
