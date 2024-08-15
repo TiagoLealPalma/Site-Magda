@@ -10,17 +10,12 @@
 </head>
 
 <body>
-    <div class="headerContainer">
-        <svg id="rectangle" width="1920" height="170" viewBox="0 0 1920 170" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100vw" height="90" fill="#242424" fill-opacity="1"/>
-        </svg>
-        <object id= "logo" type="image/svg+xml" data="{% static 'landingpage/Magda Leal.svg' %}"></object>
-        <div class= "page-selector">
-            <a href="#" class="selected" id="page1"> Início </a>
-            <a href="#" class= "non-selected" id="page2">Sobre</a>
-            <a href="#" class="non-selected" id="page3">Propriedades</a>
-            <a href="#" class="non-selected" id="page4">Contactos</a>
-        </div>
+    <div class="headerContainer" id="header">
+        <h1> <Strong>Magda</Strong> Leal</h1>
+        <a href="#" class="selected" id="page1"> Início </a>
+        <a href="#" class= "non-selected" id="page2">Sobre</a>
+        <a href="#" class="non-selected" id="page3">Propriedades</a>
+        <a href="#" class="non-selected" id="page4">Contactos</a>
     </div>
 
     <div class="landing-page">
@@ -34,7 +29,7 @@
     <div class="about-section" >
         <div class="left">
             <div class="top-left">
-                <h2 class="hidden">SOBRE</h2>
+                <h2 class="">SOBRE</h2>
                 <h1 class="hidden">Excelência na realização dos seus sonhos imobiliários.</h1>
                 <p class="hidden">
                 Com mais de 9 anos de experiência no mercado imobiliário e duas décadas de engenharia civil,
@@ -43,25 +38,98 @@
                 profissionalismo incomparáveis.
                 </p>
                 <a href="#" class="about-button cta-button hidden">Ler Mais</a>
-
+                </div>
                 <div class="bottom-left">
-                    <div class="info-box hidden" >
-                        <span class="info-number">22</span>
-                        <span class="info-text">Imóveis em venda</span>
+                    <div class="filler">
                     </div>
-                    <div class="info-box hidden" >
-                        <span class="info-number">250</span>
-                        <span class="info-text">Imóveis vendidos</span>
-                    </div>
-                    <div class="info-box hidden" >
-                        <span class="info-number">9+</span>
-                        <span class="info-text">Anos de Experiência</span>
+                    <div class="spacing">
+                        <div class="info-box " style="border-left: unset" >
+                            <span class="info-number hidden">22</span>
+                            <span class="info-text hidden">Imóveis em venda</span>
+                        </div>
+                        <div class="info-box " >
+                            <span class="info-number hidden">250</span>
+                            <span class="info-text hidden">Imóveis vendidos</span>
+                        </div>
+                        <div class="info-box " >
+                            <span class="info-number hidden">9+</span>
+                            <span class="info-text hidden">Anos de Experiência</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         <div class="right">
         </div>
+    </div>
+
+    <div class="property-section">
+        <div class="property-title">
+            <div class="filler"></div>
+            <div style="flex: 1; padding-bottom: 20px; box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); " >
+            <h2 class="hidden">Propriedades</h2>
+            <h1 class="hidden">A preparar a nova etapa da sua vida.</h1>
+            </div>
+        </div>
+        <div class="property-view">
+                <div class="property-slider hidden">
+                    <div class="property">
+                        <img src="{% static 'properties/Sintra.jpg' %}">
+                        <p>Moradia T3, Sintra</p>
+                    </div>
+                    <div class="property hidden">
+                        <img src="{% static 'properties/Faial.jpg' %}">
+                        <p>Moradia T4, Ilha do Faial</p>
+                    </div>
+                    <div class="property hidden">
+                         <img src="{% static 'properties/AdegaFogo.jpg' %}">
+                        <p>Moradia T6, Ilha do Pico</p>
+                    </div>
+                    <div class="property hidden">
+                        <img src="{% static 'properties/Prainha.jpg' %}">
+                        <p>Moradia T1, Praínha</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="feedback-section">
+        <div class="feedback-title">
+            <div class="filler" style="box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.2);"></div>
+            <div style="text-align: center;">
+            <h2 class="hidden">Feedback</h2>
+            <h1 class="hidden">Não confie em nós, confie em quem já confiou.</h1>
+            </div>
+        </div>
+        <div class="feedback-view">
+            <div class="feedback" style="border-left: unset">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+            <div class="feedback" style="border: unset; border-top: thin solid #A67D59; border-bottom: thin solid #A67D59;">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+            <div class="feedback" style="border-right: unset">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+            <div class="feedback" style="border-left: unset; border-top: unset">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+            <div class="feedback" style="border: unset; border-bottom: thin solid #A67D59;">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+            <div class="feedback" style="border-right: unset; border-top: unset">
+                <p>“A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.”</p>
+                <h3>Rosário Sousa</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-section">
+
     </div>
 
     <script src="{% static 'scripts/landingpage.js' %}"></script>

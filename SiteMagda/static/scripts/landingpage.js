@@ -1,4 +1,4 @@
-const headerSVG = document.getElementById('rectangle');
+const headerSVG = document.getElementById('header');
 
 window.addEventListener('scroll', () => {
 
@@ -7,10 +7,13 @@ window.addEventListener('scroll', () => {
     const opacity = Math.max(0, Math.min(1, (scrollPosition/800))).toString()
     console.log(scrollPosition);
 
-    if (scrollPosition > 800 ){
-        headerSVG.style.opacity = '1';
+    if (scrollPosition > 900 ){
+        headerSVG.style.backgroundColor = 'rgba(41,44,47,1)';
+
     }else{
-        headerSVG.style.opacity = opacity;
+        headerSVG.style.backgroundColor = 'rgba(41,44,47,'+opacity+')';
+
+
     }
 
     /* Fade in elements */
