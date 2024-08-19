@@ -1,4 +1,16 @@
 /* General Reset */
+
+
+:root{
+    font-size: 16px;
+
+    --primary-color: #292C2F;
+    --secondary-color: rgba(176,123,31,87%);
+    --h1-color: #222;
+    --h2-color: #666;
+    overflow-x: hidden;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -18,27 +30,40 @@ body::-webkit-scrollbar {
 /* Header */
 .headerContainer{
   width: 100%;
-  height: 9%;
+  height: 9vh;
   position: fixed;
   z-index: 1;
   background-color: rgba(41,44,47,0);
   display: flex;
   align-items: center;
   transition: opacity 0.2s;
+  flex-direction: row;
+  padding: 0 2rem 0 2rem;
 
 }
 
 .headerContainer h1{
+  flex: 5;
   color: whitesmoke;
   font-weight: lighter;
-  padding: 0 0 0 1em;
   opacity: 1;
   height: auto;
 }
 
+.nav-links{
+    flex:1;
+    display: flex;
+    justify-content:space-between;
+    gap: 2rem;
+    align-items: center;
+}
 .page-selector{
+    box-sizing: content-box;
+    display: inline;
+    width: fit-content;
+    padding: 10px;
+    margin: 0;
     flex: 1;
-    right: 3%;
     color: white;
     font-family: 'Poppins', sans-serif;
     font-size: large;
@@ -48,16 +73,14 @@ body::-webkit-scrollbar {
 
 .selected{
     text-decoration: none;
-    position: absolute;
     font-weight: bold;
-    color: #B07B1F;
+    color: var(--secondary-color);
     text-align: center;
 
 }
 
 .non-selected{
     text-decoration: none;
-    position: absolute;
     font-weight: lighter;
     transition: all 0.2s;
     color: white;
@@ -65,23 +88,9 @@ body::-webkit-scrollbar {
 
 
     &:hover{
-        color: #A67D59;
+        color: var(--secondary-color);
     }
 }
-
-#page1{
-    right: 22vw;
-}
-#page2{
-    right: 17vw;
-}
-#page3{
-    right: 8vw;
-}
-#page4{
-    right: 1vw;
-}
-
 
 /* Landing Page Background */
 .landing-page {
@@ -99,46 +108,58 @@ body::-webkit-scrollbar {
 
 /* Content Wrapper */
 .content-wrapper {
-    max-width: 90%;
+    max-width: 80%;
     color: white;
 }
 
 /* Heading Styling */
 .landing-page h1 {
-    font-size: 8rem; /* Adjust based on design */
+    font-size: 5rem; /* Adjust based on design */
     font-weight: normal;
-    line-height: 1.2;
-    margin-bottom: 10px;
+    line-height: 4rem;
+    margin-bottom: 1rem;
     text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5); /* Drop shadow for text */
 }
 
 /* Subheading Styling */
 .landing-page p {
-
-    font-size: 2.5rem;
-    margin-bottom: 40px;
+    font-weight: lighter;
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    margin-bottom: 2rem;
     text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5); /* Drop shadow for text */
 }
 
 /* Call-to-Action Button */
 .cta-button {
     display: inline-block;
-    padding: 25px 60px;
+    padding: 1rem 3rem;
     background-color: white;
     color: black;
     font-size: 1.2rem;
     font-weight: normal;
-    border-radius: 50px;
+    border-radius: 3rem;
     text-decoration: none;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Drop shadow for button */
     transition: 0.3s ease
 }
+.cta-button svg{
+    fill: black;
+    vertical-align: middle;
+    height: 1.4rem;
+    width: auto;
+    transition: 0.3s ease
+}
 
 .cta-button:hover {
-    background-color: #A67D59;
+    background-color: var(--secondary-color);
     color: whitesmoke;
     transform: translateY(3px);
 }
+.cta-button:hover svg{
+    fill: whitesmoke;
+}
+
 
 /* Responsiveness */
 @media (max-width: 768px) {
@@ -162,7 +183,7 @@ body::-webkit-scrollbar {
     background-size: cover; /* Ensure the image covers the entire section */
     background-position: center center; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
-    height: 100vh; /* Full viewport height */
+    height: max(75vh, auto); /* Full viewport height */
     box-sizing: border-box; /* Ensure padding is included in height calculation */
     overflow: hidden; /* Hide any overflow issues */
     position: relative; /* Allows stacking with z-index if needed */
@@ -172,15 +193,15 @@ body::-webkit-scrollbar {
 }
 
 
-.left{
+.about-section .left{
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 .top-left{
-    flex: 5;
-    padding: 5em;
+    flex: 3;
+    padding: 5rem;
 
 }
 
@@ -194,8 +215,8 @@ body::-webkit-scrollbar {
 .top-left h1 {
     color: #222;
     font-size: 2rem;
+    line-height: 2.2rem;
     font-weight: normal;
-    line-height: 1.2em;
 }
 
 .top-left p {
@@ -206,7 +227,8 @@ body::-webkit-scrollbar {
 }
 
 .about-button {
-    background-color: #A67D59; /* Gold color */
+    display: inline-block;
+    background-color: var(--secondary-color); /* Gold color */
     padding: 0.5em 5em;
     cursor: pointer;
     font-weight: bold;
@@ -215,35 +237,40 @@ body::-webkit-scrollbar {
     text-decoration: none;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     color: whitesmoke;
-    transition: transform 1s;
 }
 
 .about-button:hover {
-    transform: translateY(10px);
+    transition: all 0.3s;
+    transform: translateY(3px);
+
 }
 
 .bottom-left {
     flex: 3;
     display: flex;
     flex-direction: column;
+    justify-content: right;
+    align-items: stretch;
 }
 .filler{
-    flex: 2;
+    flex: 1.1;
+
 }
 .spacing{
     flex: 1;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
+
 }
 
 .info-box {
     flex: 1;
     text-align: center;
     padding: 40px;
-    border-left: thin solid #A67D59;
-    border-bottom: thin solid #A67D59;
-    border-top: thin solid #A67D59;
+    border-left: thin solid var(--secondary-color);
+    border-bottom: thin solid var(--secondary-color);
+    border-top: thin solid var(--secondary-color);
 
 
 }
@@ -262,9 +289,10 @@ body::-webkit-scrollbar {
     text-transform: uppercase;
 }
 
-@media (max-width: 768px) {
-    .bottom-left {
+@media (max-width: 1055px) {
+    .about-section {
         flex-direction: column;
+        height: 150vh;
     }
 
     .info-box {
@@ -272,18 +300,17 @@ body::-webkit-scrollbar {
     }
 }
 
-.right{
+.about-section .right{
     background-image: url('/static/landingpage/FotoMagda.png'); /* Replace with your image path */
-    background-size: 85%; /* Ensure the image covers the entire section */
+    background-size: 80%; /* Ensure the image covers the entire section */
     background-position: center center; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
-    width: 50%;
     box-sizing: border-box; /* Ensure padding is included in height calculation */
     overflow: hidden; /* Hide any overflow issues */
     flex: 1;
     margin: 0;
-    border-left: thin solid #A67D59;
-    border-bottom: thin solid #A67D59;
+    border-left: thin solid var(--secondary-color);
+    border-bottom: thin solid var(--secondary-color);
 }
 
 .hidden {
@@ -311,46 +338,43 @@ body::-webkit-scrollbar {
 
 .property-title h2 {
     color: #666;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    margin: 50px 0 0 40px;
+    margin: 3.2rem 0 0 2.8rem;
     font-weight: normal;
 }
 
 .property-title h1 {
     color: #222;
-    font-size: 3rem;
-    margin: 0 0 0 40px;
+    font-size: 2rem;
+    margin: 0 0 0 2.8rem;
     font-weight: normal;
-    line-height: 60px;
+    line-height: 2.2rem;
 }
 
-.property-title p {
-    font-size: 1.6rem;
-    line-height: 1.4;
-    margin: 20px 0 20px 40px;
-    font-weight: lighter;
-}
 .property-view{
     height: 75vh;
-
-    background-color: #292C2F;
+    background: linear-gradient(to right, var(--primary-color), #222222);
     display: flex;
     flex-direction: row;
 }
 .property-slider{
     overflow: hidden;
-    margin: 3% 0 0 5%;
-    flex: 7;
+    margin: 3% 0 0 0;
     display: flex;
     flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 5%;
+
 }
 
 .property{
-    margin: 0.2em 0 0 2em ;
+    flex: 1 0 25%;
+    scroll-snap-align: start;
+    margin: 0.2rem 0 0 2rem ;
     height: 100%;
-    flex: 1;
-    width: 10%;
+    width: 25%;
     display: flex;
     overflow: hidden;
     flex-direction: column;
@@ -362,10 +386,10 @@ body::-webkit-scrollbar {
 
 .property:hover{
     transform: translateY(-0.2em);
-    color: #A67D59;
+    color: var(--secondary-color);
 }
 
-.property img{
+.property-img{
     aspect-ratio: initial;
     flex: 4;
     object-fit: cover;
@@ -374,10 +398,10 @@ body::-webkit-scrollbar {
 }
 
 .property p{
-    margin-top: 0.5em;
+    margin-top: 0.5rem;
     flex: 1;
     font-weight: normal;
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 /* Feedback Section */
@@ -394,18 +418,24 @@ body::-webkit-scrollbar {
 
 .feedback-title h2 {
     color: #666;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    margin: 50px 0 0 40px;
+    margin: 3.2rem 0 0 2.8rem;
     font-weight: normal;
 }
 
 .feedback-title h1 {
     color: #222;
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 0 0 0 40px;
     font-weight: normal;
-    line-height: 60px;
+    line-height: 2.2rem;
+}
+.feedback h3 {
+    color: #222;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 2.2rem;
 }
 
 .feedback-view{
@@ -419,22 +449,95 @@ body::-webkit-scrollbar {
 
 .feedback{
     flex: 0 1 33.33%;
-    border: thin solid #A67D59;
-    padding: 30px;
+    border: thin solid var(--secondary-color);
+    padding: 2rem;
     display: flex;
     flex-direction:column ;
     align-items: center;
     text-align: center;
 }
 .feedback p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1;
     font-weight: lighter;
     padding: 20% 2% 2% 0;
 }
 
-.footer-section{
+.lead-section{
     box-shadow: inset 0 5px 5px 0 rgba(0, 0, 0, 0.2);
-    height: 60vh;
-    background-color: #292C2F;
+    height: 70vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.lead-section .left{
+    max-width: 50%;
+    flex: 1 0 50%;
+    background-image: url('/static/landingpage/PicoWallpaper.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.lead-section .right{
+    flex: 1;
+    background: rgba(41,44,47,1)
+}
+
+.lead-section .right{
+    padding:6rem 0 0 5rem;
+    & h1{
+        padding: 0 1rem 0.3rem 0;
+        line-height: 2.8rem;
+        font-size: 2.1rem;
+        font-weight: 500;
+        color: white;
+    }
+
+    & h2{
+        padding: 0 3rem 2rem 0;
+        line-height: 1.5rem;
+        font-size: 1rem;
+        font-weight: lighter;
+        color: white;
+    }
+
+    & .email-section{
+        width: 65%;
+        display: flex;
+        background-color: whitesmoke; /* Gold color */
+        padding: 0.2rem 0.2em;
+        cursor: text;
+        font-weight: lighter;
+        font-size: 1.2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+        color: black;
+
+        & input{
+            flex: 3 0 60%;
+            color: black;
+            opacity: 1;
+            border: none;
+            outline: none;
+            border-radius: 3rem;
+            background-color: whitesmoke;
+            padding-left: 1rem;
+        }
+        & .subscribe{
+            flex: 1 0 25%;
+            background-color:  var(--secondary-color); /* Gold color */
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: lighter;
+            font-size: 0.8rem;
+            border-radius: 50px;
+            color: white;
+            border: none;
+            transition: 0.3s;
+            &:hover {
+                background-color: rgba(176,123,31,100%);
+            }
+        }
+    }
 }

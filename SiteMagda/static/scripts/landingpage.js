@@ -3,11 +3,12 @@ const headerSVG = document.getElementById('header');
 window.addEventListener('scroll', () => {
 
     /* Fade Header Bar */
+    const viewheight = window.innerHeight - headerSVG.offsetHeight;
     const scrollPosition = document.documentElement.scrollTop;
-    const opacity = Math.max(0, Math.min(1, (scrollPosition/800))).toString()
+    const opacity = Math.max(0, Math.min(1, (scrollPosition/viewheight))).toString()
     console.log(scrollPosition);
 
-    if (scrollPosition > 900 ){
+    if (scrollPosition > viewheight){
         headerSVG.style.backgroundColor = 'rgba(41,44,47,1)';
 
     }else{
