@@ -114,7 +114,7 @@ body::-webkit-scrollbar {
 
 /* Heading Styling */
 .landing-page h1 {
-    font-size: 5rem; /* Adjust based on design */
+    font-size: 5rem; /* Adjust based on design 5 e 1.8 */
     font-weight: normal;
     line-height: 4rem;
     margin-bottom: 1rem;
@@ -201,7 +201,7 @@ body::-webkit-scrollbar {
 
 .top-left{
     flex: 3;
-    padding: 5rem;
+    padding: 5rem 5rem 1rem 5rem;
 
 }
 
@@ -267,7 +267,7 @@ body::-webkit-scrollbar {
 .info-box {
     flex: 1;
     text-align: center;
-    padding: 40px;
+    padding: 3rem 0rem;
     border-left: thin solid var(--secondary-color);
     border-bottom: thin solid var(--secondary-color);
     border-top: thin solid var(--secondary-color);
@@ -283,34 +283,49 @@ body::-webkit-scrollbar {
 }
 
 .info-text {
-    font-size: 14px;
+    font-size: 0.9rem;
     color: #666;
-    padding-top: 5px;
+    padding-top: 0.3rem;
     text-transform: uppercase;
 }
 
-@media (max-width: 1055px) {
+@media (max-width: 1000px) {
     .about-section {
         flex-direction: column;
         height: 150vh;
     }
 
     .info-box {
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
+    }
+
+    .right{
+        margin: unset;
     }
 }
 
 .about-section .right{
-    background-image: url('/static/landingpage/FotoMagda.png'); /* Replace with your image path */
-    background-size: 80%; /* Ensure the image covers the entire section */
-    background-position: center center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
     box-sizing: border-box; /* Ensure padding is included in height calculation */
     overflow: hidden; /* Hide any overflow issues */
     flex: 1;
     margin: 0;
     border-left: thin solid var(--secondary-color);
     border-bottom: thin solid var(--secondary-color);
+    display: flex;
+    text-align: center;
+    align-items: center;
+
+    .padded-background{
+        background-clip: content-box;
+        flex: 1;
+        background-image: url('/static/landingpage/FotoMagda.png'); /* Replace with your image path */
+        background-position: center center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent the image from repeating */
+        background-size: 80%;
+        padding: 1rem 1rem;
+        overflow: hidden;
+        height: 100%;
+    }
 }
 
 .hidden {
@@ -502,6 +517,7 @@ body::-webkit-scrollbar {
     }
 
     & .email-section{
+        min-width: 310px;
         width: 65%;
         display: flex;
         background-color: whitesmoke; /* Gold color */
@@ -525,18 +541,21 @@ body::-webkit-scrollbar {
             padding-left: 1rem;
         }
         & .subscribe{
+            margin: 0.2em;
             flex: 1 0 25%;
             background-color:  var(--secondary-color); /* Gold color */
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 5%;
             cursor: pointer;
-            font-weight: lighter;
-            font-size: 0.8rem;
+            font-weight: bold;
+            font-size: 0.9rem;
             border-radius: 50px;
             color: white;
             border: none;
             transition: 0.3s;
             &:hover {
-                background-color: rgba(176,123,31,100%);
+                background-color: var(--secondary-color);
+                color: whitesmoke;
+                box-shadow: 0 0 3px #ffffff;
             }
         }
     }
