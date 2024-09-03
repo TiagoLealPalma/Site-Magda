@@ -19,7 +19,7 @@
 
 body, html {
     height: 100%;
-    font-family: 'Poppins', sans-serif;
+        font-family: 'Poppins', sans-serif;
 
 }
 body::-webkit-scrollbar {
@@ -29,14 +29,14 @@ body::-webkit-scrollbar {
 
 /* Header */
 .headerContainer{
-  width: 100%;
+  width: 100vw;
   height: 9vh;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   background-color: rgba(41,44,47,0);
   display: flex;
   align-items: center;
-  transition: opacity 0.2s;
+  transition: opacity 0.35s;
   flex-direction: row;
   padding: 0 2rem 0 2rem;
 
@@ -201,7 +201,7 @@ body::-webkit-scrollbar {
 
 .top-left{
     flex: 3;
-    padding: 5rem 5rem 1rem 5rem;
+    padding: 5rem 5rem 5rem 5rem;
 
 }
 
@@ -267,7 +267,7 @@ body::-webkit-scrollbar {
 .info-box {
     flex: 1;
     text-align: center;
-    padding: 3rem 0rem;
+    padding: 3rem 0;
     border-left: thin solid var(--secondary-color);
     border-bottom: thin solid var(--secondary-color);
     border-top: thin solid var(--secondary-color);
@@ -292,7 +292,14 @@ body::-webkit-scrollbar {
 @media (max-width: 1000px) {
     .about-section {
         flex-direction: column;
-        height: 150vh;
+        height: 70vh;
+    }
+    .property-title{
+        height: 15vh !important;
+    }
+
+    .about-section .right{
+        display: none !important;
     }
 
     .info-box {
@@ -301,6 +308,24 @@ body::-webkit-scrollbar {
 
     .right{
         margin: unset;
+    }
+
+    .lead-section .right{
+        flex: 3 !important;
+    }
+
+    .lead-section .left{
+        max-width: 15%;
+    }
+
+    :root {
+        font-size: 14px; /* 1rem = 14px */
+    }
+}
+
+@media (max-width: 600px) {
+    :root {
+        font-size: 12px; /* 1rem = 12px */
     }
 }
 
@@ -349,20 +374,21 @@ body::-webkit-scrollbar {
     height: 35vh;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 .property-title h2 {
     color: #666;
     font-size: 1.2rem;
     text-transform: uppercase;
-    margin: 3.2rem 0 0 2.8rem;
+    margin: 3.2rem 0 0 0;
     font-weight: normal;
 }
 
 .property-title h1 {
     color: #222;
     font-size: 2rem;
-    margin: 0 0 0 2.8rem;
+    margin: 0 0 0 0;
     font-weight: normal;
     line-height: 2.2rem;
 }
@@ -386,10 +412,11 @@ body::-webkit-scrollbar {
 
 .property{
     flex: 1 0 25%;
+    min-width: 300px;
     scroll-snap-align: start;
     margin: 0.2rem 0 0 2rem ;
     height: 100%;
-    width: 25%;
+    max-width: 500px;
     display: flex;
     overflow: hidden;
     flex-direction: column;
@@ -478,29 +505,20 @@ body::-webkit-scrollbar {
     padding: 20% 2% 2% 0;
 }
 
-.lead-section{
+.lead-section {
+    position: relative;
+    max-width: 100vw;
     box-shadow: inset 0 5px 5px 0 rgba(0, 0, 0, 0.2);
     height: 70vh;
     display: flex;
     flex-direction: row;
-}
+    background-color: var(--primary-color);
 
-.lead-section .left{
-    max-width: 50%;
-    flex: 1 0 50%;
-    background-image: url('/static/landingpage/PicoWallpaper.jpeg');
-    background-size: cover;
-    background-position: center;
-}
+    &:hover {
+        transition: all 1s;
+    }
 
-.lead-section .right{
-    flex: 1;
-    background: rgba(41,44,47,1)
-}
-
-.lead-section .right{
-    padding:6rem 0 0 5rem;
-    & h1{
+    & h1 {
         padding: 0 1rem 0.3rem 0;
         line-height: 2.8rem;
         font-size: 2.1rem;
@@ -508,7 +526,7 @@ body::-webkit-scrollbar {
         color: white;
     }
 
-    & h2{
+    & h2 {
         padding: 0 3rem 2rem 0;
         line-height: 1.5rem;
         font-size: 1rem;
@@ -516,9 +534,9 @@ body::-webkit-scrollbar {
         color: white;
     }
 
-    & .email-section{
-        min-width: 310px;
-        width: 65%;
+    & .email-section {
+        min-width: 310px; /* 2*310=620   media cut aqui, para flexdirection: column*/
+        width: 50%;
         display: flex;
         background-color: whitesmoke; /* Gold color */
         padding: 0.2rem 0.2em;
@@ -530,7 +548,7 @@ body::-webkit-scrollbar {
         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
         color: black;
 
-        & input{
+        & input {
             flex: 3 0 60%;
             color: black;
             opacity: 1;
@@ -540,10 +558,11 @@ body::-webkit-scrollbar {
             background-color: whitesmoke;
             padding-left: 1rem;
         }
-        & .subscribe{
+
+        & .subscribe {
             margin: 0.2em;
             flex: 1 0 25%;
-            background-color:  var(--secondary-color); /* Gold color */
+            background-color: var(--secondary-color); /* Gold color */
             padding: 0.8rem 5%;
             cursor: pointer;
             font-weight: bold;
@@ -552,6 +571,7 @@ body::-webkit-scrollbar {
             color: white;
             border: none;
             transition: 0.3s;
+
             &:hover {
                 background-color: var(--secondary-color);
                 color: whitesmoke;
@@ -559,4 +579,55 @@ body::-webkit-scrollbar {
             }
         }
     }
+
+    & .left {
+        flex: 1;
+        width: 50%;
+        background: rgb(89, 118, 147);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        text-align: left;
+        justify-content: center;
+        padding: 0 0 0 4%;
+    }
+
+    & .right {
+        width: 50%;
+        flex: 1;
+         background: var(--primary-color);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        text-align: left;
+        justify-content: center;
+        padding: 0 0 0 4%;
+
+        & .lead-questions{flex: 3 0 60%;
+            color: black;
+            opacity: 1;
+            border: none;
+            outline: none;
+            border-radius: 3rem;
+            background-color: whitesmoke;
+            padding-left: 1rem;
+
+        }
+    }
+
+    & .onTop{
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        background-image: url('/static/landingpage/PicoWallpaper.jpeg');
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+        left: 0;
+    }
+}
+
+.footer{
+    border-top: solid var(--secondary-color) 3px;
+    background-color: var(--primary-color);
 }
