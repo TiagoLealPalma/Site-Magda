@@ -455,7 +455,7 @@ body::-webkit-scrollbar {
 }
 
 .feedback-title{
-    height: 35vh;
+    height: 25vh;
     display: flex;
     flex-direction: column;
 }
@@ -489,6 +489,19 @@ body::-webkit-scrollbar {
     flex-direction: row;
     flex-wrap: wrap;
     padding-bottom: 10vh;
+}
+
+.new-feedback-view{
+    height: 65vh;
+    display: grid;
+    padding: 10vh;
+    margin-top: 2%;
+
+    background-color: wheat;
+}
+
+.new-feedback{
+    text-align: center;
 }
 
 .feedback{
