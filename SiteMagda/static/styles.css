@@ -516,10 +516,7 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: row;
     background-color: var(--primary-color);
-
-    &:hover {
-        transition: all 1s;
-    }
+    transition: all 1s;
 
     & h1 {
         padding: 0 1rem 0.3rem 0;
@@ -552,12 +549,13 @@ body::-webkit-scrollbar {
         &:hover {
                 background-color: var(--secondary-color);
                 color: whitesmoke;
-                box-shadow: 0 0 3px #ffffff;
+                box-shadow: 0 -1px 3px 0 rgba(0,0,0,0.3);
+                transform: translateY(-1px);
         }
     }
 
     & #left{
-        background-color: #c2c2c2;
+        background-color: #f3f3f3;
         color: #2c2c2c;
         margin: 0;
     }
@@ -591,7 +589,7 @@ body::-webkit-scrollbar {
     }
 
      & .lead-questions {
-         background-color: #c2c2c2;
+         background-color: #f3f3f3;
 
          height: 2rem;
          margin-bottom: 0.8rem;
@@ -602,7 +600,7 @@ body::-webkit-scrollbar {
          padding: 1.2rem 1rem;
          margin-right: 0.5rem;
          cursor: text;
-         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 
          font-family: 'Poppins', sans-serif;
          font-weight: lighter;
@@ -640,7 +638,7 @@ body::-webkit-scrollbar {
 
         & .extended {
         padding: 0.6rem 1.2rem;
-        height: 15rem;
+        height: 25vh;
         width: 95%;
         margin: 0;
         }
@@ -679,6 +677,34 @@ body::-webkit-scrollbar {
 }
 
 .footer{
-    border-top: solid var(--secondary-color) 3px;
+    border-top: solid var(--secondary-color) 5px;
     background-color: var(--primary-color);
+
+    & .nav-bar{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0 0 0;
+
+        & h1{
+            color: whitesmoke;
+            font-weight: lighter;
+            text-align: center;
+            line-height: 2rem;
+        }
+
+       & a{
+
+       }
+    }
+
+    .socials{
+
+    }
+
+    .credits{
+
+    }
+
 }
