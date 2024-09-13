@@ -464,14 +464,13 @@ body::-webkit-scrollbar {
     color: #666;
     font-size: 1.2rem;
     text-transform: uppercase;
-    margin: 3.2rem 0 0 2.8rem;
+    margin: 3.2rem 0 0 0;
     font-weight: normal;
 }
 
 .feedback-title h1 {
     color: #222;
     font-size: 2rem;
-    margin: 0 0 0 40px;
     font-weight: normal;
     line-height: 2.2rem;
 }
@@ -493,15 +492,32 @@ body::-webkit-scrollbar {
 
 .new-feedback-view{
     height: 65vh;
-    display: grid;
-    padding: 10vh;
-    margin-top: 2%;
+    width: 100vw;
+    display: flex;
 
-    background-color: wheat;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 5%;
+
 }
 
 .new-feedback{
-    text-align: center;
+    height: 13rem;
+    width: 50rem;
+    padding: 2rem 3rem;
+    border-radius: 30px;
+    box-shadow: -3px 4px 2px 0 rgba(0,0,0,0.2);
+    flex-shrink: 0;
+    margin: 0 5vw 0 5vw;
+    scroll-snap-align: center;
+
+    align-content: center;
+    text-align: left;
+    background-color: #fafafa;
 }
 
 .feedback{
@@ -627,6 +643,7 @@ body::-webkit-scrollbar {
         width: 100%;
         text-align: center;
         padding-top: 0.3rem;
+        margin-top: 0.2rem  ;
     }
     textarea {
         resize: none;
