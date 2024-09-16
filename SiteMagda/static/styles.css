@@ -1,6 +1,3 @@
-/* General Reset */
-
-
 :root{
     font-size: 16px;
 
@@ -451,58 +448,93 @@ body::-webkit-scrollbar {
 /* Feedback Section */
 
 .feedback-section{
-
-}
-
-.feedback-title{
-    height: 25vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
 }
 
-.feedback-title h2 {
-    color: #666;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    margin: 3.2rem 0 0 0;
-    font-weight: normal;
-}
-
-.feedback-title h1 {
-    color: #222;
-    font-size: 2rem;
-    font-weight: normal;
-    line-height: 2.2rem;
-}
-.feedback h3 {
-    color: #222;
-    font-size: 1rem;
-    font-weight: bold;
-    line-height: 2.2rem;
-}
-
-.feedback-view{
-    margin-top: 2%;
-    height: 95vh;
+.feedback-title-container{
+    height: 5vh;
+    margin-top: 2vh;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-bottom: 10vh;
+    flex-direction: column;
+
+    & h2 {
+        color: #666;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        margin: 3.2rem 0 0 0;
+        font-weight: normal;
+    }
+
+    & h1 {
+        color: #222;
+        font-size: 2rem;
+        font-weight: normal;
+        line-height: 2.2rem;
+    }
+
+    & h3 {
+        color: #222;
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
 }
 
-.new-feedback-view{
-    height: 65vh;
+.feedback-container{
+    position: relative;
+    height: 45vh;
     width: 100vw;
+    margin-top: 10vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & button{
+        position: absolute;
+          background-color: var(--secondary-color);
+          color: white;
+          font-weight: bold;
+          font-size: 1rem;
+          border: none;
+          border-radius: 50%;
+          width: 4.5rem;  /* adjust the size of the button */
+          height: 4.5rem; /* adjust the size of the button */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          z-index: 2;
+          text-align: center;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* optional shadow */
+          transition: background-color 0.3s ease;
+    }
+
+    & button:hover {
+        background-color: rgba(176, 123, 31, 1); /* Darken on hover */
+    }
+}
+
+.feedback-scroll-container{
+    position: relative;
+    height: 100%;
+    width: 100%;
     display: flex;
 
     flex-direction: row;
-    justify-content: center;
     align-items: center;
     overflow: hidden;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 5%;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
 
+.feedback-scroll-container::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
 }
 
 .new-feedback{
@@ -512,7 +544,7 @@ body::-webkit-scrollbar {
     border-radius: 30px;
     box-shadow: -3px 4px 2px 0 rgba(0,0,0,0.2);
     flex-shrink: 0;
-    margin: 0 5vw 0 5vw;
+    margin: 0 5vw;
     scroll-snap-align: center;
 
     align-content: center;
