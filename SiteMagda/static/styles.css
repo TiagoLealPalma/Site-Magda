@@ -739,26 +739,66 @@ body::-webkit-scrollbar {
 }
 
 .footer{
-    border-top: solid var(--secondary-color) 5px;
+    /*border-top: solid var(--secondary-color) 5px;*/
     background-color: var(--primary-color);
+    & .content {
+        width: 50%;
+        margin-left: 5%;
+        padding-top: 3%;
 
-    & .nav-bar{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem 0 0 0;
+        & .nav-bar {
+            width: 60%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0 0 0;
 
-        & h1{
-            color: whitesmoke;
-            font-weight: lighter;
-            text-align: center;
-            line-height: 2rem;
+            & h1 {
+                color: whitesmoke;
+                font-weight: lighter;
+                text-align: left;
+                line-height: 1.7rem;
+            }
+            & .logo{
+                font-size: 1.7rem;
+                color: var(--secondary-color);
+            }
+
+            & a {
+                font-size: 0.8rem;
+                text-decoration: None;
+                color: whitesmoke;
+            }
+
+            & a:hover {
+                text-decoration: None;
+                color: var(--secondary-color);
+            }
         }
 
-       & a{
+        & .subContent{
+            padding-top: 4vh;
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            line-height:1.5rem;
 
-       }
+
+            & .col{
+                height: 18vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                & .lines{
+                    text-decoration: None;
+                    color: whitesmoke;
+                    font-weight: normal;
+                }
+            }
+        }
     }
 
     .socials{
