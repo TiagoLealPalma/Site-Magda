@@ -1,0 +1,289 @@
+:root{
+    font-size: 16px;
+
+    --primary-color: #292C2F;
+    --secondary-color: rgba(176,123,31,87%);
+    --secondary-color1: #5D769F;
+    --alternative-color: rgb(89, 118, 147);
+    --darker-alternative-color: rgb(65, 84, 107);
+    --h1-color: #222;
+    --h2-color: #666;
+    overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+        font-family: 'Poppins', sans-serif;
+
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Header */
+.headerContainer{
+    top: 0;
+      width: 100vw;
+      height: 9vh;
+      position: fixed;
+      z-index: 2;
+      background-color: rgba(41,44,47,100);
+      display: flex;
+      align-items: center;
+      transition: opacity 0.35s;
+      flex-direction: row;
+      padding: 0 2rem 0 2rem;
+
+    & a{
+          flex: 5;
+          color: whitesmoke;
+          font-weight: lighter;
+          opacity: 1;
+          height: auto;
+          text-decoration: none;
+
+        & .logo{
+            font-size: 2rem;
+        }
+    }
+}
+
+.nav-links{
+    flex:1;
+    display: flex;
+    justify-content:space-between;
+    gap: 2rem;
+    align-items: center;
+}
+.page-selector{
+    box-sizing: content-box;
+    display: inline;
+    width: fit-content;
+    padding: 10px;
+    margin: 0;
+    flex: 1;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: large;
+    opacity: 1;
+
+}
+
+.selected{
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--secondary-color)!important;
+    text-align: center;
+
+}
+
+.non-selected{
+    text-decoration: none;
+    font-weight: lighter;
+    transition: all 0.2s;
+    color: white;
+    text-align: center;
+
+
+    &:hover{
+        color: var(--secondary-color);
+    }
+}
+
+body {
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+
+/* ================= Container ================= */
+
+.property-container {
+  margin: 12vh auto 4rem;
+  max-width: 1200px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 2.5rem;
+}
+
+/* ================= Title ================= */
+
+.property-title {
+  font-size: 2.25rem;
+  color: var(--h1-color);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.property-title::after {
+  content: "";
+  display: block;
+  width: 8rem;
+  height: 4px;
+  background: var(--secondary-color);
+  margin-top: 0.5rem;
+  border-radius: 2px;
+}
+
+/* ================ Gallery ================= */
+
+.property-gallery {
+  margin: 2rem 0;
+  position: relative;
+}
+
+.property-gallery .f-carousel {
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.f-carousel__slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.f-carousel__slide img:hover {
+  transform: scale(1.02);
+}
+
+/* setas do carousel inline */
+.f-carousel__arrow {
+  color: var(--secondary-color) !important;
+  font-size: 1.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+}
+
+.f-carousel__arrow:hover {
+  opacity: 1;
+}
+
+/* ================= Details ================= */
+
+.property-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 3rem;
+  margin: 2rem 0;
+}
+
+.property-details div {
+  font-size: 1rem;
+}
+
+.property-details span {
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-right: 0.5rem;
+}
+
+/* ================= Description ================= */
+
+.property-description {
+  margin-top: 2.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--h2-color);
+}
+
+/* ================= Footer ================= */
+
+footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  background-color: white;
+  border-top: 1px solid #e6e6e6;
+  color: #999;
+  font-size: 0.9rem;
+  margin-top: 4rem;
+}
+
+/* ================= Fancybox Overrides ================= */
+
+.fancybox__nav .fancybox__button {
+  color: var(--secondary-color) !important;
+  opacity: 0.9 !important;
+}
+
+.fancybox__container {
+  --bg: rgba(0,0,0,0.85);
+}
+
+/* ================= Scrollbar (chrome) ================= */
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+
+/* ================= Resize da imagem principal ================= */
+.property-gallery .f-carousel {
+  /* Limita a altura total do carousel */
+  max-height: 400px;
+  overflow: hidden;
+}
+
+/* Cada slide: força o img a caber dentro da altura */
+.property-gallery .f-carousel__slide img {
+  max-height: 400px;
+  width: auto;      /* mantém proporção */
+  object-fit: cover;
+}
+
+/* Se quiseres que todo o slide (incluindo setas) fique dentro dos 400px: */
+.property-gallery {
+  max-height: 450px;  /* ajusta um pouco acima para incluir setas */
+  overflow: hidden;
+}
+
+/* Ajusta também a margem/padding para encurtar o scroll */
+.property-container {
+  padding: 1.5rem;
+  margin: 10vh auto 2rem;
+}
+
+/* Centra o próprio carousel dentro do container */
+.property-gallery .f-carousel {
+  display: flex !important;
+  justify-content: center;
+}
+
+/* Faz cada slide funcionar como flexbox para centrar a imagem */
+.f-carousel__slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Garante que a imagem fica mesmo ao centro */
+.f-carousel__slide img {
+  margin: 0 auto;
+}

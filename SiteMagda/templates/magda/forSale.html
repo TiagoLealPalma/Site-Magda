@@ -42,7 +42,7 @@
 
         <main class="lista-propriedades">
             {% for prop in propriedades %}
-                <a class="propriedade" >
+                <a class="propriedade" href="{% url 'property_detail' prop.id %}">
                     {% if prop.images.all|length > 0 %}
                         <img src="{{ prop.images.all.0.image.url }}" alt="Imagem da propriedade">
                     {% else %}

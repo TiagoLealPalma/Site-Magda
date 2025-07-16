@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from .forms import PropertyForm, ImageUploadForm
 from .models import Image, Property
 
+def property_detail(request, property_id):
+    property = get_object_or_404(Property, id=property_id)
+    return render(request, 'magda/property_detail.html', {'property': property})
 
 def create_property(request):
     if request.method == 'POST':
