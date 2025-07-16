@@ -11,11 +11,11 @@
 <body>
 <div>
     <div class="headerContainer" id="header">
-        <h1 class="logo"> <Strong>Magda</Strong> Leal</h1>
+        <a class="logo" style="font-size: 2rem" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
         <div class="nav-links">
             <a href="#" class="page-selector selected">Início</a>
             <a href="#" class= "page-selector non-selected">Sobre</a>
-            <a href="#" class="page-selector non-selected">Imóveis</a>
+            <a href="{% url 'forsale' %}" class="page-selector non-selected">Imóveis</a>
             <a href="#" class="page-selector non-selected">Contactos</a>
         </div>
     </div>
@@ -23,7 +23,7 @@
         <div class="content-wrapper">
             <h1>Encontre o seu novo lar connosco</h1>
             <p>O seu futuro pode estar a um clique de distância.</p>
-             <a href="#" class="cta-button" > Ver imóveis
+             <a href="properties" class="cta-button" > Ver imóveis
                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
                         <path d="M 15 2 A 1 1 0 0 0 14.300781 2.2851562 L 3.3925781 11.207031 A 1 1 0 0 0 3.3554688 11.236328 L 3.3183594 11.267578 L 3.3183594 11.269531 A 1 1 0 0 0 3 12 A 1 1 0 0 0 4 13 L 5 13 L 5 24 C 5 25.105 5.895 26 7 26 L 23 26 C 24.105 26 25 25.105 25 24 L 25 13 L 26 13 A 1 1 0 0 0 27 12 A 1 1 0 0 0 26.681641 11.267578 L 26.666016 11.255859 A 1 1 0 0 0 26.597656 11.199219 L 25 9.8925781 L 25 6 C 25 5.448 24.552 5 24 5 L 23 5 C 22.448 5 22 5.448 22 6 L 22 7.4394531 L 15.677734 2.2675781 A 1 1 0 0 0 15 2 z M 18 15 L 22 15 L 22 23 L 18 23 L 18 15 z"></path>
                  </svg>
@@ -37,7 +37,7 @@
                 <h2 class="hidden">SOBRE</h2>
                 <h1 class="hidden">Excelência na realização dos seus sonhos imobiliários.</h1>
                 <p class="hidden">
-                    Com mais de <span style="color:var(--secondary-color);">9 anos </span> de experiência no mercado
+                    Com mais de <span style="color:var(--secondary-color);">10 anos </span> de experiência no mercado
                     imobiliário e <span style="color:var(--secondary-color);">duas décadas</span> de engenharia civil,
                 ofereço um serviço de consultoria especializado. A minha dedicação e compromisso com a excelência
                 destacam o meu trabalho, e quero ajudá-lo a realizar os seus sonhos imobiliários com uma confiança e
@@ -60,7 +60,7 @@
                             <span class="info-text hidden">Imóveis vendidos</span>
                         </div>
                         <div class="info-box " >
-                            <span class="info-number hidden">9+</span>
+                            <span class="info-number hidden">10+</span>
                             <span class="info-text hidden">Anos de Experiência</span>
                         </div>
                     </div>
@@ -191,8 +191,36 @@
         </div>
     </div>
 
-    <div style="height:30vh"></div>
-    <div style="height: 0vh;"></div>
+    <div style="height: 50vh;">
+        <div class="feedback-title-container">
+            <div style="text-align: center;">
+            <h2 class="hidden">Prémios e Reconhecimentos</h2>
+            </div>
+            <div class="award-container">
+                <div class="award">
+                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
+                    <a> 3x Prémio Prata KW Portugal  </a>
+                </div>
+                <div class="award">
+                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
+                    <a> 2x Ouro KW Abaco</a>
+                </div>
+                <div class="award">
+                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
+                    <a> Mãe do Colaborador do Mês McDonalds </a>
+                </div>
+                <div class="award">
+                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
+                    <a> Ouro em ser bueda fixe </a>
+                </div>
+                <div class="award">
+                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
+                    <a> Viva o Benfica </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer" style="height: 50svh">
         <div class="content">
             <div class="nav-bar">
@@ -207,19 +235,19 @@
                     <a href="#" class="lines"><strong>Imóveis</strong></a>
                     <a href="#" class= "lines">Comprar</a>
                     <a href="#" class="lines">Vender</a>
-                    <a href="#" class="lines">Lorem Ipsum</a>
+                    <a href="#" class="lines">Arrendar</a>
                 </div>
-                <div class="col">
-                    <a href="#" class="lines"><strong>Keller Williams</strong></a>
-                    <a href="#" class= "lines">Lorem Ipsum</a>
-                    <a href="#" class="lines">Lorem Ipsum</a>
-                    <a href="#" class="lines">Lorem Ipsum</a>
-                </div>
+
                 <div class="col">
                     <a href="#" class="lines"><strong>Redes Sociais</strong></a>
-                    <a href="#" class= "lines">Lorem Ipsum</a>
-                    <a href="#" class="lines">Lorem Ipsum</a>
-                    <a href="#" class="lines">Lorem Ipsum</a>
+                    <a href="#" class= "lines">Instagram</a>
+                    <a href="#" class="lines">Facebook</a>
+                    <a href="#" class="lines">LinkedIn</a>
+                </div>
+
+                <div class="col" id="kw">
+                    <a href="#" class="lines"><strong>Keller Williams</strong></a>
+                    <a href="https://www.kwportugal.pt/pt/the-keller-williams" class= "lines">Imprensa</a>
                 </div>
             </div>
         </div>

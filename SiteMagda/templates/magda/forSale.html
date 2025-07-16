@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Magda Leal - Propriedades</title>
+    <link rel="stylesheet" href="{% static 'forsale.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="headerContainer" id="header">
+        <a class="logo" style="font-size:2rem" href="{% url 'home' %}"><strong>Magda</strong> Leal</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}" class="page-selector non-selected">Início</a>
+            <a href="#" class="page-selector non-selected">Sobre</a>
+            <a href="#" class="page-selector selected">Imóveis</a>
+            <a href="#" class="page-selector non-selected">Contactos</a>
+        </div>
+    </div>
+
+    <div style="margin-top: 15vh">
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar por localização, tipo, etc...">
+            <select>
+                <option value="">Tipologia</option>
+                <option value="T1">T1</option>
+                <option value="T2">T2</option>
+                <option value="T3">T3</option>
+                <option value="T4+">T4+</option>
+            </select>
+            <select>
+                <option value="">Preço máximo</option>
+                <option value="100000">Até 100.000€</option>
+                <option value="200000">Até 200.000€</option>
+                <option value="300000">Até 300.000€</option>
+                <option value="500000">Até 500.000€</option>
+                <option value="500001">Mais de 500.000€</option>
+            </select>
+            <button type="submit">Filtrar</button>
+        </div>
+
+        <main class="lista-propriedades">
+            {% for prop in propriedades %}
+                <a class="propriedade" >
+                    {% if prop.images.all|length > 0 %}
+                        <img src="{{ prop.images.all.0.image.url }}" alt="Imagem da propriedade">
+                    {% else %}
+                        <img src="{% static 'properties/placeholder.jpg' %}" alt="Sem imagem">
+                    {% endif %}
+                    <h2>{{ prop.name }}</h2>
+                    <p>{{ prop.description|truncatechars:90 }}</p>
+                </a>
+            {% empty %}
+                <p style="text-align:center; grid-column: 1 / -1;">Nenhuma propriedade disponível de momento.</p>
+            {% endfor %}
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Magda Leal - Connecting people to dreams</p>
+    </footer>
+
+    <script src="{% static 'scripts/forsale.js' %}"></script>
+</body>
+</html>

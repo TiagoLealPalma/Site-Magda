@@ -19,7 +19,8 @@ class Lead(models.Model):
     message = models.TextField()
 
 class Image(models.Model):
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to='property_images/')
 
 
 

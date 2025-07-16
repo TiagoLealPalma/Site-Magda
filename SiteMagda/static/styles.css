@@ -3,6 +3,7 @@
 
     --primary-color: #292C2F;
     --secondary-color: rgba(176,123,31,87%);
+    --secondary-color1: #5D769F;
     --alternative-color: rgb(89, 118, 147);
     --darker-alternative-color: rgb(65, 84, 107);
     --h1-color: #222;
@@ -28,26 +29,31 @@ body::-webkit-scrollbar {
 
 /* Header */
 .headerContainer{
-  width: 100vw;
-  height: 9vh;
-  position: fixed;
-  z-index: 2;
-  background-color: rgba(41,44,47,0);
-  display: flex;
-  align-items: center;
-  transition: opacity 0.35s;
-  flex-direction: row;
-  padding: 0 2rem 0 2rem;
+      width: 100vw;
+      height: 9vh;
+      position: fixed;
+      z-index: 2;
+      background-color: rgba(41,44,47,0);
+      display: flex;
+      align-items: center;
+      transition: opacity 0.35s;
+      flex-direction: row;
+      padding: 0 2rem 0 2rem;
 
+    & a{
+          flex: 5;
+          color: whitesmoke;
+          font-weight: lighter;
+          opacity: 1;
+          height: auto;
+          text-decoration: none;
+
+        & .logo{
+            font-size: 2rem;
+        }
+    }
 }
 
-.headerContainer h1{
-  flex: 5;
-  color: whitesmoke;
-  font-weight: lighter;
-  opacity: 1;
-  height: auto;
-}
 
 .nav-links{
     flex:1;
@@ -73,7 +79,7 @@ body::-webkit-scrollbar {
 .selected{
     text-decoration: none;
     font-weight: bold;
-    color: var(--secondary-color);
+    color: var(--secondary-color)!important;
     text-align: center;
 
 }
@@ -738,6 +744,20 @@ body::-webkit-scrollbar {
     color: #6c6c6c;
 }
 
+.award-container{
+    padding-top: 6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    & .award{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
 .footer{
     /*border-top: solid var(--secondary-color) 5px;*/
     background-color: var(--primary-color);
@@ -747,7 +767,7 @@ body::-webkit-scrollbar {
         padding-top: 3%;
 
         & .nav-bar {
-            width: 60%;
+            width: 40%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -779,27 +799,38 @@ body::-webkit-scrollbar {
 
         & .subContent{
             padding-top: 4vh;
-            width: 50%;
+            width: 60%;
             display: flex;
             justify-content: space-between;
             flex-direction: row;
             line-height:1.5rem;
 
+            & #kw{
+                height: 8vh;
+            }
 
             & .col{
+
                 height: 18vh;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+
+
 
                 & .lines{
                     text-decoration: None;
                     color: whitesmoke;
                     font-weight: normal;
                 }
+
+                & .lines:hover{
+
+                    color: #bbbaba;
+                }
+
             }
         }
-    }
 
     .socials{
 

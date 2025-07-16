@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Nova Propriedade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Criar Nova Propriedade</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <label for="id_images">Imagens:</label>
+                <input type="file" name="images" id="id_images" multiple>
+                {% if images_form.images.errors %}
+                    <small class="error">{{ images_form.images.errors }}</small>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="submit-btn">Guardar Propriedade</button>
+        </form>
+    </div>
+
+</body>
+</html>
