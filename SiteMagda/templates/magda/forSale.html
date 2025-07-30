@@ -10,8 +10,10 @@
 </head>
 <body>
     <div class="headerContainer" id="header">
-        <a class="logo" style="font-size:2rem" href="{% url 'home' %}"><strong>Magda</strong> Leal</a>
-        <div class="nav-links">
+        <a class="logo" href="{% url 'home' %}">
+            <strong>Magda</strong> Leal
+        </a>
+        <div class="nav-links" id="nav-links">
             <a href="{% url 'home' %}" class="page-selector non-selected">Início</a>
             <a href="#" class="page-selector non-selected">Sobre</a>
             <a href="#" class="page-selector selected">Imóveis</a>
@@ -19,25 +21,30 @@
         </div>
     </div>
 
-    <div style="margin-top: 15vh">
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar por localização, tipo, etc...">
-            <select>
-                <option value="">Tipologia</option>
-                <option value="T1">T1</option>
-                <option value="T2">T2</option>
-                <option value="T3">T3</option>
-                <option value="T4+">T4+</option>
-            </select>
-            <select>
-                <option value="">Preço máximo</option>
-                <option value="100000">Até 100.000€</option>
-                <option value="200000">Até 200.000€</option>
-                <option value="300000">Até 300.000€</option>
-                <option value="500000">Até 500.000€</option>
-                <option value="500001">Mais de 500.000€</option>
-            </select>
-            <button type="submit">Filtrar</button>
+<!-- Botão agora fora -->
+<button class="menu-toggle" id="menu-toggle"><strong> &#9776;</strong></button>
+
+    <div class="forsale-content">
+        <div class="search-bar-background">
+            <div class="search-bar" >
+                <input type="text" placeholder="Pesquisar por localização, tipo, etc...">
+                <select>
+                    <option value="">Tipologia</option>
+                    <option value="T1">T1</option>
+                    <option value="T2">T2</option>
+                    <option value="T3">T3</option>
+                    <option value="T4+">T4+</option>
+                </select>
+                <select>
+                    <option value="">Preço máximo</option>
+                    <option value="100000">Até 100.000€</option>
+                    <option value="200000">Até 200.000€</option>
+                    <option value="300000">Até 300.000€</option>
+                    <option value="500000">Até 500.000€</option>
+                    <option value="500001">Mais de 500.000€</option>
+                </select>
+                <button type="submit">Filtrar</button>
+            </div>
         </div>
 
         <main class="lista-propriedades">
@@ -57,7 +64,7 @@
         </main>
     </div>
 
-    <footer>
+    <footer style="position: fixed; bottom: 0; width: 100vw;">
         <p>&copy; 2025 Magda Leal - Connecting people to dreams</p>
     </footer>
 

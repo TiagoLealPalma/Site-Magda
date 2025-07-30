@@ -38,7 +38,7 @@ body::-webkit-scrollbar {
       width: 100vw;
       height: 9vh;
       position: fixed;
-      z-index: 2;
+      z-index: 2000;
       background-color: rgba(41,44,47,100);
       display: flex;
       align-items: center;
@@ -53,11 +53,10 @@ body::-webkit-scrollbar {
           opacity: 1;
           height: auto;
           text-decoration: none;
-
-        & .logo{
+    }
+    & .logo{
             font-size: 2rem;
         }
-    }
 }
 
 .nav-links{
@@ -131,15 +130,32 @@ header p {
     color: #666;
 }
 
+.search-bar-background{
+    align-items: center;
+    margin-top: 9vh;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height:15vh;
+    display: flex;
+    background-color: whitesmoke;
+    z-index: 1000;
+}
+
+.forsale-content{
+        margin-top: 15vh;
+    }
+
 /* Lista de propriedades */
 main.lista-propriedades {
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap: 2rem;
     padding: 2rem;
     max-width: 1800px;
-    margin: 0 auto;
-    margin-top: 3rem;
+    margin: 23vh auto 0 auto;
 }
 
 /* Card de propriedade */
@@ -168,8 +184,8 @@ main.lista-propriedades {
 }
 
 .propriedade h2 {
+    margin: 0.5rem 0 0.3rem 1rem;
     font-size: 1rem;
-    margin: 0.5rem;
     color: #2c2c2c;
 }
 
@@ -177,6 +193,7 @@ main.lista-propriedades {
     margin: 0 1rem 1rem;
     color: #555;
     font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .propriedade a {
@@ -215,7 +232,9 @@ footer {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.05);
   margin: 2rem auto;
+    width: 70vw;
   max-width: 1200px;
+    height: fit-content;
 }
 
 .search-bar input, .search-bar select {
@@ -251,4 +270,265 @@ footer {
 
 .search-bar input{
     flex: 6;
+}
+
+.menu-toggle {
+    display: none; /* Escondido por padrão no desktop */
+}
+
+/* Compatibilidade com ecrãs grandes */
+@media (max-width: 1800px) {
+    :root {
+        font-size: 14px;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        height: 18.5rem;
+        width: 21rem;
+
+        & img {
+            width: 100%;
+            height: 12rem;
+            object-fit: cover;
+        }
+    }
+}
+
+@media (max-width: 1600px) {
+    :root {
+        font-size: 13px;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        height: 18.5rem;
+        width: 21rem;
+
+        & img {
+            width: 100%;
+            height: 12rem;
+            object-fit: cover;
+        }
+    }
+}
+
+/* Laptops pequenos ou tablets em landscape */
+@media (max-width: 1460px) {
+    :root {
+        font-size: 12px;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        height: 18rem;
+        width: 18rem;
+
+        & img {
+            height: 11rem;
+        }
+    }
+}
+
+/* Tablets (<= 1024px) */
+@media (max-width: 1024px) {
+    :root {
+        font-size: 8px;
+    }
+    .headerContainer {
+        height: 8vh;
+        padding: 0 1.5rem;
+    }
+
+    .search-bar-background{
+        margin-top: 8vh;
+    }
+    .nav-links {
+        gap: 1.5rem;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal or smaller than width */
+    }
+
+    .propriedade {
+        height: 19rem;
+        width: 19rem;
+
+        & img {
+            height: 11rem;
+        }
+    }
+}
+
+/* Telemóveis grandes (<= 767px) */
+@media (max-width: 767px) {
+
+    .forsale-content{
+        margin-top: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 2002; /* Maior que o header */
+    }
+
+        .headerContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 20rem;
+        height: 100vh;
+        background-color: rgba(41,44,47,1);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1rem 2rem 1rem;
+        transform: translateX(-100%); /* Hide sidebar */
+        transition: transform 0.3s ease;
+        z-index: 2000;
+    }
+
+    /* Show when toggled */
+    .headerContainer.open {
+        transform: translateX(0);
+    }
+
+
+    /* Hamburger button */
+    .menu-toggle {
+        color: #868686;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 2001;
+        transition: transform 0.3s ease;
+
+    }
+
+    .slide{
+            transform: translateX(15rem);
+            color: var(--secondary-color);
+        }
+
+
+
+    /* Nav links vertical */
+    .nav-links {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .page-selector {
+        display: block;
+        width: 100%;
+        font-size: 1.4rem;
+        text-align: left;
+    }
+
+
+    :root {
+        font-size: 8px;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        height: 18rem;
+        width: 18rem;
+
+        & img {
+            height: 11rem;
+        }
+    }
+
+
+    .headerContainer{
+        & .logo{
+            font-size: 2rem;
+        }
+
+        & .nav-links{
+            & a{
+                font-size: 2.5rem;
+            }
+        }
+    }
+
+}
+
+/* Telemóveis pequenos (<= 479px) */
+@media (max-width: 479px) {
+    :root {
+        font-size: 8px;
+    }
+
+    .forsale-content{
+        margin-top: vh;
+    }
+
+    .propriedade {
+        width: 100%;
+        height: auto;
+    }
+    .propriedade img {
+        height: 150px;
+    }
+    header h1 {
+        font-size: 2rem;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(calc(100vw - 10vw), 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        margin: 2rem;
+        height: 33vh;
+        width: calc(100vw - 10vw);
+
+        & img {
+            height: 25vh;
+        }
+    }
+
+    .propriedade {
+        & h2{
+            padding-top: 0.2rem;
+            font-size: 1.5rem;
+        }
+
+        & p{
+            font-size: 1.2rem;
+        }
+    }
 }

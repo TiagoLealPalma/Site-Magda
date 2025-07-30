@@ -31,8 +31,9 @@ def create_property(request):
     })
 
 def load_landing_page(request):
-    template = loader.get_template('magda/home.html')
-    return HttpResponse(template.render())
+    top6_properties = Property.objects.all()[:6]
+    return render(request, "magda/home.html", {
+        "properties": top6_properties})
 
 def load_for_sale(request):
     propriedades = Property.objects.all()
