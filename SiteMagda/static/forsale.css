@@ -141,6 +141,8 @@ header p {
     display: flex;
     background-color: whitesmoke;
     z-index: 1000;
+    border-radius: 12px;
+    transition: all 0.5s;
 }
 
 .forsale-content{
@@ -235,6 +237,7 @@ footer {
     width: 70vw;
   max-width: 1200px;
     height: fit-content;
+    transition: 0.5s;
 }
 
 .search-bar input, .search-bar select {
@@ -261,7 +264,7 @@ footer {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .search-bar button:hover {
@@ -339,8 +342,28 @@ footer {
     }
 }
 
+/* Laptops pequenos ou tablets em landscape */
+@media (max-width: 1240px) {
+    :root {
+        font-size: 10.5px;
+    }
+
+    main.lista-propriedades {
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Must be equal to width */
+    }
+
+    .propriedade {
+        height: 18rem;
+        width: 18rem;
+
+        & img {
+            height: 11rem;
+        }
+    }
+}
+
 /* Tablets (<= 1024px) */
-@media (max-width: 1024px) {
+@media (max-width: 1075px) {
     :root {
         font-size: 8px;
     }
@@ -400,7 +423,7 @@ footer {
         align-items: flex-start;
         padding: 1rem 1rem 2rem 1rem;
         transform: translateX(-100%); /* Hide sidebar */
-        transition: transform 0.3s ease;
+        transition: transform 0.5s ease;
         z-index: 2000;
     }
 
@@ -421,7 +444,7 @@ footer {
         border: none;
         cursor: pointer;
         z-index: 2001;
-        transition: transform 0.3s ease;
+        transition: transform 0.5s ease;
 
     }
 
@@ -484,10 +507,55 @@ footer {
         }
     }
 
+    .search-bar-background{
+        margin-top: 0;
+    }
+
+    main.lista-propriedades {
+        margin: 15vh auto 0 auto;
+    }
+
+    .search-bar{
+        width: 85vw;
+    }
+
 }
 
 /* Telemóveis pequenos (<= 479px) */
 @media (max-width: 479px) {
+    .search-bar-background{
+        margin-top: 0;
+        height: fit-content;
+
+
+    }
+
+    .search-bar{
+        display: flex;
+        padding: 2rem 5rem;
+        width: 100%;
+        background-color: whitesmoke;
+        border-radius: 12px;
+        box-shadow: none;
+        height: fit-content;
+        min-height: 10vh;
+        align-items: stretch;
+        flex-direction: row;
+        align-content: space-between;
+        margin: 0 !important;
+    }
+
+    .scrolled-header{
+        background-color: #ffffff;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(68, 68, 68, 0.08);
+    }
+
+    .scrolled-helper{
+        display: none;
+    }
+
     :root {
         font-size: 8px;
     }
@@ -508,6 +576,7 @@ footer {
     }
 
     main.lista-propriedades {
+        margin-top: 8vh;
         grid-template-columns: repeat(auto-fit, minmax(calc(100vw - 10vw), 1fr)); /* Must be equal to width */
     }
 

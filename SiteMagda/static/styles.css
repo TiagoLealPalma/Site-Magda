@@ -11,6 +11,10 @@
     overflow-x: hidden;
 }
 
+html{
+    scroll-snap-type: y mandatory;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +28,12 @@ body, html {
 }
 body::-webkit-scrollbar {
   display: none;
+}
+
+.section{
+    margin: 0px auto;
+    height: 100vh;
+    scroll-snap-align: start;
 }
 
 
