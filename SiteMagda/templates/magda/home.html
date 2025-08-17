@@ -11,7 +11,7 @@
 <body>
 <div>
     <div class="headerContainer" id="header">
-        <a class="logo" style="font-size: 2rem" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
+        <a class="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
         <div class="nav-links">
             <a href="#" class="page-selector selected">Início</a>
             <a href="#" class= "page-selector non-selected">Sobre</a>
@@ -19,6 +19,8 @@
             <a href="#" class="page-selector non-selected">Contactos</a>
         </div>
     </div>
+
+<button class="menu-toggle" id="menu-toggle"><strong> &#9776;</strong></button>
     <div class="landing-page">
         <div class="content-wrapper">
             <h1>Encontre o seu novo lar connosco</h1>
@@ -102,50 +104,18 @@
     <div class="feedback-section">
         <div class="feedback-title-container">
             <div style="text-align: center;">
-            <h2 class="hidden">Feedback</h2>
-            <h1 class="hidden">Não confie em nós, confie em quem já confiou.</h1>
+                <h2 class="hidden">Feedback</h2>
+                <h1 class="hidden">Não confie em nós, confie em quem já confiou.</h1>
             </div>
         </div>
 
-        <div class="feedback-container">
-            <button id="scrollLeft" class="hidden" style="left: 3%"> < </button>
-            <button id="scrollRight" class="hidden" style="right: 3%"> > </button>
+        <div class="feedback-carousel-container">
+            <div class="feedback-carousel" id="feedback-carousel">
 
-            <div class="feedback-scroll-container" id="feedback-scroll-container">
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.</p>
-                    <p style="color: #6c6c6c" class="hidden">Rosário Sousa</p>
-                </div>
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">Incansáveis. Sempre que a bola está do lado da Equipa da Magda Leal, rapidamente o assunto é tratado. [...]Nunca uma chamada da nossa parte ficou por atender. Não se pode pedir mais..</p>
-                    <p style="color: #6c6c6c" class="hidden">Silvana Curado</p>
-                </div>
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">Uma agente imobiliária impecável! Não só é uma excelente profissional como também é uma amiga que se preocupa genuinamente com os seus clientes.</p>
-                    <p style="color: #6c6c6c" class="hidden">Catarina Cardoso</p>
-                </div>
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">Profissionalismo, dedicação, seriedade e simpatia! Tornou todo o complexo processo da compra de uma casa, em algo muito simples, onde tudo o que foi prometido, foi cumprido! E com uma rapidez fantástica!</p>
-                    <p style="color: #6c6c6c" class="hidden">Carlos Silva</p>
-                </div>
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">Tive a minha casa à venda durante cerca de dois anos e meio noutra imobiliária. Quando, felizmente, mudei para a Magda, foram 23 dias para a vender! Só lamento não o ter feito antes. [...]</p>
-                    <p style="color: #6c6c6c" class="hidden">Sílvia Fernandes</p>
-                </div>
-                <div class="new-feedback" >
-                    <div class="hidden" style="width: 100%; text-align: left"><img class="property-img" src="{% static 'landingpage/quote.png' %}"></div>
-                    <p class="hidden" style="margin-bottom: 0.8rem">As a Foreign national living abroad it can be extremely difficult to purchase property in Portugal [...].  Magda’s team was able to get it done!  Magda is a true professional with all of the necessary tools to close a deal.[...]</p>
-                    <p style="color: #6c6c6c" class="hidden">Sérgio Serpa</p>
-                </div>
             </div>
         </div>
-
     </div>
+
     <div style="height: 10vh"></div>
     <div class="lead-section">
 
@@ -216,27 +186,22 @@
                 <a href="#" class="">Contactos</a>
             </div>
             <div class="subContent">
-                <div class="col">
-                    <a href="#" class="lines"><strong>Imóveis</strong></a>
-                    <a href="#" class= "lines">Comprar</a>
-                    <a href="#" class="lines">Vender</a>
-                    <a href="#" class="lines">Arrendar</a>
-                </div>
 
-                <div class="col">
-                    <a href="#" class="lines"><strong>Redes Sociais</strong></a>
-                    <a href="#" class= "lines">Instagram</a>
-                    <a href="#" class="lines">Facebook</a>
-                    <a href="#" class="lines">LinkedIn</a>
-                </div>
+                <a href="#" class="lines" style="grid-column: 1/2; grid-row: 1/2;"><strong>Imóveis</strong></a>
+                <a href="#" class= "lines" style="grid-column: 1/2; grid-row: 2/3;">Comprar</a>
+                <a href="#" class="lines" style="grid-column: 1/2; grid-row: 3/4;">Vender</a>
+                <a href="#" class="lines" style="grid-column: 1/2; grid-row: 4/5;">Arrendar</a>
 
-                <div class="col" id="kw">
-                    <a href="#" class="lines"><strong>Keller Williams</strong></a>
-                    <a href="https://www.kwportugal.pt/pt/the-keller-williams" class= "lines">Imprensa</a>
-                </div>
+                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 1/2;"><strong>Redes Sociais</strong></a>
+                <a href="#" class= "lines" style="grid-column: 2/3; grid-row: 2/3;">Instagram</a>
+                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 3/4;">Facebook</a>
+                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 4/5;">LinkedIn</a>
+
+                <a href="#" class="lines" style="grid-column: 3/4; grid-row: 1/2;"><strong>Keller Williams</strong></a>
+                <a href="https://www.kwportugal.pt/pt/the-keller-williams" class= "lines" style="grid-column: 3/4; grid-row: 2/3;">Imprensa</a>
+
             </div>
         </div>
-
     </div>
 </div>
 

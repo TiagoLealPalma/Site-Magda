@@ -162,7 +162,7 @@ main.lista-propriedades {
 
 /* Card de propriedade */
 .propriedade {
-    height: 20rem;
+    height: 18rem; /* MUDAR O HEIGHT EM TODAS AS QUERIES*/
     width: 20rem;
     background-color: #ffffff;
     border-radius: 12px;
@@ -189,12 +189,13 @@ main.lista-propriedades {
     margin: 0.5rem 0 0.3rem 1rem;
     font-size: 1rem;
     color: #2c2c2c;
+    font-weight: 600;
 }
 
 .propriedade p {
     margin: 0 1rem 1rem;
     color: #555;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 400;
 }
 
@@ -209,6 +210,32 @@ main.lista-propriedades {
 
 .propriedade a:hover {
     color: #005999;
+}
+
+.bed-vector{
+        height: 1rem !important;
+        width: auto !important;
+}
+
+.name{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tipology{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 1rem 0.3rem 1rem;
+    align-items: center;
+
+    & p{
+        margin: 0;
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #4f4f4f;
+    }
 }
 
 /* Rodapé */
@@ -409,10 +436,25 @@ footer {
         background: none;
         border: none;
         cursor: pointer;
-        z-index: 2002; /* Maior que o header */
+        z-index: 2002;
     }
 
-        .headerContainer {
+    /* Hamburger button */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        color: #868686;
+        top: 1rem;
+        left: 1rem;
+        font-size: 3rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 2001;
+        transition: transform 0.5s ease;
+    }
+
+    .headerContainer {
         position: fixed;
         top: 0;
         left: 0;
@@ -422,30 +464,16 @@ footer {
         flex-direction: column;
         align-items: flex-start;
         padding: 1rem 1rem 2rem 1rem;
-        transform: translateX(-100%); /* Hide sidebar */
+        transform: translateX(-100%);
         transition: transform 0.5s ease;
         z-index: 2000;
     }
 
+
+
     /* Show when toggled */
     .headerContainer.open {
         transform: translateX(0);
-    }
-
-
-    /* Hamburger button */
-    .menu-toggle {
-        color: #868686;
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        font-size: 2rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        z-index: 2001;
-        transition: transform 0.5s ease;
-
     }
 
     .slide{
@@ -497,7 +525,7 @@ footer {
 
     .headerContainer{
         & .logo{
-            font-size: 2rem;
+            font-size: 2.5rem;
         }
 
         & .nav-links{

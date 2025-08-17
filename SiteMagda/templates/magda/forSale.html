@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -21,7 +22,6 @@
         </div>
     </div>
 
-<!-- Botão agora fora -->
 <button class="menu-toggle" id="menu-toggle"><strong> &#9776;</strong></button>
 
     <div class="forsale-content">
@@ -55,8 +55,14 @@
                     {% else %}
                         <img src="{% static 'properties/placeholder.jpg' %}" alt="Sem imagem">
                     {% endif %}
-                    <h2>{{ prop.name }}</h2>
-                    <p>{{ prop.description|truncatechars:90 }}</p>
+                    <div class="name">
+                        <h2>{{ prop.name }}</h2>
+                        <div class="tipology">
+                            <p>{{ prop.bedrooms }}</p>
+                            <img class="bed-vector" src="{% static 'landingpage/Bed Vector.png' %}">
+                        </div>
+                    </div>
+                <p>{{ prop.price|intcomma }} €</p>
                 </a>
             {% empty %}
                 <p style="text-align:center; grid-column: 1 / -1;">Nenhuma propriedade disponível de momento.</p>
