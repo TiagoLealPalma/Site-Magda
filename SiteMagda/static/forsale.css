@@ -153,16 +153,17 @@ header p {
 main.lista-propriedades {
     display: grid;
     justify-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(5, minmax(20rem, 1fr));
     padding: 2rem;
     max-width: 1800px;
-    margin: 23vh auto 0 auto;
+    margin: 22vh auto;
+    gap: 1rem;
+    justify-content: center;
 }
 
 /* Card de propriedade */
 .propriedade {
-    height: 18rem; /* MUDAR O HEIGHT EM TODAS AS QUERIES*/
+    height: 18rem;
     width: 20rem;
     background-color: #ffffff;
     border-radius: 12px;
@@ -185,11 +186,20 @@ main.lista-propriedades {
     object-fit: cover;
 }
 
+.propriedade img:hover {
+    z-index: -1;
+}
+
+.hovered-prop-image:hover{
+    z-index: 1;
+}
+
 .propriedade h2 {
     margin: 0.5rem 0 0.3rem 1rem;
     font-size: 1rem;
     color: #2c2c2c;
     font-weight: 600;
+    grid-column: span 2;
 }
 
 .propriedade p {
@@ -212,26 +222,46 @@ main.lista-propriedades {
     color: #005999;
 }
 
+.text{
+    font-family: 'Poppins', sans-seriff;
+}
+
 .bed-vector{
         height: 1rem !important;
         width: auto !important;
 }
+.bath-vector{
+        height: 1.35rem !important;
+        width: auto !important;
+}
 
-.name{
+.vector{
+    width: 30%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.name{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    flex-direction: row;
     justify-content: space-between;
+    align-items: end;
 }
 
 .tipology{
+    padding-right: 1rem;
     display: flex;
     flex-direction: row;
-    margin: 0.5rem 1rem 0.3rem 1rem;
+    margin: 0.3rem 0rem;
     align-items: center;
+    justify-content: space-around;
 
     & p{
         margin: 0;
-        margin-right: 0.5rem;
+        margin-right: 0.4rem;
         font-size: 0.9rem;
         font-weight: 500;
         color: #4f4f4f;
@@ -267,15 +297,6 @@ footer {
     transition: 0.5s;
 }
 
-.search-bar input, .search-bar select {
-  padding: 0.7rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 200px;
-  background-color: #f9f9f9;
-  transition: border 0.2s ease;
-}
 
 .search-bar input:focus, .search-bar select:focus {
   border-color: var(--secondary-color);
@@ -303,8 +324,52 @@ footer {
 }
 
 .menu-toggle {
-    display: none; /* Escondido por padrão no desktop */
+    display: none;
 }
+
+.property-image-container{
+    height: 70%;
+}
+
+.property-image-container .image {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 1s ease;
+}
+
+.property-image-container .hover {
+    display: none;
+    opacity: 0;
+}
+
+.property-image-container:hover .base {
+    display: none;
+}
+
+.property-image-container:hover .hover {
+    display: block;
+}
+
+.property-image-container:hover .hover {
+  opacity: 1;
+}
+
+select, input[type="text"], input[type="search"] {
+  appearance: none;
+  -webkit-appearance: none; /* Safari / Chrome */
+  -moz-appearance: none; /* Firefox */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: white;
+    color: rgba(0,0,0,0.5s);
+}
+
 
 /* Compatibilidade com ecrãs grandes */
 @media (max-width: 1800px) {
@@ -313,14 +378,14 @@ footer {
     }
 
     main.lista-propriedades {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal to width */
+        max-width: 1600px;
     }
 
     .propriedade {
         height: 18.5rem;
         width: 21rem;
 
-        & img {
+        & .property-image-container {
             width: 100%;
             height: 12rem;
             object-fit: cover;
@@ -334,14 +399,14 @@ footer {
     }
 
     main.lista-propriedades {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal to width */
+        max-width: 1460px;
     }
 
     .propriedade {
         height: 18.5rem;
-        width: 21rem;
+        width: 20rem;
 
-        & img {
+        & .property-image-container {
             width: 100%;
             height: 12rem;
             object-fit: cover;
@@ -356,14 +421,17 @@ footer {
     }
 
     main.lista-propriedades {
-        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Must be equal to width */
+        max-width: 1200px;
+        padding: 0;
+        margin: 25vh auto;
+        gap: 1rem;
     }
 
     .propriedade {
-        height: 18rem;
-        width: 18rem;
+        height: 17.5rem;
+        width: 18.2rem;
 
-        & img {
+        & .property-image-container {
             height: 11rem;
         }
     }
@@ -376,14 +444,16 @@ footer {
     }
 
     main.lista-propriedades {
-        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Must be equal to width */
+        max-width: 1050px;
+        padding: 0;
+        margin: 25vh auto;
     }
 
     .propriedade {
         height: 18rem;
         width: 18rem;
 
-        & img {
+        & .property-image-container {
             height: 11rem;
         }
     }
@@ -407,21 +477,21 @@ footer {
     }
 
     main.lista-propriedades {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Must be equal or smaller than width */
+        max-width: 700px;
     }
 
     .propriedade {
-        height: 19rem;
-        width: 19rem;
+        height: 16.5rem;
+        width: 17.2rem;
 
-        & img {
+        & .property-image-container {
             height: 11rem;
         }
     }
 }
 
 /* Telemóveis grandes (<= 767px) */
-@media (max-width: 767px) {
+@media (max-width: 850px) {
 
     .forsale-content{
         margin-top: 0;
@@ -517,7 +587,7 @@ footer {
         height: 18rem;
         width: 18rem;
 
-        & img {
+        & .property-image-container {
             height: 11rem;
         }
     }
@@ -526,7 +596,9 @@ footer {
     .headerContainer{
         & .logo{
             font-size: 2.5rem;
+            padding-top: 2px;
         }
+
 
         & .nav-links{
             & a{
@@ -596,7 +668,7 @@ footer {
         width: 100%;
         height: auto;
     }
-    .propriedade img {
+    .propriedade .property-image-container {
         height: 150px;
     }
     header h1 {
@@ -604,7 +676,7 @@ footer {
     }
 
     main.lista-propriedades {
-        margin-top: 8vh;
+        margin-top: 12vh;
         grid-template-columns: repeat(auto-fit, minmax(calc(100vw - 10vw), 1fr)); /* Must be equal to width */
     }
 
@@ -613,7 +685,7 @@ footer {
         height: 33vh;
         width: calc(100vw - 10vw);
 
-        & img {
+        & .property-image-container {
             height: 25vh;
         }
     }

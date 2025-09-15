@@ -1,9 +1,11 @@
+from datetime import date
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from .forms import PropertyForm, ImageUploadForm
-from .models import Image, Property
+from .models import Image, Property, Lead
 
 def property_detail(request, property_id):
     property = get_object_or_404(Property, id=property_id)
@@ -31,13 +33,65 @@ def create_property(request):
     })
 
 def load_landing_page(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        Lead.objects.create(name=name, email=email, message=message)
+        return redirect('property_success')
+
+
     top6_properties = Property.objects.all()[:6]
+    years_since = date.today().year - 2015
+    number_of_properties = len(Property.objects.all())
+
     return render(request, "magda/home.html", {
-        "properties": top6_properties})
+        "properties": top6_properties,
+        "years_since": years_since,
+        "number_of_properties": len(top6_properties)
+    })
 
 def load_for_sale(request):
-    propriedades = Property.objects.all()
-    return render(request, 'magda/forSale.html', {'propriedades': propriedades})
+    properties = Property.objects.all()
+
+    # Get URL parameters
+    search = request.GET.get('search', "")
+    type = request.GET.get('type', '')
+    price = request.GET.get('price', '')
+
+    # Filter accordingly
+
+    # Search filtering
+    if search != "":
+        by_name = properties.filter(name__icontains=search)
+        by_address = properties.filter(address__icontains=search)
+
+        properties = by_name | by_address
+
+    # Type
+    if type != "":
+        if type != "5":
+            properties = properties.filter(bedrooms=int(type))
+        else:
+            properties = properties.filter(bedrooms__gte=5)
+
+    # Price
+    if price != "":
+        try:
+            price = int(price)
+            properties = properties.filter(price__lte=int(price))
+        except ValueError:
+            pass
+
+
+
+    return render(request, 'magda/forSale.html', {'propriedades': properties})
+
+
+
+
 
 def create_property_confirmation(request):
     template = loader.get_template('magda/property_success_confirmation.html')

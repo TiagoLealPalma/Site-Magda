@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +12,14 @@
 <body>
 <div>
     <div class="headerContainer" id="header">
-        <a class="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
-        <div class="nav-links">
-            <a href="#" class="page-selector selected">Início</a>
-            <a href="#" class= "page-selector non-selected">Sobre</a>
-            <a href="{% url 'forsale' %}" class="page-selector non-selected">Imóveis</a>
-            <a href="#" class="page-selector non-selected">Contactos</a>
+        <div class="header-flex">
+            <a class="logo" id="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
+            <div class="nav-links" id="nav-links">
+                <a href="#" class="page-selector selected">Início</a>
+                <a href="#" class= "page-selector non-selected">Sobre</a>
+                <a href="{% url 'forsale' %}" class="page-selector non-selected">Imóveis</a>
+                <a href="#" class="page-selector non-selected">Contactos</a>
+            </div>
         </div>
     </div>
 
@@ -54,7 +57,7 @@
                     </div>
                     <div class="spacing">
                         <div class="info-box " style="border-left: unset" >
-                            <span class="info-number hidden">22</span>
+                            <span class="info-number hidden">{{ number_of_properties }}</span>
                             <span class="info-text hidden">Imóveis em venda</span>
                         </div>
                         <div class="info-box " >
@@ -62,7 +65,9 @@
                             <span class="info-text hidden">Imóveis vendidos</span>
                         </div>
                         <div class="info-box " >
-                            <span class="info-number hidden">10+</span>
+                            <span class="info-number hidden">
+                                {{ years_since }}+
+                            </span>
                             <span class="info-text hidden">Anos de Experiência</span>
                         </div>
                     </div>
@@ -120,57 +125,63 @@
     <div class="lead-section">
 
         <div class="onTop"></div>
+
         <div class="left">
             <h1>Explique-nos que procura!</h1>
             <h2> Entraremos em contacto consigo o mais breve possivel.</h2>
-            <div style="flex-direction: row;">
-                <input class="lead-questions" type="text" name="fname" placeholder="Insira o seu nome.">
-                <input class="lead-questions" type="email" name="femail" placeholder="Insira o seu email.">
-            </div>
-            <textarea class="lead-questions extended" type="text" name="fmessage" placeholder="O que procura?"></textarea>
-            <div class="extended-lead-div">
-                <button id="left" class="subscribe">Solicitar Contacto</button>
-                <p class="clickable" style="padding-top:0.2rem; font-size: 0.6rem; color: whitesmoke; font-family: 'Poppins', sans-serif; font-weight: lighter; text-decoration: underline; cursor: pointer"> Prefiro assinar a newsletter!</p>
-            </div>
+            <form style="width: 100%" method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+                <div style="flex-direction: row;">
+                    <input class="lead-questions" type="text" name="name" placeholder="Insira o seu nome.">
+                    <input class="lead-questions" type="email" name="email" placeholder="Insira o seu email.">
+                </div>
+                <textarea class="lead-questions extended" type="text" name="message" placeholder="O que procura?"></textarea>
+                <div class="extended-lead-div">
+                    <button id="left" class="subscribe">Solicitar Contacto</button>
+                    <p class="clickable"> Prefiro assinar a newsletter!</p>
+                </div>
+            </form>
         </div>
+
+
         <div class="right">
             <h1>Acompanhe as últimas novidades do ramo imobiliário.</h1>
             <h2>Junte-se à nossa newsletter e fique por dentro das notícias do setor e das melhores dicas de decoração.</h2>
-            <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="email-section-container">
             <div class="email-section">
                 <input type="email" name="fname" placeholder="Insira o seu email">
                 <button class="subscribe">Subscrever</button>
             </div>
-                <p class="clickable" style="Padding-top:0.3rem; font-size: 0.6rem; color: whitesmoke; font-family: 'Poppins', sans-serif; font-weight: lighter; text-decoration: underline; cursor: pointer">Prefiro entrar em contacto direto!</p>
+                <p class="clickable" >Prefiro entrar em contacto direto!</p>
             </div>
         </div>
     </div>
 
-    <div style="height: 50vh;">
+    <div class="award-section">
         <div class="feedback-title-container">
             <div style="text-align: center;">
             <h2 class="hidden">Prémios e Reconhecimentos</h2>
             </div>
             <div class="award-container">
                 <div class="award">
-                    <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
-                    <a> 3x Prémio Prata KW Portugal  </a>
+                    <img src="https://img.icons8.com/?size=100&id=67672&format=png&color=000000">
+                    <a> 3x Top 10 Mega Teams  </a>
                 </div>
                 <div class="award">
                     <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
-                    <a> 2x Ouro KW Abaco</a>
+                    <a> 3x Top 3 Income </a>
                 </div>
                 <div class="award">
                     <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
-                    <a> Mãe do Colaborador do Mês McDonalds </a>
+                    <a> 2x Ouro KW Abaco </a>
                 </div>
                 <div class="award">
                     <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
-                    <a> Ouro em ser bueda fixe </a>
+                    <a> 1x Prata Kw Abaco </a>
                 </div>
                 <div class="award">
                     <img src="https://img.icons8.com/?size=100&id=6YtrB5VnlPqY&format=png&color=000000">
-                    <a> Viva o Benfica </a>
+                    <a> 9x Capper </a>
                 </div>
             </div>
         </div>
@@ -187,21 +198,22 @@
             </div>
             <div class="subContent">
 
-                <a href="#" class="lines" style="grid-column: 1/2; grid-row: 1/2;"><strong>Imóveis</strong></a>
+                <h1 class="lines" style="grid-column: 1/2; grid-row: 1/2;"><strong>Imóveis</strong></h1>
                 <a href="#" class= "lines" style="grid-column: 1/2; grid-row: 2/3;">Comprar</a>
                 <a href="#" class="lines" style="grid-column: 1/2; grid-row: 3/4;">Vender</a>
                 <a href="#" class="lines" style="grid-column: 1/2; grid-row: 4/5;">Arrendar</a>
 
-                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 1/2;"><strong>Redes Sociais</strong></a>
-                <a href="#" class= "lines" style="grid-column: 2/3; grid-row: 2/3;">Instagram</a>
-                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 3/4;">Facebook</a>
-                <a href="#" class="lines" style="grid-column: 2/3; grid-row: 4/5;">LinkedIn</a>
+                <h1 class="lines" style="grid-column: 2/3; grid-row: 1/2;"><strong>Redes Sociais</strong></h1>
+                <a href="https://www.instagram.com/magdalealconsultora/" class= "lines" style="grid-column: 2/3; grid-row: 2/3;">Instagram</a>
+                <a href="https://www.facebook.com/magdalealconsultora" class="lines" style="grid-column: 2/3; grid-row: 3/4;">Facebook</a>
+                <a href="https://www.linkedin.com/in/magdaleal/?originalSubdomain=pt" class="lines" style="grid-column: 2/3; grid-row: 4/5;">LinkedIn</a>
 
-                <a href="#" class="lines" style="grid-column: 3/4; grid-row: 1/2;"><strong>Keller Williams</strong></a>
+                <h1 href="#" class="lines" style="grid-column: 3/4; grid-row: 1/2;"><strong>Keller Williams</strong></h1>
                 <a href="https://www.kwportugal.pt/pt/the-keller-williams" class= "lines" style="grid-column: 3/4; grid-row: 2/3;">Imprensa</a>
 
             </div>
         </div>
+        <div class="author-credit">Site made by <a href="mailto:tiagolealpalma@outlook.com"> Tiago Leal Palma</a></div>
     </div>
 </div>
 

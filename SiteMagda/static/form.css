@@ -108,6 +108,13 @@ body::-webkit-scrollbar {
     background-color: var(--darker-alternative-color);
 }
 
+.container{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+}
+
 .success-window {
     max-width: 600px;
     margin: 15vh auto;
@@ -119,6 +126,7 @@ body::-webkit-scrollbar {
     font-family: 'Poppins', sans-serif;
     animation: fadeInUp 0.5s ease;
 }
+
 
 .success-window h1 {
     color: var(--primary-color);
@@ -160,6 +168,15 @@ body::-webkit-scrollbar {
 
 .btn-secondary:hover {
     background-color: #e2e2e2;
+}
+
+#custom-hover{
+    transition: all 0.2s ease-in-out;
+}
+
+#custom-hover:hover{
+    color: white;
+    background-color: var(--secondary-color);
 }
 
 @keyframes fadeInUp {

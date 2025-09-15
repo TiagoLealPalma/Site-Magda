@@ -3,7 +3,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Propriedade criada</title>
+    <title>Recebemos a sua mensagem!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Estilos existentes -->
@@ -11,12 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div class="success-window">
-        <h1>Propriedade criada com sucesso!</h1>
-        <p>A tua nova propriedade foi adicionada ao sistema.</p>
-        <a href="{% url 'create_property' %}" class="btn-secondary">Criar nova</a>
-        <a class="btn-primary">Ver lista</a>
+    <div class="container">
+        <div class="success-window">
+            <h1>Mensagem enviada com sucesso!</h1>
+            <p>Agradecemos o seu contacto, entraremos em contacto o mais breve possível.</p>
+            <a href="{% url 'home' %}" id="custom-hover" class="btn-secondary">Voltar para a página anterior</a>
+        </div>
     </div>
 
 </body>

@@ -117,3 +117,18 @@ menuToggle.addEventListener("click", () => {
     body.classList.toggle("menu-open");
     menuToggle.classList.toggle("slide")
 });
+
+
+const logo = document.getElementById("logo");
+const nav = document.getElementById("nav-links");
+const triggerHeight = window.innerHeight; // 100vh in px
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > triggerHeight) {
+    logo.classList.add("secondary-color");
+    nav.classList.add("black-color");
+  } else {
+    logo.classList.remove("secondary-color");
+    nav.classList.remove("black-color");
+  }
+});
