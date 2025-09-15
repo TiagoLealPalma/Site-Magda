@@ -1,31 +1,26 @@
 const menuToggle = document.getElementById("menu-toggle");
 const header = document.querySelector(".headerContainer");
 const body = document.body;
+const mq = window.matchMedia("(min-width: 768px)");
 
 const headerSVG = document.getElementById('header');
 let originalPos = true;
 let lastScroll = 0;
+let downScrolling = false;
+let upScrolling = false;
 
 window.addEventListener('scroll', () => {
 
+
+
     const viewheight = window.innerHeight - headerSVG.offsetHeight;
     const scrollPosition = document.documentElement.scrollTop;
-    const opacity = Math.max(0, Math.min(1, (scrollPosition/viewheight))).toString();
+    const opacity = Math.max(0, Math.min(1, ((scrollPosition/viewheight)/10))).toString();
 
-    if(scrollPosition < lastScroll) {
-        if (scrollPosition > viewheight) {
-            headerSVG.style.backgroundColor = 'rgba(41,44,47,1)';
-        } else {
-            headerSVG.style.backgroundColor = 'rgba(41,44,47,' + opacity + ')';
-        }
-        headerSVG.style.opacity = '1';
-    } else {
-        headerSVG.style.opacity = '0';
-    }
+    // General styling
 
-    lastScroll = scrollPosition;
 
-    const elements = document.querySelectorAll('.hidden');
+     const elements = document.querySelectorAll('.hidden');
     elements.forEach(element => {
         const position = element.getBoundingClientRect();
         if (position.top < window.innerHeight && position.bottom >= 0) {
@@ -34,6 +29,37 @@ window.addEventListener('scroll', () => {
             element.classList.remove('visible');
         }
     });
+
+
+    if (!mq.matches) return;
+
+    // Desktop only styling
+
+    if(scrollPosition < lastScroll) { // Scrolling up
+        downScrolling = false;
+        if (!upScrolling){
+            headerSVG.style.transform = 'translateY(0px)'
+        }
+
+        if (scrollPosition > viewheight) {
+            headerSVG.style.backgroundColor = 'rgba(255, 255, 255,0.1)';
+        } else {
+            headerSVG.style.backgroundColor = 'rgba(255, 255, 255,' + opacity + ')';
+            headerSVG.style.boxShadow = 'none';
+        }
+        headerSVG.style.opacity = '1';
+
+    } else { // Scrolling down
+        upScrolling = false;
+        if(!downScrolling){
+            headerSVG.style.transform = 'translateY(-200px)';
+            downScrolling = true;
+        }
+    }
+
+    lastScroll = scrollPosition;
+
+
 });
 
 document.querySelectorAll('.clickable').forEach(item => {

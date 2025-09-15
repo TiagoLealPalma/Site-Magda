@@ -6,7 +6,8 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.load_landing_page, name='home'),
+    path('', views.load_brevemente_page, name='brevemente'),
+    path('home', views.load_landing_page, name='home'),
     path('properties', views.load_for_sale, name='forsale'),
     path('properties/new/', views.create_property, name='create_property_notbeingused'),
     path('confirmation/', views.create_property_confirmation, name='property_success'),

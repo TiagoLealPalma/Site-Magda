@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brevemente disponível</title>
+  <meta name="description" content="Página de espera — Brevemente disponível" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --gold: #B07B1F;
+      --gold-light: #d4a23a;
+      --bg1: #404852;
+      --bg2: #414a53;
+      --bg3: #454d54;
+      --text: #f5f5f5;
+      --muted: #c9c9c9;
+      --card: rgba(255,255,255,0.1);
+      --border: rgba(255,255,255,0.25);
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
+      display:grid; place-items:center; overflow:hidden;
+    }
+
+    @keyframes gradientMove{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .wrap{position:relative; padding: 40px; width:min(780px, 92vw)}
+
+    .orb{position:absolute; inset:auto; filter: blur(100px); opacity:.25; pointer-events:none}
+    .orb.one{width:300px; height:300px; background: radial-gradient(ellipse at center, var(--gold), transparent 70%); top:-60px; left:-80px;}
+    .orb.two{width:320px; height:320px; background: radial-gradient(ellipse at center, var(--gold-light), transparent 70%); right:-80px; bottom:-60px;}
+
+    .card{
+      position:relative; z-index:1; border:1px solid var(--border); background: var(--card);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-radius: 24px; padding: clamp(28px, 6vw, 48px);
+      box-shadow: var(--shadow);
+    }
+
+    h1{margin:0 0 12px; font-size: clamp(32px, 6vw, 56px); line-height:1.05; letter-spacing:-.02em; color: var(--text)}
+    p{margin:0; color: var(--muted); font-size: clamp(16px, 2.6vw, 18px)}
+
+    .divider{height:1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 26px 0}
+
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center; margin-top: 8px;
+    }
+
+    .btn{
+      padding: 12px 18px; border-radius: 14px; border: 1px solid var(--gold);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; font-weight: 600; letter-spacing:.01em;
+      cursor:pointer; transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.3);
+    }
+    .btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.4); background: var(--gold-light);}
+    .btn:active{ transform: translateY(0)}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid var(--gold);
+      background: rgba(255,255,255,.15); color: var(--gold); font-weight:600; font-size:14px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .logomark{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; font-weight:800; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color:#fff}
+
+    footer{position:fixed; inset:auto 0 18px; display:grid; place-items:center; font-size:12px; color: var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="orb one" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
+
+    <section class="card" role="region" aria-label="Estado do site">
+      <div class="pill" aria-hidden="true">
+        <span class="logomark">ML</span>
+        <span>Brevemente disponível</span>
+      </div>
+
+      <h1>Estamos a preparar algo especial</h1>
+      <p>A nova experiência estará brevemente disponível. Agradecemos a sua paciência.</p>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <div class="cta">
+        <button class="btn" onclick="window.location.href='https://www.kwportugal.pt/en/agente/Magda-Leal/34306'">
+  Magda Leal - Site KW
+</button>
+        <button class="btn" onclick="navigator.clipboard.writeText(location.href); this.textContent='Ligação copiada!';">Copiar ligação</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>© <span id="y"></span> — Todos os direitos reservados</footer>
+
+  <script>
+    // Atualiza ano do rodapé
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

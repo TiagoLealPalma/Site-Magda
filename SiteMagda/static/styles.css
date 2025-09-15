@@ -47,11 +47,12 @@ body::-webkit-scrollbar {
 
 /* Header */
 .headerContainer{
+    transition: transform 0.2s ease-in-out;
       width: 100vw;
       height: 9vh;
       position: fixed;
       z-index: 2000;
-      background: rgba(255, 255, 255, 0.1)!important; /* semi-transparent */
+      background: rgba(255, 255, 255, 0.0); /* semi-transparent */
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* subtle shadow */
       backdrop-filter: blur(10px);          /* the key: background blur */
       -webkit-backdrop-filter: blur(10px);  /* Safari support */
@@ -1064,7 +1065,7 @@ feedback-quote{
         left: 0;
         width: 27rem;
         height: 100vh;
-        background-color: rgba(41,44,47,1);
+        background-color: rgba(255,255,255,0.1);
 
         transform: translateX(-100%);
         transition: transform 0.5s ease;
@@ -1086,6 +1087,8 @@ feedback-quote{
             & .nav-links {
                 & a {
                     font-size: 2.5rem;
+                    color: white;
+                    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
                 }
             }
         }

@@ -45,12 +45,12 @@ def load_landing_page(request):
 
     top6_properties = Property.objects.all()[:6]
     years_since = date.today().year - 2015
-    number_of_properties = len(Property.objects.all())
+    number_of_properties = Property.objects.count()
 
     return render(request, "magda/home.html", {
         "properties": top6_properties,
         "years_since": years_since,
-        "number_of_properties": len(top6_properties)
+        "number_of_properties": number_of_properties
     })
 
 def load_for_sale(request):
@@ -58,8 +58,8 @@ def load_for_sale(request):
 
     # Get URL parameters
     search = request.GET.get('search', "")
-    type = request.GET.get('type', '')
-    price = request.GET.get('price', '')
+    tipologia = request.GET.get('type', '')
+    preco = request.GET.get('price', '')
 
     # Filter accordingly
 
@@ -71,23 +71,27 @@ def load_for_sale(request):
         properties = by_name | by_address
 
     # Type
-    if type != "":
-        if type != "5":
-            properties = properties.filter(bedrooms=int(type))
+    if tipologia != "":
+        if tipologia != "5":
+            properties = properties.filter(bedrooms=int(tipologia))
         else:
             properties = properties.filter(bedrooms__gte=5)
 
     # Price
-    if price != "":
+    if preco != "":
         try:
-            price = int(price)
+            price = int(preco)
             properties = properties.filter(price__lte=int(price))
         except ValueError:
             pass
 
 
 
-    return render(request, 'magda/forSale.html', {'propriedades': properties})
+    return render(request, 'magda/forSale.html', {'propriedades': properties,
+                                                  "tipologia": tipologia,
+                                                  "preco": preco,
+                                                  "search": search,
+                                                  })
 
 
 
@@ -96,3 +100,7 @@ def load_for_sale(request):
 def create_property_confirmation(request):
     template = loader.get_template('magda/property_success_confirmation.html')
     return HttpResponse(template.render())
+
+
+def load_brevemente_page(request):
+    return render(request, 'magda/brevemente.html')
