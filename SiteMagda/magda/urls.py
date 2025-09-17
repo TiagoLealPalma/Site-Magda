@@ -5,7 +5,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.load_brevemente_page, name='brevemente'),
     path('home', views.load_landing_page, name='home'),
     path('properties', views.load_for_sale, name='forsale'),
