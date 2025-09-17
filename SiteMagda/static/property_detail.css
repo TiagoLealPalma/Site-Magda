@@ -1,128 +1,119 @@
-:root{
-    font-size: 16px;
-
-    --primary-color: #292C2F;
-    --secondary-color: rgba(176,123,31,87%);
-    --secondary-color1: #5D769F;
-    --alternative-color: rgb(89, 118, 147);
-    --darker-alternative-color: rgb(65, 84, 107);
-    --h1-color: #222;
-    --h2-color: #666;
-    overflow-x: hidden;
+@charset "UTF-8";
+:root {
+  font-size: 16px;
+  --primary-color: #292C2F;
+  --secondary-color: rgba(176,123,31,87%);
+  --secondary-color1: #5D769F;
+  --alternative-color: rgb(89, 118, 147);
+  --darker-alternative-color: rgb(65, 84, 107);
+  --h1-color: #222;
+  --h2-color: #666;
+  overflow-x: hidden;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body, html {
-    height: 100%;
-        font-family: 'Poppins', sans-serif;
-
+  height: 100%;
+  font-family: "Poppins", sans-serif;
 }
+
 body::-webkit-scrollbar {
   display: none;
 }
-
 
 body::-webkit-scrollbar {
   display: none;
 }
 
 /* Header */
-.headerContainer{
-    top: 0;
-      width: 100vw;
-      height: 9vh;
-      position: fixed;
-      z-index: 2;
-      background-color: rgba(41,44,47,100);
-      display: flex;
-      align-items: center;
-      transition: opacity 0.35s;
-      flex-direction: row;
-      padding: 0 2rem 0 2rem;
-
-    & a{
-          flex: 5;
-          color: whitesmoke;
-          font-weight: lighter;
-          opacity: 1;
-          height: auto;
-          text-decoration: none;
-
-        & .logo{
-            font-size: 2rem;
-        }
-    }
+.headerContainer {
+  top: 0;
+  width: 100vw;
+  height: 9vh;
+  position: fixed;
+  z-index: 2;
+  background-color: rgb(41, 44, 47);
+  display: flex;
+  align-items: center;
+  transition: opacity 0.35s;
+  flex-direction: row;
+  padding: 0 2rem 0 2rem;
+}
+.headerContainer a {
+  flex: 5;
+  color: whitesmoke;
+  font-weight: lighter;
+  opacity: 1;
+  height: auto;
+  text-decoration: none;
+}
+.headerContainer a .logo {
+  font-size: 2rem;
 }
 
-.nav-links{
-    flex:1;
-    display: flex;
-    justify-content:space-between;
-    gap: 2rem;
-    align-items: center;
-}
-.page-selector{
-    box-sizing: content-box;
-    display: inline;
-    width: fit-content;
-    padding: 10px;
-    margin: 0;
-    flex: 1;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    font-size: large;
-    opacity: 1;
-
+.nav-links {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: center;
 }
 
-.selected{
-    text-decoration: none;
-    font-weight: bold;
-    color: var(--secondary-color)!important;
-    text-align: center;
-
+.page-selector {
+  box-sizing: content-box;
+  display: inline;
+  width: fit-content;
+  padding: 10px;
+  margin: 0;
+  flex: 1;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: large;
+  opacity: 1;
 }
 
-.non-selected{
-    text-decoration: none;
-    font-weight: lighter;
-    transition: all 0.2s;
-    color: white;
-    text-align: center;
+.selected {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--secondary-color) !important;
+  text-align: center;
+}
 
-
-    &:hover{
-        color: var(--secondary-color);
-    }
+.non-selected {
+  text-decoration: none;
+  font-weight: lighter;
+  transition: all 0.2s;
+  color: white;
+  text-align: center;
+}
+.non-selected:hover {
+  color: var(--secondary-color);
 }
 
 body {
-    background-color: #f7f7f7;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
+  background-color: #f7f7f7;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
-
 /* ================= Container ================= */
-
 .property-container {
   margin: 12vh auto 4rem;
   max-width: 1200px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
 }
 
 /* ================= Title ================= */
-
 .property-title {
   font-size: 2.25rem;
   color: var(--h1-color);
@@ -141,7 +132,6 @@ body {
 }
 
 /* ================ Gallery ================= */
-
 .property-gallery {
   margin: 2rem 0;
   position: relative;
@@ -178,7 +168,6 @@ body {
 }
 
 /* ================= Details ================= */
-
 .property-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -197,7 +186,6 @@ body {
 }
 
 /* ================= Description ================= */
-
 .property-description {
   margin-top: 2.5rem;
   font-size: 1rem;
@@ -206,7 +194,6 @@ body {
 }
 
 /* ================= Footer ================= */
-
 footer {
   text-align: center;
   padding: 1.5rem 0;
@@ -218,7 +205,6 @@ footer {
 }
 
 /* ================= Fancybox Overrides ================= */
-
 .fancybox__nav .fancybox__button {
   color: var(--secondary-color) !important;
   opacity: 0.9 !important;
@@ -229,7 +215,6 @@ footer {
 }
 
 /* ================= Scrollbar (chrome) ================= */
-
 body::-webkit-scrollbar {
   width: 8px;
 }
@@ -243,7 +228,6 @@ body::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-
 /* ================= Resize da imagem principal ================= */
 .property-gallery .f-carousel {
   /* Limita a altura total do carousel */
@@ -254,13 +238,13 @@ body::-webkit-scrollbar-track {
 /* Cada slide: força o img a caber dentro da altura */
 .property-gallery .f-carousel__slide img {
   max-height: 400px;
-  width: auto;      /* mantém proporção */
+  width: auto; /* mantém proporção */
   object-fit: cover;
 }
 
 /* Se quiseres que todo o slide (incluindo setas) fique dentro dos 400px: */
 .property-gallery {
-  max-height: 450px;  /* ajusta um pouco acima para incluir setas */
+  max-height: 450px; /* ajusta um pouco acima para incluir setas */
   overflow: hidden;
 }
 
@@ -287,3 +271,5 @@ body::-webkit-scrollbar-track {
 .f-carousel__slide img {
   margin: 0 auto;
 }
+
+/*# sourceMappingURL=property_detail.css.map */
