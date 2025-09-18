@@ -1,0 +1,29 @@
+# Local environment databases and config
+SiteMagda/db.sqlite3
+SiteMagda/pyvenv.cfg
+
+# Virtual environment directories
+SiteMagda/bin/
+SiteMagda/lib/
+
+# Uploaded media
+SiteMagda/property_images/
+
+# IDE/editor configuration
+.idea/
+.vscode/
+*.code-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Keep production settings out of version control
+SiteMagda/SiteMada/settings.py
+SiteMagda/SiteMada/__pycache__/
+
