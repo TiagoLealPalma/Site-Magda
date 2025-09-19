@@ -1,6 +1,7 @@
 # Local environment databases and config
 SiteMagda/db.sqlite3
 SiteMagda/pyvenv.cfg
+venv/
 
 # Virtual environment directories
 SiteMagda/bin/
