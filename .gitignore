@@ -23,8 +23,20 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 *$py.class
+SiteMagda/staticfiles/
 
 # Keep production settings out of version control
 SiteMagda/SiteMada/settings.py
 SiteMagda/SiteMada/__pycache__/
+
+
+
+# Node.js / Tailwind build stuff
+node_modules/
+package-lock.json
+theme/node_modules/
+theme/package-lock.json
+
+# Tailwind build artifacts (if you don’t want to version them)
+*.map
 
