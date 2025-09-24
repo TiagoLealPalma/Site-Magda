@@ -1,15 +1,16 @@
 @charset "UTF-8";
 :root {
   font-size: 16px;
-  --primary-color: #292C2F;
-  --secondary-color: rgba(176,123,31,87%);
-  --secondary-color1: #5D769F;
+  --primary-color1: #292C2F;
+  --secondary-color: rgba(176, 123, 31, 0.88);
+  --primary-color: hsl(213, 25%, 15%);
   --alternative-color: rgb(89, 118, 147);
   --darker-alternative-color: rgb(65, 84, 107);
   --h1-color: #222;
   --h2-color: #666;
   overflow-x: hidden;
 }
+
 
 html {
   scroll-snap-type: y mandatory;
@@ -392,7 +393,8 @@ body::-webkit-scrollbar {
 
 .property-view {
   height: 75vh;
-  background: linear-gradient(to right, var(--primary-color), #222222);
+  /*background: linear-gradient(to right, var(--primary-color), #222222);*/
+  background: linear-gradient(to right, var(--primary-color), color-mix(in srgb, var(--primary-color) 40%, black));
   display: flex;
   flex-direction: row;
 }
