@@ -13,9 +13,11 @@
 <div>
     <div class="headerContainer" id="header">
         <div class="header-flex">
-            <a class="logo" id="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
+            <div style="display: flex; flex: 5; justify-content: left;">
+                <a class="logo" id="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
+            </div>
             <div class="nav-links" id="nav-links">
-                <a href="#" class="page-selector selected">Início</a>
+                <a href="{% url 'home' %}" class="page-selector selected">Início</a>
                 <a href="#" class= "page-selector non-selected">Sobre</a>
                 <a href="{% url 'forsale' %}" class="page-selector non-selected">Imóveis</a>
                 <a href="#" class="page-selector non-selected">Contactos</a>

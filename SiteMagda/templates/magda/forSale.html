@@ -11,14 +11,16 @@
 </head>
 <body>
     <div class="headerContainer" id="header">
-        <a class="logo" href="{% url 'home' %}">
-            <strong>Magda</strong> Leal
-        </a>
-        <div class="nav-links" id="nav-links">
-            <a href="{% url 'home' %}" class="page-selector non-selected">Início</a>
-            <a href="#" class="page-selector non-selected">Sobre</a>
-            <a href="#" class="page-selector selected">Imóveis</a>
-            <a href="#" class="page-selector non-selected">Contactos</a>
+        <div class="header-flex">
+            <div style="display: flex; flex: 5; justify-content: left;">
+                <a class="logo" id="logo" href="{% url 'home' %}"> <Strong>Magda</Strong> Leal</a>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="{% url 'home' %}" class="page-selector non-selected">Início</a>
+                <a href="#" class= "page-selector non-selected">Sobre</a>
+                <a href="{% url 'forsale' %}" class="page-selector selected">Imóveis</a>
+                <a href="#" class="page-selector non-selected">Contactos</a>
+            </div>
         </div>
     </div>
 
