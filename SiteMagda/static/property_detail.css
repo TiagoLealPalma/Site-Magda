@@ -1,9 +1,9 @@
 @charset "UTF-8";
 :root {
   font-size: 16px;
-  --primary-color: #292C2F;
-  --secondary-color: rgba(176,123,31,87%);
-  --secondary-color1: #5D769F;
+  --primary-color1: #292C2F;
+  --secondary-color: #c79413;
+  --primary-color: hsl(213, 35%, 15%);
   --alternative-color: rgb(89, 118, 147);
   --darker-alternative-color: rgb(65, 84, 107);
   --h1-color: #222;
