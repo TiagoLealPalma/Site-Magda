@@ -44,6 +44,7 @@
                         <option value="300000" {% if request.GET.preco == "300000" %}selected{% endif %}>Até 300.000€</option>
                         <option value="500000" {% if request.GET.preco == "500000" %}selected{% endif %}>Até 500.000€</option>
                         <option value="800000" {% if request.GET.preco == "800000" %}selected{% endif %}>Até 800.000€</option>
+                        <option value="800000" {% if request.GET.preco == "1" %}selected{% endif %}>Superior 800 €</option>
                     </select>
                     <button style="min-width: 20rem;" type="submit">Filtrar</button>
                 </div>

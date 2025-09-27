@@ -2,8 +2,8 @@
 :root {
   font-size: 16px;
   --primary-color1: #292C2F;
-  --secondary-color: rgba(176, 123, 31, 0.88);
-  --primary-color: hsl(213, 25%, 15%);
+  --secondary-color: #c79413;
+  --primary-color: hsl(213, 35%, 15%);
   --alternative-color: rgb(89, 118, 147);
   --darker-alternative-color: rgb(65, 84, 107);
   --h1-color: #222;
@@ -203,27 +203,59 @@ body::-webkit-scrollbar {
     padding: 12px 24px;
   }
 }
+
 .about-section {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  width: 100vw;
   height: 70vh;
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
   display: flex;
+  justify-content: center;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 10px 20px 10px;
+
+
+}
+
+.about-section .content{
+  width: clamp(760px, 80%, 1500px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
   flex-direction: row;
 }
 
-.about-section .left {
+
+.about-section .right {
+  width:50%;
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+  overflow: hidden; /* Hide any overflow issues */
   flex: 1;
+  margin: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: right;
+  align-items: center;
 }
 
-.top-left {
-  flex: 3;
-  padding: 5rem 5rem 5rem 5rem;
+.about-section .right .padded-background {
+  width: 100%;
+  aspect-ratio: 9/16;
+  background-clip: content-box;
+  background-image: url("/static/landingpage/FotoMagda.png"); /* Replace with your image path */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  padding: 2vw 1rem;
+  overflow: hidden;
+  max-height: clamp(450px, 90%, 1000px);
+  height: 100%;
+  background-size: cover;
+}
+
+.about-section .left {
+  width: 50%;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .top-left h2 {
@@ -241,7 +273,7 @@ body::-webkit-scrollbar {
 }
 
 .top-left p {
-  font-size: 1rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.4;
   margin: 20px 0 20px 0;
   font-weight: lighter;
@@ -266,19 +298,13 @@ body::-webkit-scrollbar {
 }
 
 .bottom-left {
-  flex: 3;
   display: flex;
   flex-direction: column;
   justify-content: right;
   align-items: stretch;
 }
 
-.filler {
-  flex: 1.1;
-}
-
 .spacing {
-  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -287,10 +313,7 @@ body::-webkit-scrollbar {
 .info-box {
   flex: 1;
   text-align: center;
-  padding: 3rem 0;
-  border-left: thin solid var(--secondary-color);
-  border-bottom: thin solid var(--secondary-color);
-  border-top: thin solid var(--secondary-color);
+  padding-top: 3rem;
 }
 
 .info-number {
@@ -308,16 +331,11 @@ body::-webkit-scrollbar {
 }
 
 @media (max-width: 1000px) {
-  .about-section {
-    flex-direction: column;
-    height: 70vh;
-  }
+
   .property-title {
     height: 15vh !important;
   }
-  .about-section .right {
-    display: none !important;
-  }
+
   .info-box {
     margin-bottom: 1.5rem;
   }
@@ -333,28 +351,7 @@ body::-webkit-scrollbar {
     font-size: 12px; /* 1rem = 12px */
   }
 }
-.about-section .right {
-  box-sizing: border-box; /* Ensure padding is included in height calculation */
-  overflow: hidden; /* Hide any overflow issues */
-  flex: 1;
-  margin: 0;
-  border-left: thin solid var(--secondary-color);
-  border-bottom: thin solid var(--secondary-color);
-  display: flex;
-  text-align: center;
-  align-items: center;
-}
-.about-section .right .padded-background {
-  background-clip: content-box;
-  flex: 1;
-  background-image: url("/static/landingpage/FotoMagda.png"); /* Replace with your image path */
-  background-position: center center; /* Center the background image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  background-size: 80%;
-  padding: 1rem 1rem;
-  overflow: hidden;
-  height: 100%;
-}
+
 
 .hidden {
   opacity: 0;
@@ -369,8 +366,10 @@ body::-webkit-scrollbar {
 
 /* Propriedades */
 .property-title {
-  height: 35vh;
+  height: 15vh;
   display: flex;
+  justify-content: center;
+  text-align: center;
   flex-direction: column;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
@@ -379,7 +378,7 @@ body::-webkit-scrollbar {
   color: #666;
   font-size: 1.2rem;
   text-transform: uppercase;
-  margin: 3.2rem 0 0 0;
+  margin: 2rem 0 0 0;
   font-weight: normal;
 }
 
@@ -1037,8 +1036,25 @@ feedback-quote {
     width: 20vw;
   }
   .about-section {
-    height: max(50vh, 350px);
+    height: max(60vh, 350px);
   }
+
+  .about-section .content{
+    width: 90%;
+  }
+
+  .about-section .right{
+    width: 45%;
+  }
+
+  .about-section .right .padded-background{
+    height: 80%;
+  }
+
+  .about-section .left{
+    width: 50%;
+  }
+
   .feedback-section {
     height: 50vh;
   }
@@ -1052,6 +1068,15 @@ feedback-quote {
   :root {
     font-size: 8px;
   }
+
+  .about-section .right{
+    display: none;
+  }
+
+  .about-section .left{
+    width: 100%;
+  }
+
   .property-view {
     height: 60vh;
   }
