@@ -81,7 +81,10 @@ def load_for_sale(request):
     if preco != "":
         try:
             price = int(preco)
-            properties = properties.filter(price__lte=int(price))
+            if tipologia != "1":
+                properties = properties.filter(price__lte=int(price))
+            else:
+                properties = properties.filter(price__gte=int(price))
         except ValueError:
             pass
 

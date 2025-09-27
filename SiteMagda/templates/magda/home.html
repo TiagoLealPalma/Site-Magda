@@ -37,24 +37,21 @@
 
     </div>
     <div class="about-section" >
-        <div class="left">
-            <div class="top-left">
-                <h2 class="hidden">SOBRE</h2>
-                <h1 class="hidden">Excelência na realização dos seus sonhos imobiliários.</h1>
-                <p class="hidden">
-                    Com mais de <span style="color:var(--secondary-color);">10 anos </span> de experiência no mercado
-                    imobiliário e <span style="color:var(--secondary-color);">duas décadas</span> de engenharia civil,
-                ofereço um serviço de consultoria especializado. A minha dedicação e compromisso com a excelência
-                destacam o meu trabalho, e quero ajudá-lo a realizar os seus sonhos imobiliários com uma confiança e
-                profissionalismo incomparáveis.
-                </p>
-                <a href="#" class="about-button hidden">Ler Mais
-
-                </a>
+        <div class="content">
+            <div class="left">
+                <div class="top-left">
+                    <h2 class="hidden">SOBRE</h2>
+                    <h1 class="hidden">Excelência na realização dos seus sonhos imobiliários.</h1>
+                    <p class="hidden">
+                        Com mais de <span style="color:var(--secondary-color);">10 anos </span> de experiência no mercado
+                        imobiliário e <span style="color:var(--secondary-color);">duas décadas</span> de engenharia civil,
+                    ofereço um serviço de consultoria especializado. A minha dedicação e compromisso com a excelência
+                    destacam o meu trabalho, e quero ajudá-lo a realizar os seus sonhos imobiliários com uma confiança e
+                    profissionalismo incomparáveis.
+                    </p>
+                    <a href="#" class="about-button hidden">Ler Mais </a>
                 </div>
                 <div class="bottom-left">
-                    <div class="filler">
-                    </div>
                     <div class="spacing">
                         <div class="info-box " style="border-left: unset" >
                             <span class="info-number hidden">{{ number_of_properties }}</span>
@@ -73,19 +70,13 @@
                     </div>
                 </div>
             </div>
-        <div class="right">
-            <div class="padded-background"></div>
+            <div class="right">
+                <div class="padded-background"></div>
+            </div>
         </div>
     </div>
 
     <div class="property-section">
-        <div class="property-title">
-            <div class="filler"></div>
-            <div style="flex: 1; padding: max(20px, 3rem); " >
-            <h2 class="hidden">Propriedades</h2>
-            <h1 class="hidden">A preparar a nova etapa da sua vida.</h1>
-            </div>
-        </div>
         <div class="property-view">
                 <div class="property-slider hidden">
                     {% for prop in properties %}
