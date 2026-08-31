@@ -111,7 +111,7 @@ export default function PropertyForm() {
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Field label="Nome" value={form.name} onChange={(v) => setField("name", v)} required />
           <Field label="Preço (€)" type="number" value={form.price} onChange={(v) => setField("price", v)} />
           <div>
@@ -130,7 +130,7 @@ export default function PropertyForm() {
               ))}
             </select>
           </div>
-          <Field label="Morada" value={form.address} onChange={(v) => setField("address", v)} required className="col-span-2" />
+          <Field label="Morada" value={form.address} onChange={(v) => setField("address", v)} required className="sm:col-span-2" />
           <Field label="Tipologia" value={form.typology} onChange={(v) => setField("typology", v)} required />
           <Field label="Quartos" type="number" value={form.bedrooms} onChange={(v) => setField("bedrooms", v)} />
           <Field label="Casas de banho" type="number" value={form.bathrooms} onChange={(v) => setField("bathrooms", v)} />
@@ -168,7 +168,7 @@ export default function PropertyForm() {
           <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-4">
             Fotos
           </label>
-          <div className="grid grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
             {images.map((img) => (
               <div key={img.id} className="relative group aspect-square overflow-hidden bg-charcoal">
                 <img src={img.url} alt="" className="h-full w-full object-cover" />

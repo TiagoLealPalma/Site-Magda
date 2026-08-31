@@ -47,15 +47,15 @@ export default function Sobre() {
           style={{ backgroundImage: "url('/static/landingpage/PicoWallpaper.jpeg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10" />
-        <div className="relative mx-auto max-w-7xl px-8 pb-20">
+        <div className="relative mx-auto max-w-7xl px-6 md:px-8 pb-16 md:pb-20">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">Sobre</p>
-          <h1 className="font-display text-5xl md:text-6xl text-paper max-w-2xl leading-[1.05]">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl text-paper max-w-2xl leading-[1.15] md:leading-[1.05]">
             A conhecer melhor quem a vai acompanhar.
           </h1>
         </div>
       </section>
 
-      <section className="grid grid-cols-2">
+      <section className="grid grid-cols-1 md:grid-cols-2">
         <div className="aspect-square overflow-hidden">
           <img
             src="/static/landingpage/FotoMagda.png"
@@ -63,12 +63,12 @@ export default function Sobre() {
             className="h-full w-full object-cover grayscale"
           />
         </div>
-        <div className="px-16 py-24 flex flex-col justify-center">
+        <div className="px-6 py-16 md:px-16 md:py-24 flex flex-col justify-center">
           <Reveal>
-            <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-5">
+            <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-6">
               Magda Leal
             </p>
-            <div className="space-y-6 text-stone leading-relaxed max-w-md">
+            <div className="space-y-7 text-stone leading-relaxed max-w-md">
               <p>
                 Com mais de <span className="text-gold font-medium">10 anos</span> de experiência
                 no mercado imobiliário e <span className="text-gold font-medium">duas décadas</span>{" "}
@@ -98,8 +98,8 @@ export default function Sobre() {
       </section>
 
       {stats && (
-        <section className="mx-auto max-w-7xl px-8">
-          <div className="grid grid-cols-3 border-t border-ink/10 pt-24 pb-24 gap-8">
+        <section className="mx-auto max-w-7xl px-6 md:px-8">
+          <div className="grid grid-cols-3 border-t border-ink/10 pt-20 pb-20 md:pt-24 md:pb-24 gap-6 sm:gap-8">
             <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
             <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
             <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
@@ -107,14 +107,14 @@ export default function Sobre() {
         </section>
       )}
 
-      <section className="mx-auto max-w-7xl px-8 pb-32">
-        <Reveal className="text-center mb-20">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 pb-24 md:pb-32">
+        <Reveal className="text-center mb-14 md:mb-20">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
             Como trabalho
           </p>
-          <h2 className="font-display text-4xl">Três princípios que guiam cada negócio.</h2>
+          <h2 className="font-display text-3xl md:text-4xl">Três princípios que guiam cada negócio.</h2>
         </Reveal>
-        <div className="grid grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16">
           {VALUES.map((v, i) => (
             <Reveal key={v.title} delay={i * 100} className="text-center">
               <TickRule className="w-10 mx-auto mb-8" />
@@ -125,15 +125,15 @@ export default function Sobre() {
         </div>
       </section>
 
-      <section className="bg-charcoal py-32">
-        <Reveal className="text-center mb-20">
+      <section className="bg-charcoal py-24 md:py-32">
+        <Reveal className="text-center mb-14 md:mb-20">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
             Distinções
           </p>
-          <h2 className="font-display text-4xl text-paper">Prémios e Reconhecimentos.</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-paper">Prémios e Reconhecimentos.</h2>
         </Reveal>
 
-        <div className="mx-auto max-w-2xl px-8">
+        <div className="mx-auto max-w-2xl px-6 md:px-8">
           {AWARDS.map((award, i) => (
             <Reveal
               key={award.title}

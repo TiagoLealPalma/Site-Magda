@@ -34,11 +34,11 @@ export default function Home() {
           style={{ backgroundImage: "url('/static/landingpage/LandingBackground.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" />
-        <div className="relative mx-auto max-w-7xl px-8 pb-24 w-full">
+        <div className="relative mx-auto max-w-7xl px-6 md:px-8 pb-16 md:pb-24 w-full">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
             Consultora Imobiliária · Keller Williams
           </p>
-          <h1 className="font-display text-6xl md:text-7xl text-paper leading-[0.95] max-w-3xl">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-paper leading-[1.05] md:leading-[0.95] max-w-3xl">
             Encontre o seu novo lar connosco.
           </h1>
           <p className="mt-6 text-paper/80 max-w-md text-lg font-light">
@@ -54,13 +54,13 @@ export default function Home() {
       </section>
 
       {/* About teaser */}
-      <section className="mx-auto max-w-7xl px-8 py-28 grid grid-cols-2 gap-20 items-center">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-20 md:py-28 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">Sobre</p>
-          <h2 className="font-display text-4xl leading-tight max-w-lg">
+          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-5">Sobre</p>
+          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight max-w-lg">
             Excelência na realização dos seus sonhos imobiliários.
           </h2>
-          <p className="mt-6 text-stone leading-relaxed max-w-md">
+          <p className="mt-7 text-stone leading-relaxed max-w-md">
             Com mais de <span className="text-gold font-medium">10 anos</span> de experiência no
             mercado imobiliário e <span className="text-gold font-medium">duas décadas</span> de
             engenharia civil, ofereço um serviço de consultoria especializado — uma leitura técnica
@@ -74,7 +74,7 @@ export default function Home() {
           </Link>
 
           {stats && (
-            <div className="mt-14 grid grid-cols-3 gap-8 border-t border-ink/10 pt-8">
+            <div className="mt-12 md:mt-14 grid grid-cols-3 gap-6 sm:gap-8 border-t border-ink/10 pt-9">
               <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
               <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
               <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
@@ -91,14 +91,14 @@ export default function Home() {
       </section>
 
       {/* Featured properties — asymmetric rhythm, not a uniform grid */}
-      <section className="bg-charcoal py-28">
-        <div className="mx-auto max-w-7xl px-8">
-          <Reveal className="mb-14 flex items-end justify-between">
+      <section className="bg-charcoal py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
+          <Reveal className="mb-12 md:mb-14 flex items-end justify-between">
             <div>
               <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
                 Propriedades
               </p>
-              <h2 className="font-display text-4xl text-paper">
+              <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight text-paper">
                 A preparar a nova etapa da sua vida.
               </h2>
             </div>
@@ -111,8 +111,8 @@ export default function Home() {
           </Reveal>
 
           {properties.length > 0 && (
-            <div className="grid grid-cols-4 grid-rows-2 gap-6 h-[42rem]">
-              <div className="col-span-2 row-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6 md:h-[42rem]">
+              <div className="md:col-span-2 md:row-span-2">
                 <PropertyCard property={properties[0]} featured fillHeight />
               </div>
               {properties.slice(1, 5).map((p) => (
@@ -126,10 +126,10 @@ export default function Home() {
       <Testimonials />
 
       {/* Lead form */}
-      <section className="mx-auto max-w-3xl px-8 py-28 text-center">
+      <section className="mx-auto max-w-3xl px-6 md:px-8 py-20 md:py-28 text-center">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">Contacto</p>
-          <h2 className="font-display text-4xl mb-10">Explique-nos que procura.</h2>
+          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-5">Contacto</p>
+          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight mb-12">Explique-nos que procura.</h2>
           <div className="text-left">
             <LeadForm />
           </div>

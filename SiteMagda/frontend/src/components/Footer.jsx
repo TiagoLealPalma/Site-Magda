@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer id="contacto" className="bg-charcoal text-paper scroll-mt-20">
-      <div className="mx-auto max-w-7xl px-8 py-16 grid grid-cols-[1.2fr_1fr_1fr_1fr] gap-8">
-        <div>
+      <div className="mx-auto max-w-7xl px-6 md:px-8 py-12 md:py-16 grid grid-cols-2 md:grid-cols-[1.2fr_1fr_1fr_1fr] gap-x-6 gap-y-10 md:gap-8">
+        <div className="col-span-2 md:col-span-1">
           <p className="font-display text-2xl text-gold">Magda Leal</p>
           <p className="mt-4 text-sm text-paper/60 leading-relaxed max-w-[26ch]">
             Consultora imobiliária Keller Williams. Engenharia civil aplicada

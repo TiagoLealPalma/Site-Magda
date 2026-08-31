@@ -37,21 +37,21 @@ export default function Properties() {
     <div className="bg-paper min-h-screen">
       <Header />
 
-      <section className="pt-40 pb-20 bg-charcoal">
-        <div className="mx-auto max-w-7xl px-8">
+      <section className="pt-32 md:pt-40 pb-16 md:pb-20 bg-charcoal">
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">Imóveis</p>
-          <h1 className="font-display text-5xl text-paper max-w-xl">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl leading-snug md:leading-tight text-paper max-w-xl">
             A preparar a nova etapa da sua vida.
           </h1>
 
-          <div className="mt-16 flex flex-wrap items-end gap-8 border-t border-paper/10 pt-10">
+          <div className="mt-14 md:mt-16 flex flex-wrap items-end gap-6 md:gap-8 border-t border-paper/10 pt-9 md:pt-10">
             <Field label="Pesquisar">
               <input
                 type="text"
                 placeholder="Localização, nome…"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                className="bg-transparent border-b border-paper/30 text-paper placeholder:text-paper/40 py-2 text-sm focus:outline-none focus:border-gold transition-colors w-56"
+                className="bg-transparent border-b border-paper/30 text-paper placeholder:text-paper/40 py-2 text-sm focus:outline-none focus:border-gold transition-colors w-full sm:w-56"
               />
             </Field>
             <Field label="Quartos">
@@ -89,7 +89,7 @@ export default function Properties() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-8 py-24">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-20 md:py-24">
         {properties === null ? (
           <p className="text-stone text-sm">A carregar…</p>
         ) : properties.length === 0 ? (
@@ -97,7 +97,7 @@ export default function Properties() {
             Nenhuma propriedade disponível de momento.
           </p>
         ) : (
-          <div className="grid grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {properties.map((p) => (
               <PropertyCard key={p.id} property={p} />
             ))}

@@ -64,7 +64,7 @@ export default function PropertyDetail() {
           </svg>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 px-8 pb-14 mx-auto max-w-7xl">
+        <div className="absolute inset-x-0 bottom-0 px-6 md:px-8 pb-10 md:pb-14 mx-auto max-w-7xl">
           <Link
             to="/imoveis"
             onClick={(e) => e.stopPropagation()}
@@ -72,16 +72,16 @@ export default function PropertyDetail() {
           >
             ← Todos os imóveis
           </Link>
-          <h1 className="font-display text-5xl md:text-6xl text-paper mt-4 max-w-2xl">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl leading-snug md:leading-tight text-paper mt-5 max-w-2xl">
             {property.name}
           </h1>
-          <p className="font-mono text-xl text-gold-soft mt-3">{formatPrice(property.price)}</p>
+          <p className="font-mono text-lg md:text-xl text-gold-soft mt-3">{formatPrice(property.price)}</p>
         </div>
       </section>
 
       {/* Filmstrip */}
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto bg-charcoal px-8 py-4">
+        <div className="flex gap-2 overflow-x-auto bg-charcoal px-6 md:px-8 py-4">
           {images.map((img, i) => (
             <button
               key={img.url}
@@ -95,9 +95,9 @@ export default function PropertyDetail() {
       )}
 
       {/* Blueprint spec strip */}
-      <section className="mx-auto max-w-7xl px-8 py-24">
-        <TickRule className="mb-12" />
-        <Reveal className="grid grid-cols-6 gap-8">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-20 md:py-24">
+        <TickRule className="mb-11 md:mb-12" />
+        <Reveal className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
           <Spec label="Tipologia" value={property.typology || "—"} />
           <Spec label="Quartos" value={property.bedrooms ?? "—"} />
           <Spec label="Área Bruta" value={`${property.area} m²`} />
@@ -106,8 +106,8 @@ export default function PropertyDetail() {
           <Spec label="Morada" value={property.address} />
         </Reveal>
 
-        <div className="grid grid-cols-3 gap-16 mt-24">
-          <Reveal className="col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 mt-16 md:mt-24">
+          <Reveal className="md:col-span-2">
             <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
               Descrição
             </p>

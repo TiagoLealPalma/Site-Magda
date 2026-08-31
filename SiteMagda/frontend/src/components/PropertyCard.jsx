@@ -7,8 +7,8 @@ export default function PropertyCard({ property, featured = false, fillHeight = 
     <Link
       to={`/imoveis/${property.id}`}
       className={`group relative block overflow-hidden bg-charcoal ${
-        fillHeight ? "h-full" : featured ? "aspect-[4/3]" : "aspect-[3/4]"
-      }`}
+        featured ? "aspect-[4/3]" : "aspect-[3/4]"
+      } ${fillHeight ? "md:aspect-auto md:h-full" : ""}`}
     >
       <img
         src={coverImage(property)}
@@ -21,8 +21,12 @@ export default function PropertyCard({ property, featured = false, fillHeight = 
 
       <div className="absolute inset-x-0 bottom-0 p-6">
         <div className="tick-rule mb-4 opacity-80" />
-        <p className={`font-display text-paper ${featured ? "text-3xl" : "text-xl"}`}>
-          {property.name}
+        <p
+          className={`font-display text-paper leading-snug line-clamp-2 ${
+            featured ? "text-3xl" : "text-xl"
+          }`}
+        >
+          {property.address}
         </p>
         <div className="mt-2 flex items-center justify-between">
           <p className="font-mono text-sm text-gold-soft">{formatPrice(property.price)}</p>
