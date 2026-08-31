@@ -1,0 +1,30 @@
+# Virtual environment
+bin/
+lib/
+lib64/
+include/
+pyvenv.cfg
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Editors / OS
+.idea/
+.DS_Store
+
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+
+# Deployment
+.env
+staticfiles/

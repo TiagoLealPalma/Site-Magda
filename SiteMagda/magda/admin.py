@@ -11,7 +11,7 @@ class ImageInline(admin.TabularInline):
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'address', 'bedrooms', 'area')
+    list_display = ('name', 'address', 'bedrooms', 'area', 'status')
     inlines = [ImageInline]
 
 @admin.register(Lead)

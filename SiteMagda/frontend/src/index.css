@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — warm charcoal + gold, kept from the existing identity */
+  --color-ink: #17181a;
+  --color-charcoal: #292c2f;
+  --color-paper: #f6f4ef;
+  --color-paper-dim: #eeebe3;
+  --color-gold: #b07b1f;
+  --color-gold-soft: #d9b673;
+  --color-stone: #8c877e;
+  --color-rust: #9c4a3c;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.kenburns {
+  animation: kenburns 8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns {
+    animation: none;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Blueprint tick-mark divider — the site's signature motif for technical
+   data (price, area, bedrooms, stats). A thin gold rule with tick marks at
+   both ends, evoking an architectural dimension line. Used sparingly. */
+.tick-rule {
+  position: relative;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.55;
+}
+.tick-rule::before,
+.tick-rule::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--color-gold);
+}
+.tick-rule::before {
+  left: 0;
+}
+.tick-rule::after {
+  right: 0;
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.nav-underline {
+  transform-origin: left;
+  animation: draw-line 0.35s ease-out;
+}

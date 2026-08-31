@@ -20,12 +20,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3(7q+5+2u$qz-$gu5dj**_i@$s@lpn^mo=d&bbl6jw6_z#p9v5'
+# In production, SECRET_KEY/DEBUG/ALLOWED_HOSTS come from environment
+# variables (see docker-compose.yml / .env). The literal defaults below are
+# only used for local `npm run dev` + `manage.py runserver`, never in prod.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'django-insecure-3(7q+5+2u$qz-$gu5dj**_i@$s@lpn^mo=d&bbl6jw6_z#p9v5'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [h for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h]
+
+# The React dev server (Vite) proxies /api to this server. The browser's
+# Origin header is the Vite origin, which Django's CSRF Origin check needs
+# to trust explicitly since it differs from the host Django sees. In
+# production this is extended with the real domain (over https) via env var.
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:5174',
+    'http://127.0.0.1:5174',
+] + [o for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o]
 
 
 # Application definition
@@ -38,8 +54,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'rest_framework',
     'magda'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +102,7 @@ WSGI_APPLICATION = 'SiteMada.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DATABASE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -108,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Lisbon'
 
 USE_I18N = True
 
@@ -122,6 +145,16 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "magda/../static"),
 ]
+# Where `collectstatic` gathers files for production (nginx serves this
+# directly; unused by `manage.py runserver` in dev).
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Uploaded property photos live under MEDIA_ROOT, served at MEDIA_URL.
+# Previously unset, which made Django's dev static() helper fall back to
+# MEDIA_URL='/' and MEDIA_ROOT='' (cwd) — i.e. it served the ENTIRE project
+# directory (db.sqlite3, settings.py, ...) over HTTP. Do not remove this.
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,0 +1,84 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { adminApi } from "../../api/adminClient";
+import { formatPrice } from "../../utils/format";
+
+const STATUS_LABELS = {
+  available: "Disponível",
+  coming_soon: "Brevemente",
+  reserved: "Reservado",
+};
+
+export default function PropertiesAdmin() {
+  const [properties, setProperties] = useState(null);
+
+  function reload() {
+    adminApi.listProperties().then(setProperties);
+  }
+
+  useEffect(reload, []);
+
+  async function handleDelete(id, name) {
+    if (!confirm(`Apagar "${name}"? Esta ação não pode ser desfeita.`)) return;
+    await adminApi.deleteProperty(id);
+    reload();
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-10">
+        <div>
+          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-2">Imóveis</p>
+          <h1 className="font-display text-3xl text-ink">Gerir imóveis.</h1>
+        </div>
+        <Link
+          to="/backoffice/imoveis/novo"
+          className="bg-gold text-ink text-sm px-6 py-3 hover:bg-gold-soft transition-colors"
+        >
+          Novo Imóvel
+        </Link>
+      </div>
+
+      <div className="bg-white border border-ink/10">
+        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-3 border-b border-ink/10 font-mono text-[10px] uppercase tracking-widest text-stone">
+          <span>Nome</span>
+          <span>Preço</span>
+          <span>Tipologia</span>
+          <span>Fotos</span>
+          <span>Estado</span>
+          <span></span>
+        </div>
+
+        {properties === null ? (
+          <p className="p-6 text-sm text-stone">A carregar…</p>
+        ) : properties.length === 0 ? (
+          <p className="p-6 text-sm text-stone">Ainda não há imóveis.</p>
+        ) : (
+          properties.map((p) => (
+            <div
+              key={p.id}
+              className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-4 border-b border-ink/5 last:border-0 items-center"
+            >
+              <span className="text-sm text-ink">{p.name}</span>
+              <span className="font-mono text-sm text-stone">{formatPrice(p.price)}</span>
+              <span className="text-sm text-stone">{p.typology}</span>
+              <span className="font-mono text-sm text-stone">{p.images.length}</span>
+              <span className="text-sm text-stone">{STATUS_LABELS[p.status] || p.status}</span>
+              <div className="flex gap-4 justify-end">
+                <Link to={`/backoffice/imoveis/${p.id}`} className="text-sm text-gold hover:underline">
+                  Editar
+                </Link>
+                <button
+                  onClick={() => handleDelete(p.id, p.name)}
+                  className="text-sm text-red-600 hover:underline"
+                >
+                  Apagar
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
