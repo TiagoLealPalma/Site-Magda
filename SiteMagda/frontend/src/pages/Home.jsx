@@ -14,7 +14,12 @@ export default function Home() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    getProperties().then((data) => setProperties(data.slice(0, 5)));
+    getProperties().then((data) => {
+      // Featured card = priciest listing; the rest fill the grid in the
+      // same descending order (top 5 by price overall).
+      const byPriceDesc = [...data].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+      setProperties(byPriceDesc.slice(0, 5));
+    });
     getStats().then(setStats);
   }, []);
 

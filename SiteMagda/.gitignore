@@ -28,3 +28,10 @@ frontend/dist/
 # Deployment
 .env
 staticfiles/
+
+# SSH keys — never commit these, whatever they're named
+deploy_key*
+id_rsa*
+id_ed25519*
+*.pem
+*.ppk
