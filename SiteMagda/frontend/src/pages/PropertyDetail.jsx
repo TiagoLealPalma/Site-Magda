@@ -14,12 +14,37 @@ import { formatPrice, PLACEHOLDER_IMAGE } from "../utils/format";
 export default function PropertyDetail() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
+  const [error, setError] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     setProperty(null);
-    getProperty(id).then(setProperty);
-  }, [id]);
+    setError(false);
+    getProperty(id)
+      .then(setProperty)
+      .catch(() => setError(true));
+  }, [id, retryCount]);
+
+  if (error) {
+    return (
+      <div className="bg-paper min-h-screen">
+        <Header />
+        <div className="pt-40 pb-20 text-center">
+          <p className="text-stone text-sm">
+            Não foi possível carregar este imóvel. Verifique a sua ligação.
+          </p>
+          <button
+            type="button"
+            onClick={() => setRetryCount((c) => c + 1)}
+            className="mt-4 border border-gold text-gold px-6 py-2 text-sm tracking-wide hover:bg-gold hover:text-ink transition-colors"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -68,7 +93,7 @@ export default function PropertyDetail() {
           <Link
             to="/imoveis"
             onClick={(e) => e.stopPropagation()}
-            className="font-mono text-xs text-paper/60 hover:text-gold"
+            className="font-mono text-xs text-paper/60 hover:text-gold-soft"
           >
             ← Todos os imóveis
           </Link>
@@ -108,7 +133,7 @@ export default function PropertyDetail() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 mt-16 md:mt-24">
           <Reveal className="md:col-span-2">
-            <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
+            <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
               Descrição
             </p>
             <p className="text-stone leading-relaxed whitespace-pre-line">
@@ -117,7 +142,7 @@ export default function PropertyDetail() {
           </Reveal>
 
           <Reveal delay={150}>
-            <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
+            <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
               Interessado?
             </p>
             <LeadForm presetMessage={`Tenho interesse em: ${property.name}`} />

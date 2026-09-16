@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createLead } from "../api/client";
 
 export default function LeadForm({ presetMessage = "" }) {
-  const [form, setForm] = useState({ name: "", email: "", message: presetMessage });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: presetMessage });
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const messageRef = useRef(null);
 
@@ -21,7 +21,7 @@ export default function LeadForm({ presetMessage = "" }) {
     try {
       await createLead(form);
       setStatus("sent");
-      setForm({ name: "", email: "", message: "" });
+      setForm({ name: "", email: "", phone: "", message: "" });
     } catch {
       setStatus("error");
     }
@@ -41,32 +41,63 @@ export default function LeadForm({ presetMessage = "" }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input
+        <div>
+          <label htmlFor="lead-name" className="sr-only">
+            Nome
+          </label>
+          <input
+            id="lead-name"
+            required
+            type="text"
+            placeholder="Nome"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+        <div>
+          <label htmlFor="lead-email" className="sr-only">
+            Email
+          </label>
+          <input
+            id="lead-email"
+            required
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className="w-full bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor="lead-phone" className="sr-only">
+            Telefone
+          </label>
+          <input
+            id="lead-phone"
+            type="tel"
+            placeholder="Telefone (opcional)"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            className="w-full bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+      </div>
+      <div>
+        <label htmlFor="lead-message" className="sr-only">
+          O que procura?
+        </label>
+        <textarea
+          id="lead-message"
+          ref={messageRef}
           required
-          type="text"
-          placeholder="Nome"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors"
-        />
-        <input
-          required
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors"
+          rows={1}
+          placeholder="O que procura?"
+          value={form.message}
+          onChange={(e) => setForm({ ...form, message: e.target.value })}
+          className="w-full bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors resize-none overflow-hidden block"
         />
       </div>
-      <textarea
-        ref={messageRef}
-        required
-        rows={1}
-        placeholder="O que procura?"
-        value={form.message}
-        onChange={(e) => setForm({ ...form, message: e.target.value })}
-        className="w-full bg-transparent border-b border-ink/20 py-2 text-sm placeholder:text-stone focus:outline-none focus:border-gold transition-colors resize-none overflow-hidden block"
-      />
       <button
         type="submit"
         disabled={status === "sending"}
@@ -75,7 +106,7 @@ export default function LeadForm({ presetMessage = "" }) {
         {status === "sending" ? "A enviar…" : "Solicitar Contacto"}
       </button>
       {status === "error" && (
-        <p className="text-sm text-red-700">Não foi possível enviar. Tente novamente.</p>
+        <p className="text-sm text-rust">Não foi possível enviar. Tente novamente.</p>
       )}
     </form>
   );

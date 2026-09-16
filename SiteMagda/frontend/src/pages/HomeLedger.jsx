@@ -10,16 +10,17 @@ import LeadForm from "../components/LeadForm";
 import Testimonials from "../components/Testimonials";
 import { getProperties, getStats } from "../api/client";
 
-export default function Home() {
+// Variant A — "The Ledger": the calmest, most generous reading of the
+// system. One idea per screen, wide margins, no boxed panels — the hero's
+// quiet, framed-print language carried all the way down the page.
+export default function HomeLedger() {
   const [properties, setProperties] = useState([]);
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
     getProperties().then((data) => {
-      // Featured card = priciest listing; the rest fill the grid in the
-      // same descending order (top 5 by price overall).
       const byPriceDesc = [...data].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
-      setProperties(byPriceDesc.slice(0, 5));
+      setProperties(byPriceDesc.slice(0, 6));
     });
     getStats().then(setStats);
   }, []);
@@ -28,9 +29,7 @@ export default function Home() {
     <div className="bg-paper">
       <Header />
 
-      {/* Hero — deliberately not full-bleed or full-height: an open, quiet
-          arrival with her portrait presented as a framed print, not a photo
-          background. Breathing room is the point. */}
+      {/* Hero */}
       <section className="relative bg-paper pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
           <Reveal>
@@ -75,87 +74,90 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About teaser */}
-      <section className="mx-auto max-w-7xl px-6 md:px-8 py-20 md:py-28 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
+      {/* About + stats + quote — one narrow centered column, generous
+          vertical rhythm, no boxed panels at all. */}
+      <section className="mx-auto max-w-3xl px-6 md:px-8 py-24 md:py-36 text-center">
         <Reveal>
           <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">Sobre</p>
-          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight max-w-lg">
+          <h2 className="font-display text-3xl md:text-5xl leading-snug md:leading-tight">
             Excelência na realização dos seus sonhos imobiliários.
           </h2>
-          <p className="mt-7 text-stone leading-relaxed max-w-md">
-            Com mais de <span className="text-gold font-medium">{stats?.years_since ?? 10} anos</span> de experiência no
-            mercado imobiliário e <span className="text-gold font-medium">duas décadas</span> de
+          <p className="mt-8 text-stone leading-relaxed text-lg max-w-2xl mx-auto">
+            Com mais de <span className="text-gold-deep font-medium">{stats?.years_since ?? 10} anos</span> de experiência
+            no mercado imobiliário e <span className="text-gold-deep font-medium">duas décadas</span> de
             engenharia civil, ofereço um serviço de consultoria especializado — uma leitura técnica
             pouco comum no setor.
           </p>
           <Link
             to="/sobre"
-            className="mt-8 inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold transition-colors"
+            className="mt-8 inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold-deep transition-colors"
           >
             Ler mais
           </Link>
-
-          {stats && (
-            <div className="mt-12 md:mt-14 grid grid-cols-3 gap-6 sm:gap-8 border-t border-ink/10 pt-9">
-              <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
-              <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
-              <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
-            </div>
-          )}
         </Reveal>
-        <Reveal delay={150} className="bg-charcoal px-8 py-12 md:px-10 md:py-14 flex flex-col justify-center">
-          <span className="font-display text-6xl text-gold-soft leading-none">“</span>
-          <p className="mt-2 font-display text-2xl md:text-[1.75rem] leading-snug text-paper">
-            Vendi em 23 dias depois de mais de dois anos noutra imobiliária. A Magda faz mesmo a
-            diferença!
+
+        {stats && (
+          <Reveal delay={100} className="mt-20 grid grid-cols-3 gap-10 md:gap-16 border-t border-ink/10 pt-12">
+            <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
+            <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
+            <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
+          </Reveal>
+        )}
+
+        <Reveal delay={200} className="mt-20 md:mt-24">
+          <TickRule className="w-10 mx-auto mb-8" />
+          <p className="font-display text-2xl md:text-3xl leading-snug text-ink max-w-2xl mx-auto">
+            “Vendi em 23 dias depois de mais de dois anos noutra imobiliária. A Magda faz mesmo a
+            diferença!”
           </p>
-          <TickRule className="w-10 mt-8 mb-5" />
-          <p className="font-mono text-xs tracking-widest uppercase text-gold-soft">
+          <p className="mt-6 font-mono text-xs tracking-widest uppercase text-gold-deep">
             Sílvia Fernandes
           </p>
         </Reveal>
       </section>
 
-      {/* Featured properties — asymmetric rhythm, not a uniform grid */}
-      <section className="bg-charcoal py-20 md:py-28">
+      {/* Featured properties — a calm, uniform grid on paper, not a dense
+          asymmetric block on charcoal; the cards' own dark frames provide
+          the contrast, the page around them stays quiet. */}
+      <section className="bg-paper py-24 md:py-36 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-6 md:px-8">
-          <Reveal className="mb-12 md:mb-14 flex items-end justify-between">
-            <div>
-              <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">
-                Propriedades
-              </p>
-              <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight text-paper">
-                A preparar a nova etapa da sua vida.
-              </h2>
-            </div>
-            <Link
-              to="/imoveis"
-              className="hidden md:inline-block text-sm text-paper/70 hover:text-gold-soft transition-colors"
-            >
-              Ver todos →
-            </Link>
+          <Reveal className="mb-16 md:mb-20 text-center max-w-2xl mx-auto">
+            <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
+              Propriedades
+            </p>
+            <h2 className="font-display text-3xl md:text-5xl leading-snug md:leading-tight text-ink">
+              A preparar a nova etapa da sua vida.
+            </h2>
           </Reveal>
 
           {properties.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6 md:h-[42rem]">
-              <div className="md:col-span-2 md:row-span-2">
-                <PropertyCard property={properties[0]} featured fillHeight />
-              </div>
-              {properties.slice(1, 5).map((p) => (
-                <PropertyCard key={p.id} property={p} fillHeight />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
+              {properties.map((p) => (
+                <PropertyCard key={p.id} property={p} />
               ))}
             </div>
           )}
+
+          <Reveal delay={150} className="mt-16 text-center">
+            <Link
+              to="/imoveis"
+              className="inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold-deep transition-colors"
+            >
+              Ver todos os imóveis →
+            </Link>
+          </Reveal>
         </div>
       </section>
 
       <Testimonials />
 
       {/* Lead form */}
-      <section className="mx-auto max-w-3xl px-6 md:px-8 py-20 md:py-28 text-center">
+      <section className="mx-auto max-w-2xl px-6 md:px-8 py-24 md:py-36 text-center">
         <Reveal>
           <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">Contacto</p>
-          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight mb-12">Explique-nos que procura.</h2>
+          <h2 className="font-display text-3xl md:text-5xl leading-snug md:leading-tight mb-14">
+            Explique-nos que procura.
+          </h2>
           <div className="text-left">
             <LeadForm />
           </div>

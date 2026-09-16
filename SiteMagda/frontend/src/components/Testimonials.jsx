@@ -37,7 +37,7 @@ export default function Testimonials() {
   return (
     <section className="bg-paper py-32">
       <Reveal className="text-center mb-16">
-        <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-5">Feedback</p>
+        <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">Feedback</p>
         <h2 className="font-display text-3xl md:text-4xl text-ink max-w-xl mx-auto leading-snug">
           Não confie em nós, confie em quem já confiou.
         </h2>
@@ -60,7 +60,7 @@ export default function Testimonials() {
           </p>
           <p
             key={`${active}-author`}
-            className="mt-6 font-mono text-xs tracking-widest uppercase text-gold animate-[fadein_0.8s_ease-out]"
+            className="mt-6 font-mono text-xs tracking-widest uppercase text-gold-deep animate-[fadein_0.8s_ease-out]"
           >
             {current.author}
           </p>

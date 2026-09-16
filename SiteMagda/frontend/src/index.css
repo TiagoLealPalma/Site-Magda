@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette — warm charcoal + gold, kept from the existing identity */
+  /* Brand palette — gold stays gold; the dark surface (header, footer,
+     dark sections, cards) is now navy instead of charcoal. */
   --color-ink: #17181a;
-  --color-charcoal: #292c2f;
+  --color-charcoal: #142e4f;
   --color-paper: #f6f4ef;
   --color-paper-dim: #eeebe3;
   --color-gold: #b07b1f;
   --color-gold-soft: #d9b673;
-  --color-stone: #8c877e;
+  --color-gold-deep: #825b17;
+  --color-stone: #6c6860;
   --color-rust: #9c4a3c;
 
   --font-display: "Fraunces", "Georgia", serif;
@@ -18,6 +20,11 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {

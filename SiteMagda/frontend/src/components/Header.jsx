@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const LINKS = [
@@ -7,18 +7,11 @@ const LINKS = [
   { to: "/imoveis", label: "Imóveis" },
 ];
 
-export default function Header({ transparentOnTop = false }) {
+export default function Header() {
   const { pathname } = useLocation();
-  const [scrolled, setScrolled] = useState(!transparentOnTop);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (!transparentOnTop) return;
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.7);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [transparentOnTop]);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -31,16 +24,41 @@ export default function Header({ transparentOnTop = false }) {
     };
   }, [menuOpen]);
 
+  // Hide the header on scroll-down, bring it back on scroll-up — keeps it
+  // out of the way of the pinned/scroll-driven sections without losing
+  // access to navigation once the visitor pauses or reverses. Computed
+  // directly here (not via a value another component writes on its own
+  // scroll listener) since two independent 'scroll' listeners racing each
+  // other left this a step behind and effectively non-functional.
+  useEffect(() => {
+    function onScroll() {
+      const feedbackEl = document.getElementById("scroll-feedback");
+      if (feedbackEl) {
+        const rect = feedbackEl.getBoundingClientRect();
+        const pinned = rect.top <= 0 && rect.bottom > window.innerHeight;
+        if (pinned) {
+          setHidden(true);
+          lastScrollY.current = window.scrollY;
+          return;
+        }
+      }
+      const y = window.scrollY;
+      setHidden(y > lastScrollY.current && y > 120);
+      lastScrollY.current = y;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        scrolled || menuOpen ? "bg-charcoal/95 backdrop-blur-sm" : "bg-transparent"
-      }`}
+      className="fixed inset-x-0 z-50 bg-charcoal/95 backdrop-blur-sm"
+      style={{ top: hidden && !menuOpen ? "-88px" : "0px", transition: "top 300ms ease" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-8 h-20 flex items-center justify-between">
         <Link to="/" className="font-display text-2xl text-paper tracking-wide">
-          Magda <span className="text-gold">Leal</span>
+          Magda <span className="text-gold-soft">Leal</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">
@@ -50,22 +68,22 @@ export default function Header({ transparentOnTop = false }) {
               to={link.to}
               className={`relative inline-block py-2 text-sm tracking-wide transition-colors ${
                 pathname === link.to
-                  ? "text-gold font-medium"
-                  : "text-paper/90 hover:text-gold"
+                  ? "text-gold-soft font-medium"
+                  : "text-paper/90 hover:text-gold-soft"
               }`}
             >
               {link.label}
               {pathname === link.to && (
                 <span
                   key={pathname}
-                  className="nav-underline absolute left-0 right-0 -bottom-px h-px bg-gold"
+                  className="nav-underline absolute left-0 right-0 -bottom-px h-px bg-gold-soft"
                 />
               )}
             </Link>
           ))}
           <a
             href="#contacto"
-            className="text-sm tracking-wide text-paper/90 hover:text-gold transition-colors"
+            className="text-sm tracking-wide text-paper/90 hover:text-gold-soft transition-colors"
           >
             Contacto
           </a>
@@ -105,7 +123,7 @@ export default function Header({ transparentOnTop = false }) {
           key={link.to}
           to={link.to}
           className={`font-display text-3xl ${
-            pathname === link.to ? "text-gold" : "text-paper"
+            pathname === link.to ? "text-gold-soft" : "text-paper"
           }`}
         >
           {link.label}

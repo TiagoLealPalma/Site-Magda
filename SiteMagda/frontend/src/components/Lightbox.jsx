@@ -19,7 +19,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
       <button
         onClick={onClose}
         aria-label="Fechar"
-        className="absolute top-6 right-8 text-paper/70 hover:text-gold text-3xl leading-none"
+        className="absolute top-6 right-8 text-paper/70 hover:text-gold-soft text-3xl leading-none"
       >
         ×
       </button>
@@ -30,7 +30,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
           onNavigate((index - 1 + images.length) % images.length);
         }}
         aria-label="Anterior"
-        className="absolute left-6 text-paper/60 hover:text-gold text-4xl px-3"
+        className="absolute left-6 text-paper/60 hover:text-gold-soft text-4xl px-3"
       >
         ‹
       </button>
@@ -48,7 +48,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
           onNavigate((index + 1) % images.length);
         }}
         aria-label="Seguinte"
-        className="absolute right-6 text-paper/60 hover:text-gold text-4xl px-3"
+        className="absolute right-6 text-paper/60 hover:text-gold-soft text-4xl px-3"
       >
         ›
       </button>

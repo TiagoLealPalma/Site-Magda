@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T17:30:00Z",
+  "title": "Design System: Magda Leal",
+  "extensions": {
+    "colorMeta": {
+      "gold": { "role": "primary", "displayName": "Instrument Gold", "canonical": "#b07b1f", "tonalRamp": ["#412d0b", "#755215", "#a9761e", "#da9a2b", "#e3b25f", "#eccb93", "#f5e4c7", "#fbf5e9"] },
+      "gold-soft": { "role": "primary", "displayName": "Soft Brass", "canonical": "#d9b673", "tonalRamp": ["#3c2d10", "#6c511d", "#9c752a", "#ca993a", "#d7b26b", "#e4cb9b", "#f1e4cb", "#faf5eb"] },
+      "ink": { "role": "neutral", "displayName": "Blueprint Ink", "canonical": "#17181a", "tonalRamp": ["#242529", "#414349", "#5d616a", "#7a808a", "#9b9fa6", "#bbbec3", "#dcdde0", "#f1f2f3"] },
+      "charcoal": { "role": "neutral", "displayName": "Drafting Navy", "canonical": "#142e4f", "tonalRamp": ["#0f243d", "#1c406e", "#285c9f", "#3879cd", "#689ad9", "#99bbe5", "#cadcf2", "#ebf1fa"] },
+      "paper": { "role": "neutral", "displayName": "Vellum Paper", "canonical": "#f6f4ef", "tonalRamp": ["#312b1c", "#584d32", "#7f6f48", "#a5915f", "#bbac86", "#d1c7ad", "#e7e2d5", "#f6f4ef"] },
+      "paper-dim": { "role": "neutral", "displayName": "Dimmed Vellum", "canonical": "#eeebe3", "tonalRamp": ["#302a1d", "#564c34", "#7c6e4b", "#a19064", "#b8ab8a", "#cfc6b0", "#e6e2d6", "#f5f4ef"] },
+      "stone": { "role": "neutral", "displayName": "Pencil Stone", "canonical": "#6c6860", "tonalRamp": ["#282724", "#494641", "#69655e", "#89847b", "#a6a29b", "#c3c0bb", "#e0dedc", "#f3f2f2"] },
+      "gold-deep": { "role": "primary", "displayName": "Deep Gold", "canonical": "#825b17", "tonalRamp": ["#412e0c", "#755215", "#a9761e", "#d99a2b", "#e3b35f", "#eccb93", "#f5e4c7", "#fbf5e9"] },
+      "rust": { "role": "tertiary", "displayName": "Reserved Rust", "canonical": "#9c4a3c", "tonalRamp": ["#371a15", "#632f26", "#904437", "#ba5b4b", "#cb8377", "#dcaba3", "#edd3cf", "#f8eeed"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines, section titles, the wordmark. Fraunces only." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy, nav links, form labels. Poppins." },
+      "label": { "displayName": "Label / Mono", "purpose": "The blueprint-annotation layer: eyebrows, specs, prices, badges, counters. IBM Plex Mono, uppercase, wide-tracked." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "kenburns", "value": "transform: scale(1.06) -> scale(1); 8s cubic-bezier(0.25,0.1,0.25,1) forwards", "purpose": "Slow zoom-out on full-bleed hero background images; disabled under prefers-reduced-motion." },
+      { "name": "reveal", "value": "opacity 0->1, translateY(20px)->0; 0.8s ease-out, staggered 80-150ms per sibling", "purpose": "Scroll-triggered content reveal via IntersectionObserver at 15% visibility, fires once; disabled under prefers-reduced-motion." },
+      { "name": "tick-rule-draw", "value": "transform: scaleX(0) -> scaleX(1), transform-origin left; 1s cubic-bezier(0.65,0,0.35,1)", "purpose": "Draw-in animation for the signature tick-rule divider motif when scrolled into view." },
+      { "name": "nav-underline-draw", "value": "transform: scaleX(0) -> scaleX(1), transform-origin left; 0.35s ease-out", "purpose": "Active nav link's gold underline drawing in." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled gold CTA; hover inverts fill to ink.",
+      "html": "<button class=\"ds-btn-primary\">Solicitar Contacto</button>",
+      "css": ".ds-btn-primary { background: #b07b1f; color: #f6f4ef; padding: 12px 32px; font-size: 14px; letter-spacing: 0.02em; border: none; transition: background-color 0.2s; } .ds-btn-primary:hover { background: #17181a; } .ds-btn-primary:disabled { opacity: 0.6; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Gold-outlined CTA that fills solid gold on hover; the site's most common button.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Ver imóveis</a>",
+      "css": ".ds-btn-outline { display: inline-block; background: transparent; color: #b07b1f; border: 1px solid #b07b1f; padding: 12px 32px; font-size: 14px; letter-spacing: 0.02em; transition: background-color 0.2s, color 0.2s; } .ds-btn-outline:hover { background: #b07b1f; color: #17181a; }"
+    },
+    {
+      "name": "Status Badge — Coming Soon",
+      "kind": "chip",
+      "refersTo": "badge-coming-soon",
+      "description": "Solid gold-fill mono badge for a 'Brevemente' property; the available state renders no badge at all.",
+      "html": "<span class=\"ds-badge ds-badge-gold\">Brevemente</span>",
+      "css": ".ds-badge { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; padding: 6px 12px; } .ds-badge-gold { background: #b07b1f; color: #17181a; }"
+    },
+    {
+      "name": "Status Badge — Reserved",
+      "kind": "chip",
+      "refersTo": "badge-reserved",
+      "description": "Solid rust-fill mono badge for a 'Reservado' property.",
+      "html": "<span class=\"ds-badge ds-badge-rust\">Reservado</span>",
+      "css": ".ds-badge-rust { background: #9c4a3c; color: #f6f4ef; font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; padding: 6px 12px; }"
+    },
+    {
+      "name": "Property Card",
+      "kind": "card",
+      "refersTo": "property-card",
+      "description": "Signature listing card: full-bleed image with kenburns-style crop, bottom scrim, tick-rule above the address, mono price/specs. No border-radius, no shadow.",
+      "html": "<a class=\"ds-card\" href=\"#\"><img class=\"ds-card-img\" src=\"\" alt=\"\"/><div class=\"ds-card-scrim\"></div><div class=\"ds-card-body\"><div class=\"ds-tick-rule\"></div><div class=\"ds-card-address\">Rua das Flores, Lisboa</div><div class=\"ds-card-price\">450 000 €</div></div></a>",
+      "css": ".ds-card { position: relative; display: block; overflow: hidden; background: #292c2f; aspect-ratio: 3/4; } .ds-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease-out; } .ds-card:hover .ds-card-img { transform: scale(1.05); } .ds-card-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(23,24,26,0.9), rgba(23,24,26,0.1) 60%, transparent); } .ds-card-body { position: absolute; inset-inline: 0; bottom: 0; padding: 24px; } .ds-tick-rule { position: relative; height: 1px; background: #b07b1f; opacity: 0.8; margin-bottom: 16px; } .ds-tick-rule::before, .ds-tick-rule::after { content: ''; position: absolute; top: -3px; width: 1px; height: 7px; background: #b07b1f; } .ds-tick-rule::before { left: 0; } .ds-tick-rule::after { right: 0; } .ds-card-address { font-family: Fraunces, Georgia, serif; color: #f6f4ef; font-size: 20px; line-height: 1.3; } .ds-card-price { font-family: 'IBM Plex Mono', monospace; color: #d9b673; font-size: 13px; margin-top: 4px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "Bottom-line-only field; focus shifts the underline to solid gold. No box, no ring.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"O seu nome\"/>",
+      "css": ".ds-input { background: transparent; border: none; border-bottom: 1px solid rgba(23,24,26,0.2); padding: 8px 0; font-size: 14px; font-family: Poppins, sans-serif; width: 100%; } .ds-input::placeholder { color: #8c877e; } .ds-input:focus { outline: none; border-bottom-color: #b07b1f; }"
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "nav-header",
+      "description": "Fixed header; transparent over the hero, translucent charcoal-blur once scrolled. Active link gets a gold color and an animated underline.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Início</a><a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Sobre</a><a class=\"ds-nav-link\" href=\"#\">Imóveis</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 40px; align-items: center; } .ds-nav-link { position: relative; display: inline-block; padding: 8px 0; font-size: 14px; letter-spacing: 0.02em; color: rgba(246,244,239,0.9); transition: color 0.2s; text-decoration: none; } .ds-nav-link:hover { color: #b07b1f; } .ds-nav-link-active { color: #b07b1f; font-weight: 500; } .ds-nav-link-active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: #b07b1f; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Blueprint Ledger",
+    "overview": "The system reads as an architect's drafting table crossed with a ledger book: warm, precise, and quietly confident, never decorative for its own sake. It carries Magda Leal's dual identity — twenty years reading buildings as a civil engineer, ten years reading the market as a consultant — into every surface. A single warm gold marks what matters; everything else sits in flat, tonal planes of ink, charcoal, and paper, joined by hairline rules rather than shadows.\n\nThe system rejects rounded, soft, \"app-like\" UI conventions (bubble buttons, card shadows, colorful chips) in favor of hard-cornered rectangles, mono-spaced \"dimension line\" annotations, and a serif display face for moments that need weight. Depth comes from translucency and tonal contrast, never elevation.",
+    "keyCharacteristics": [
+      "Flat planes, hard corners, hairline dividers — no shadows anywhere.",
+      "One accent color (gold) used sparingly and consistently for interaction and emphasis.",
+      "A recurring \"blueprint annotation\" language (mono, uppercase, wide-tracked) for data: prices, specs, eyebrows, captions, counters.",
+      "Precise and restrained component personality — the gold accent and typography carry the energy, not ornament."
+    ],
+    "rules": [
+      { "name": "The Absence-as-Status Rule", "body": "An available property carries no badge at all — the absence of a badge is the \"Disponível\" signal. Badges exist only to flag an exception (coming soon = gold fill, reserved = rust fill). Never add a neutral/default badge for the available state.", "section": "colors" },
+      { "name": "The One Accent Rule", "body": "Gold is the only color that ever signals interactivity or emphasis. Don't introduce a second \"brand\" hue for hover states, links, or highlights — invert to ink/charcoal instead.", "section": "colors" },
+      { "name": "The Mono-Means-Data Rule", "body": "Any numeral or short label that describes the thing itself — a price, a spec, a status, a counter, an eyebrow — is set in IBM Plex Mono, uppercase, wide-tracked. Fraunces and Poppins never carry numerals of this kind.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "Never add box-shadow anywhere in this system. If something needs to feel \"above\" the page, darken what's behind it or add a hairline border instead.", "section": "elevation" },
+      { "name": "The Sharp Corner Rule", "body": "Radius is the exception, not the default. Reach for rounded-sm only for a confirmation/success moment — never for cards, images, buttons, or badges.", "section": "shapes" },
+      { "name": "The Sparse Tick Rule", "body": "The tick-rule motif marks a deliberate technical flourish — it is not a general-purpose divider. Everyday section separation uses a plain border-t hairline at 10% opacity instead.", "section": "shapes" },
+      { "name": "The Background-Matched Gold Rule", "body": "Small mono/uppercase text (eyebrows, labels) never uses base Instrument Gold directly on a flat surface — neither charcoal nor paper gives it AA contrast at that size. Use Soft Brass on charcoal, Deep Gold on paper.", "section": "colors" }
+    ],
+    "dos": [
+      "Do keep gold as the only accent color that signals interactivity — invert to ink/charcoal for hover/active states instead of introducing a second hue.",
+      "Do set any price, spec, status, counter, or eyebrow label in IBM Plex Mono, uppercase, wide letter-spacing.",
+      "Do match the gold variant to its background for small text (Soft Brass on charcoal, Deep Gold on paper).",
+      "Do keep corners sharp by default; reach for rounded-sm only for a confirmation/success moment.",
+      "Do convey depth with flat tonal contrast, translucency, and hairline borders — never a box-shadow.",
+      "Do use the tick-rule motif sparingly, only at moments meant to feel like a deliberate technical flourish.",
+      "Do keep filter/search state mirrored in the URL and give every empty or failed state a concrete recovery action."
+    ],
+    "donts": [
+      "Don't add drop shadows, card elevation, or glow effects anywhere — it breaks the flat \"blueprint\" language.",
+      "Don't give the \"Disponível\" (available) status its own badge — its signal is the absence of one.",
+      "Don't use default Tailwind red (text-red-700) for error states — use Reserved Rust instead.",
+      "Don't set base Instrument Gold directly as small text color on a flat charcoal or paper surface — it fails AA contrast at that size either way.",
+      "Don't round buttons, cards, images, or badges — sharp corners are the system's default, not an oversight to \"fix.\"",
+      "Don't use the tick-rule as a general section divider — plain low-opacity hairline borders handle everyday separation."
+    ]
+  }
+}

@@ -5,7 +5,7 @@ export default function Footer() {
     <footer id="contacto" className="bg-charcoal text-paper scroll-mt-20">
       <div className="mx-auto max-w-7xl px-6 md:px-8 py-12 md:py-16 grid grid-cols-2 md:grid-cols-[1.2fr_1fr_1fr_1fr] gap-x-6 gap-y-10 md:gap-8">
         <div className="col-span-2 md:col-span-1">
-          <p className="font-display text-2xl text-gold">Magda Leal</p>
+          <p className="font-display text-2xl text-gold-soft">Magda Leal</p>
           <p className="mt-4 text-sm text-paper/60 leading-relaxed max-w-[26ch]">
             Consultora imobiliária Keller Williams. Engenharia civil aplicada
             à procura da sua próxima casa.
@@ -48,7 +48,7 @@ function FooterColumn({ title, links }) {
         {links.map((link) => (
           <li key={link.label}>
             {link.to ? (
-              <Link to={link.to} className="text-sm text-paper/80 hover:text-gold transition-colors">
+              <Link to={link.to} className="text-sm text-paper/80 hover:text-gold-soft transition-colors">
                 {link.label}
               </Link>
             ) : (
@@ -56,7 +56,7 @@ function FooterColumn({ title, links }) {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm text-paper/80 hover:text-gold transition-colors"
+                className="text-sm text-paper/80 hover:text-gold-soft transition-colors"
               >
                 {link.label}
               </a>

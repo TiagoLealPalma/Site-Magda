@@ -39,7 +39,7 @@ export default function Sobre() {
 
   return (
     <div className="bg-paper">
-      <Header transparentOnTop />
+      <Header />
 
       <section className="relative h-[70vh] flex items-end overflow-hidden">
         <div
@@ -48,7 +48,7 @@ export default function Sobre() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10" />
         <div className="relative mx-auto max-w-7xl px-6 md:px-8 pb-16 md:pb-20">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">Sobre</p>
+          <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">Sobre</p>
           <h1 className="font-display text-3xl sm:text-4xl md:text-6xl text-paper max-w-2xl leading-[1.15] md:leading-[1.05]">
             A conhecer melhor quem a vai acompanhar.
           </h1>
@@ -70,7 +70,7 @@ export default function Sobre() {
             </p>
             <div className="space-y-7 text-stone leading-relaxed max-w-md">
               <p>
-                Com mais de <span className="text-gold font-medium">10 anos</span> de experiência
+                Com mais de <span className="text-gold font-medium">{stats?.years_since ?? 10} anos</span> de experiência
                 no mercado imobiliário e <span className="text-gold font-medium">duas décadas</span>{" "}
                 de engenharia civil, ofereço um serviço de consultoria especializado a quem procura
                 comprar, vender ou arrendar o seu próximo imóvel.
@@ -99,7 +99,7 @@ export default function Sobre() {
 
       {stats && (
         <section className="mx-auto max-w-7xl px-6 md:px-8">
-          <div className="grid grid-cols-3 border-t border-ink/10 pt-20 pb-20 md:pt-24 md:pb-24 gap-6 sm:gap-8">
+          <div className="grid grid-cols-3 pt-20 pb-20 md:pt-24 md:pb-24 gap-6 sm:gap-8">
             <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
             <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
             <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
@@ -127,7 +127,7 @@ export default function Sobre() {
 
       <section className="bg-charcoal py-24 md:py-32">
         <Reveal className="text-center mb-14 md:mb-20">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
+          <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">
             Distinções
           </p>
           <h2 className="font-display text-3xl md:text-4xl text-paper">Prémios e Reconhecimentos.</h2>
@@ -140,7 +140,7 @@ export default function Sobre() {
               delay={i * 80}
               className="flex items-baseline gap-6 py-7 border-t border-paper/10 last:border-b"
             >
-              <span className="font-mono text-lg text-gold w-12 shrink-0">{award.count}</span>
+              <span className="font-mono text-lg text-gold-soft w-12 shrink-0">{award.count}</span>
               <span className="font-display text-2xl text-paper">{award.title}</span>
             </Reveal>
           ))}

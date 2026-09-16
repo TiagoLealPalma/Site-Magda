@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-8">
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
-        <p className="font-display text-2xl text-gold text-center mb-1">Magda Leal</p>
+        <p className="font-display text-2xl text-gold-soft text-center mb-1">Magda Leal</p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-paper/40 text-center mb-10">
           Backoffice
         </p>
