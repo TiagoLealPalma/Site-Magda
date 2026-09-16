@@ -106,3 +106,12 @@ body {
   transform-origin: left;
   animation: draw-line 0.35s ease-out;
 }
+
+/* While the page is actively scrolling, cards sweeping past a stationary
+   cursor keep entering/leaving :hover, re-triggering the image's scale
+   transition dozens of times a second — visually it reads as the scroll
+   itself being janky. Dropping pointer events during scroll stops hover
+   from firing at all until the page settles. */
+body.is-scrolling .property-card {
+  pointer-events: none;
+}

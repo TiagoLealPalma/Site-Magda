@@ -1,5 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import WhatsAppButton from "./components/WhatsAppButton";
+import { useScrollingClass } from "./hooks/useScrollingClass";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import Properties from "./pages/Properties";
@@ -13,9 +15,14 @@ import BackofficeLayout from "./components/backoffice/BackofficeLayout";
 import ProtectedRoute from "./components/backoffice/ProtectedRoute";
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isBackoffice = pathname.startsWith("/backoffice");
+  useScrollingClass();
+
   return (
     <>
       <ScrollToTop />
+      {!isBackoffice && <WhatsAppButton />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre" element={<Sobre />} />

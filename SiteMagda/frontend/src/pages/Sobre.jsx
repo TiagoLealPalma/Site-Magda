@@ -93,21 +93,19 @@ export default function Sobre() {
             >
               Ver Imóveis
             </Link>
+
+            {stats && (
+              <div className="mt-12 grid grid-cols-3 gap-6 border-t border-ink/10 pt-10 max-w-md">
+                <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
+                <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
+                <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
+              </div>
+            )}
           </Reveal>
         </div>
       </section>
 
-      {stats && (
-        <section className="mx-auto max-w-7xl px-6 md:px-8">
-          <div className="grid grid-cols-3 pt-20 pb-20 md:pt-24 md:pb-24 gap-6 sm:gap-8">
-            <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
-            <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
-            <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
-          </div>
-        </section>
-      )}
-
-      <section className="mx-auto max-w-7xl px-6 md:px-8 pb-24 md:pb-32">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-24 md:py-36">
         <Reveal className="text-center mb-14 md:mb-20">
           <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
             Como trabalho

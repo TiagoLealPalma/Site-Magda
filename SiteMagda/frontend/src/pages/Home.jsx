@@ -192,7 +192,7 @@ export default function Home() {
               role="region"
               aria-label="Lista de imóveis — deslize horizontalmente"
               tabIndex={0}
-              className="pl-6 md:pl-8 flex gap-6 md:gap-10 overflow-x-auto pb-4 snap-x snap-mandatory [&>*]:snap-start [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+              className="pl-6 md:pl-8 flex gap-6 md:gap-10 overflow-x-auto overflow-y-hidden pb-4 snap-x snap-mandatory [&>*]:snap-start [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
             >
               {properties.map((p) => (
                 <div key={p.id} className="shrink-0 w-[78vw] sm:w-[46vw] lg:w-[30vw]">

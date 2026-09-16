@@ -6,7 +6,7 @@ export default function PropertyCard({ property, featured = false, fillHeight = 
   return (
     <Link
       to={`/imoveis/${property.id}`}
-      className={`group relative block overflow-hidden bg-charcoal ${
+      className={`group property-card relative block overflow-hidden bg-charcoal ${
         featured ? "aspect-[4/3]" : "aspect-[3/4]"
       } ${fillHeight ? "md:aspect-auto md:h-full" : ""}`}
     >
