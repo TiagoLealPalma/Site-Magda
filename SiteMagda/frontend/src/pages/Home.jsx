@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,20 +7,52 @@ import Spec from "../components/Spec";
 import TickRule from "../components/TickRule";
 import PropertyCard from "../components/PropertyCard";
 import LeadForm from "../components/LeadForm";
-import Testimonials from "../components/Testimonials";
+import ScrollFeedback from "../components/ScrollFeedback";
+import { useHorizontalRail } from "../hooks/useHorizontalRail";
 import { getProperties, getStats } from "../api/client";
 
+// The featured quote up top and the smaller grid below are both real client
+// testimonials — kept in one static section instead of the featured quote
+// plus a separate auto-rotating carousel repeating the same idea twice.
+const FEATURED_TESTIMONIAL = {
+  text: "Vendi em 23 dias depois de mais de dois anos noutra imobiliária. A Magda faz mesmo a diferença!",
+  author: "Sílvia Fernandes",
+};
+
+const MORE_TESTIMONIALS = [
+  {
+    text: "A Magda foi incansável no processo, tanto na procura como durante a aquisição, com grande profissionalismo, sempre simpática, disponível e nos momentos mais críticos teve sempre uma palavra amiga.",
+    author: "Rosário Sousa",
+  },
+  {
+    text: "Incansáveis. Sempre que a bola está do lado da Equipa da Magda Leal, rapidamente o assunto é tratado. Nunca uma chamada da nossa parte ficou por atender. Não se pode pedir mais.",
+    author: "Silvana Curado",
+  },
+  {
+    text: "Uma agente imobiliária impecável! Não só é uma excelente profissional como também é uma amiga que se preocupa genuinamente com os seus clientes.",
+    author: "Catarina Cardoso",
+  },
+  {
+    text: "Profissionalismo, dedicação, seriedade e simpatia! Tornou todo o processo de compra de casa simples e rápido!",
+    author: "Carlos Silva",
+  },
+];
+
+
 export default function Home() {
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState(null);
   const [stats, setStats] = useState(null);
+  const railRef = useRef(null);
+  const hasProperties = properties !== null && properties.length > 0;
+  useHorizontalRail(railRef, hasProperties);
 
   useEffect(() => {
-    getProperties().then((data) => {
-      // Featured card = priciest listing; the rest fill the grid in the
-      // same descending order (top 5 by price overall).
-      const byPriceDesc = [...data].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
-      setProperties(byPriceDesc.slice(0, 5));
-    });
+    getProperties()
+      .then((data) => {
+        const byPriceDesc = [...data].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+        setProperties(byPriceDesc.slice(0, 6));
+      })
+      .catch(() => setProperties([]));
     getStats().then(setStats);
   }, []);
 
@@ -28,9 +60,7 @@ export default function Home() {
     <div className="bg-paper">
       <Header />
 
-      {/* Hero — deliberately not full-bleed or full-height: an open, quiet
-          arrival with her portrait presented as a framed print, not a photo
-          background. Breathing room is the point. */}
+      {/* Hero */}
       <section className="relative bg-paper pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
           <Reveal>
@@ -75,87 +105,123 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About teaser */}
-      <section className="mx-auto max-w-7xl px-6 md:px-8 py-20 md:py-28 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
-        <Reveal>
-          <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">Sobre</p>
-          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight max-w-lg">
-            Excelência na realização dos seus sonhos imobiliários.
-          </h2>
-          <p className="mt-7 text-stone leading-relaxed max-w-md">
-            Com mais de <span className="text-gold font-medium">{stats?.years_since ?? 10} anos</span> de experiência no
-            mercado imobiliário e <span className="text-gold font-medium">duas décadas</span> de
-            engenharia civil, ofereço um serviço de consultoria especializado — uma leitura técnica
-            pouco comum no setor.
-          </p>
-          <Link
-            to="/sobre"
-            className="mt-8 inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold transition-colors"
-          >
-            Ler mais
-          </Link>
+      {/* About — same two-column grid and gap as the hero above it, so both
+          title blocks share one left edge and one column width; the stats
+          live inside that same first column instead of a separate max-w
+          guess, so they align with it exactly. */}
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-24 md:py-36">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20">
+          <div>
+            <Reveal>
+              <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-6">Sobre</p>
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl leading-[1.1] max-w-2xl">
+                Excelência na realização dos seus sonhos imobiliários.
+              </h2>
+            </Reveal>
 
-          {stats && (
-            <div className="mt-12 md:mt-14 grid grid-cols-3 gap-6 sm:gap-8 border-t border-ink/10 pt-9">
-              <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
-              <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
-              <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
-            </div>
-          )}
-        </Reveal>
-        <Reveal delay={150} className="bg-charcoal px-8 py-12 md:px-10 md:py-14 flex flex-col justify-center">
-          <span className="font-display text-6xl text-gold-soft leading-none">“</span>
-          <p className="mt-2 font-display text-2xl md:text-[1.75rem] leading-snug text-paper">
-            Vendi em 23 dias depois de mais de dois anos noutra imobiliária. A Magda faz mesmo a
-            diferença!
-          </p>
-          <TickRule className="w-10 mt-8 mb-5" />
-          <p className="font-mono text-xs tracking-widest uppercase text-gold-soft">
-            Sílvia Fernandes
-          </p>
-        </Reveal>
+            {stats && (
+              <Reveal
+                delay={200}
+                className="mt-16 md:mt-20 grid grid-cols-3 gap-6 md:gap-8 border-t border-ink/10 pt-10"
+              >
+                <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
+                <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
+                <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
+              </Reveal>
+            )}
+          </div>
+
+          <Reveal delay={120} className="border border-ink/10 p-8 md:p-10 flex flex-col justify-center items-start">
+            <p className="text-stone leading-relaxed">
+              Com mais de <span className="text-gold-deep font-medium">{stats?.years_since ?? 10} anos</span> de
+              experiência no mercado imobiliário e{" "}
+              <span className="text-gold-deep font-medium">duas décadas</span> de engenharia civil,
+              ofereço um serviço de consultoria especializado — uma leitura técnica pouco comum no
+              setor.
+            </p>
+            <Link
+              to="/sobre"
+              className="mt-6 inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold-deep transition-colors"
+            >
+              Ler mais
+            </Link>
+          </Reveal>
+        </div>
       </section>
 
-      {/* Featured properties — asymmetric rhythm, not a uniform grid */}
-      <section className="bg-charcoal py-20 md:py-28">
+      {/* Feedback — a pinned, fullscreen scrollytelling section: the primary
+          quote disappears as each secondary testimonial crossfades in,
+          driven by scroll position rather than a carousel timer. */}
+      <ScrollFeedback featured={FEATURED_TESTIMONIAL} others={MORE_TESTIMONIALS} />
+
+      {/* Featured properties */}
+      <section className="bg-paper py-24 md:py-36">
         <div className="mx-auto max-w-7xl px-6 md:px-8">
-          <Reveal className="mb-12 md:mb-14 flex items-end justify-between">
+          <Reveal className="mb-14 md:mb-16 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">
+              <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
                 Propriedades
               </p>
-              <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight text-paper">
+              <h2 className="font-display text-3xl md:text-5xl leading-snug text-ink max-w-xl">
                 A preparar a nova etapa da sua vida.
               </h2>
             </div>
             <Link
               to="/imoveis"
-              className="hidden md:inline-block text-sm text-paper/70 hover:text-gold-soft transition-colors"
+              className="hidden md:inline-block shrink-0 border-b border-gold text-sm tracking-wide pb-1 hover:text-gold-deep transition-colors"
             >
               Ver todos →
             </Link>
           </Reveal>
+        </div>
 
-          {properties.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6 md:h-[42rem]">
-              <div className="md:col-span-2 md:row-span-2">
-                <PropertyCard property={properties[0]} featured fillHeight />
-              </div>
-              {properties.slice(1, 5).map((p) => (
-                <PropertyCard key={p.id} property={p} fillHeight />
+        {properties === null ? (
+          <div className="pl-6 md:pl-8 flex gap-6 md:gap-10 overflow-x-hidden pb-4">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="shrink-0 w-[78vw] sm:w-[46vw] lg:w-[30vw] aspect-[4/3] bg-ink/5" />
+            ))}
+          </div>
+        ) : properties.length === 0 ? (
+          <div className="mx-auto max-w-7xl px-6 md:px-8">
+            <p className="text-stone text-sm">Não foi possível carregar os imóveis de momento.</p>
+          </div>
+        ) : (
+          <div className="relative">
+            <div
+              ref={railRef}
+              role="region"
+              aria-label="Lista de imóveis — deslize horizontalmente"
+              tabIndex={0}
+              className="pl-6 md:pl-8 flex gap-6 md:gap-10 overflow-x-auto pb-4 snap-x snap-mandatory [&>*]:snap-start [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+            >
+              {properties.map((p) => (
+                <div key={p.id} className="shrink-0 w-[78vw] sm:w-[46vw] lg:w-[30vw]">
+                  <PropertyCard property={p} featured />
+                </div>
               ))}
+              <div className="shrink-0 w-2" aria-hidden />
             </div>
-          )}
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 bg-gradient-to-l from-paper to-transparent" />
+          </div>
+        )}
+
+        <div className="mx-auto max-w-7xl px-6 md:px-8 mt-8 md:hidden">
+          <Link
+            to="/imoveis"
+            className="inline-block border-b border-gold text-sm tracking-wide pb-1 hover:text-gold-deep transition-colors"
+          >
+            Ver todos os imóveis →
+          </Link>
         </div>
       </section>
 
-      <Testimonials />
-
       {/* Lead form */}
-      <section className="mx-auto max-w-3xl px-6 md:px-8 py-20 md:py-28 text-center">
+      <section className="mx-auto max-w-2xl px-6 md:px-8 py-24 md:py-36 text-center">
         <Reveal>
           <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">Contacto</p>
-          <h2 className="font-display text-3xl md:text-4xl leading-snug md:leading-tight mb-12">Explique-nos que procura.</h2>
+          <h2 className="font-display text-3xl md:text-5xl leading-snug mb-14">
+            Explique-nos que procura.
+          </h2>
           <div className="text-left">
             <LeadForm />
           </div>

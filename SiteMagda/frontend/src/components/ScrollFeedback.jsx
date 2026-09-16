@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import TickRule from "./TickRule";
 
-const VH_PER_STEP = 80; // scroll distance (vh) to go from the primary quote to the rest
+const VH_PER_STEP = 140; // total pinned scroll distance (vh); split evenly, this gives each
+// frame a longer, more deliberate hold before/after the crossfade instead of a quick swap
 
 // A short, pinned fullscreen moment: the primary testimonial holds the
 // screen, then disappears as the rest crossfade in as a group — driven by

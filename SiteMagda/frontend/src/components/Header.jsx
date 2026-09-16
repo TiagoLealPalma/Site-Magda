@@ -53,7 +53,7 @@ export default function Header() {
   return (
     <>
     <header
-      className="fixed inset-x-0 z-50 bg-charcoal/95 backdrop-blur-sm"
+      className="fixed inset-x-0 z-50 bg-charcoal/90 backdrop-blur-sm"
       style={{ top: hidden && !menuOpen ? "-88px" : "0px", transition: "top 300ms ease" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-8 h-20 flex items-center justify-between">

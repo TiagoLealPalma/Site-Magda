@@ -1,15 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
-import HomeLedger from "./pages/HomeLedger";
-import HomeDrafting from "./pages/HomeDrafting";
-import HomeAtelier from "./pages/HomeAtelier";
-import HomeAtelierInstrument from "./pages/HomeAtelierInstrument";
-import HomeAtelierCompact from "./pages/HomeAtelierCompact";
-import HomeAtelierStory from "./pages/HomeAtelierStory";
-import HomeAtelierFeedbackCharcoal from "./pages/HomeAtelierFeedbackCharcoal";
-import HomeAtelierFeedbackCards from "./pages/HomeAtelierFeedbackCards";
-import HomeAtelierFeedbackLedger from "./pages/HomeAtelierFeedbackLedger";
 import Sobre from "./pages/Sobre";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
@@ -27,15 +18,6 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/landing/ledger" element={<HomeLedger />} />
-        <Route path="/landing/drafting" element={<HomeDrafting />} />
-        <Route path="/landing/atelier" element={<HomeAtelier />} />
-        <Route path="/landing/atelier-instrument" element={<HomeAtelierInstrument />} />
-        <Route path="/landing/atelier-compact" element={<HomeAtelierCompact />} />
-        <Route path="/landing/atelier-story" element={<HomeAtelierStory />} />
-        <Route path="/landing/feedback-charcoal" element={<HomeAtelierFeedbackCharcoal />} />
-        <Route path="/landing/feedback-cards" element={<HomeAtelierFeedbackCards />} />
-        <Route path="/landing/feedback-ledger" element={<HomeAtelierFeedbackLedger />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/imoveis" element={<Properties />} />
         <Route path="/imoveis/:id" element={<PropertyDetail />} />
