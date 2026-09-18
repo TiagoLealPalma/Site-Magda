@@ -1,8 +1,10 @@
 const PHONE = "351913503048";
 const MESSAGE = "Olá Magda, gostaria de falar consigo sobre um imóvel.";
 
+export const WHATSAPP_HREF = `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+
 export default function WhatsAppButton() {
-  const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+  const href = WHATSAPP_HREF;
 
   return (
     <a

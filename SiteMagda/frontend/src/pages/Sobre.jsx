@@ -1,150 +1,186 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
-import Spec from "../components/Spec";
-import TickRule from "../components/TickRule";
-import { getStats } from "../api/client";
+import {
+  VALUES,
+  KW_TEXT,
+  useSobreStats,
+  usePrefersReducedMotion,
+  DrawnRule,
+  AwardsSection,
+  ContactCta,
+} from "./sobre/shared";
 
-const VALUES = [
-  {
-    title: "Rigor Técnico",
-    text: "Uma leitura de engenheira sobre cada imóvel, para que decida com toda a informação, não apenas com a primeira impressão.",
-  },
-  {
-    title: "Acompanhamento Próximo",
-    text: "Disponibilidade real do primeiro contacto à escritura, com resposta rápida em cada etapa do processo.",
-  },
-  {
-    title: "Confiança",
-    text: "Transparência em cada negociação, para que a relação continue muito depois de as chaves mudarem de mãos.",
-  },
-];
+const STANDFIRST =
+  "A minha formação em engenharia civil dá-me um olhar técnico pouco comum no mercado imobiliário: avalio a construção, o estado do imóvel e o seu potencial real, não apenas a sua apresentação.";
 
-const AWARDS = [
-  { count: "3×", title: "Top 10 Mega Teams" },
-  { count: "3×", title: "Top 3 Income" },
-  { count: "2×", title: "Ouro KW Abaco" },
-  { count: "1×", title: "Prata KW Abaco" },
-  { count: "9×", title: "Capper" },
-];
+const clamp = (n) => Math.min(1, Math.max(0, n));
 
-export default function Sobre() {
-  const [stats, setStats] = useState(null);
+// A statement that fills in word by word as it scrolls through the reading
+// zone, so the one sentence that carries her pitch is read, not skimmed.
+function ScrollWords({ text }) {
+  const ref = useRef(null);
+  const reduced = usePrefersReducedMotion();
+  const [progress, setProgress] = useState(reduced ? 1 : 0);
+  const words = text.split(" ");
 
   useEffect(() => {
-    getStats().then(setStats);
-  }, []);
+    if (reduced) return;
+    let raf = 0;
+    function update() {
+      raf = 0;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setProgress(clamp((vh * 0.85 - r.top) / (r.height + vh * 0.3)));
+    }
+    function onScroll() {
+      if (!raf) raf = requestAnimationFrame(update);
+    }
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reduced]);
+
+  return (
+    <p ref={ref} className="font-display text-2xl leading-[1.3] sm:text-3xl lg:text-4xl">
+      {words.map((word, i) => {
+        const t = clamp(progress * words.length * 1.25 - i);
+        return (
+          <span key={i} style={{ opacity: 0.2 + 0.8 * t }}>
+            {word}{" "}
+          </span>
+        );
+      })}
+    </p>
+  );
+}
+
+function DimLine({ pct, label, delay }) {
+  return (
+    <div>
+      <p className="develop font-mono text-[11px] uppercase tracking-widest text-gold-soft" style={{ "--d": `${delay + 500}ms` }}>
+        {label}
+      </p>
+      <div className="mt-2.5" style={{ width: `${pct}%` }}>
+        <div className="dim-rule rule-draw" style={{ "--d": `${delay}ms` }} />
+      </div>
+    </div>
+  );
+}
+
+function ValueRow({ value, index }) {
+  return (
+    <div className="group">
+      <DrawnRule className="bg-ink/15 transition-colors duration-500 group-hover:bg-gold" delay={index * 120} />
+      <Reveal delay={index * 120 + 150} className="grid grid-cols-1 gap-4 py-9 md:grid-cols-[1fr_1.4fr] md:gap-12 md:py-12">
+        <h3 className="font-display text-2xl transition-colors duration-500 group-hover:text-gold-deep md:text-3xl">
+          {value.title}
+        </h3>
+        <p className="max-w-md leading-relaxed text-stone">{value.text}</p>
+      </Reveal>
+    </div>
+  );
+}
+
+export default function Sobre() {
+  const stats = useSobreStats();
+  const years = stats?.years_since ?? 10;
 
   return (
     <div className="bg-paper">
       <Header />
 
-      <section className="relative h-[70vh] flex items-end overflow-hidden">
-        <div
-          className="kenburns absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/static/landingpage/PicoWallpaper.jpeg')" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10" />
-        <div className="relative mx-auto max-w-7xl px-6 md:px-8 pb-16 md:pb-20">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">Sobre</p>
-          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl text-paper max-w-2xl leading-[1.15] md:leading-[1.05]">
-            A conhecer melhor quem a vai acompanhar.
-          </h1>
+      <section className="overflow-hidden bg-charcoal text-paper">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-6 pt-32 md:grid-cols-[1fr_auto] md:gap-12 md:px-8 md:pt-44 lg:gap-20">
+          <div className="pb-2 md:pb-24">
+            <h1 className="font-display text-4xl leading-[1.04] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
+              <span className="line-mask">
+                <span className="line-up text-balance" style={{ "--d": "300ms" }}>Duas décadas a ler edifícios.</span>
+              </span>
+              <span className="line-mask">
+                <span className="line-up text-balance italic text-gold-soft" style={{ "--d": "480ms" }}>
+                  Uma década a ler o mercado.
+                </span>
+              </span>
+            </h1>
+
+            <p className="develop mt-8 max-w-md leading-relaxed text-paper/75" style={{ "--d": "900ms" }}>
+              Com mais de {years} anos de experiência no mercado imobiliário e duas décadas de engenharia
+              civil, ofereço um serviço de consultoria especializado a quem procura comprar, vender ou
+              arrendar o seu próximo imóvel.
+            </p>
+
+            <div className="mt-14 max-w-md space-y-9 md:mt-16">
+              <DimLine pct={100} label="20 anos · Engenharia civil" delay={700} />
+              <DimLine pct={Math.min(100, (years / 20) * 100)} label={`${years}+ anos · Mercado imobiliário`} delay={950} />
+            </div>
+          </div>
+
+          <img
+            src="/static/landingpage/FotoMagdaSemFundo.webp"
+            alt="Magda Leal"
+            width="884"
+            height="1080"
+            className="wipe-up mx-auto block w-4/5 max-w-sm md:mx-0 md:w-[19rem] lg:w-[24rem]"
+            style={{
+              mixBlendMode: "multiply",
+              filter: "grayscale(1) brightness(1.35) contrast(1.08)",
+              "--d": "250ms",
+            }}
+          />
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2">
-        <div className="aspect-square overflow-hidden">
-          <img
-            src="/static/landingpage/FotoMagda.png"
-            alt="Magda Leal"
-            className="h-full w-full object-cover grayscale"
-          />
-        </div>
-        <div className="px-6 py-16 md:px-16 md:py-24 flex flex-col justify-center">
-          <Reveal>
-            <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-6">
-              Magda Leal
-            </p>
-            <div className="space-y-7 text-stone leading-relaxed max-w-md">
-              <p>
-                Com mais de <span className="text-gold font-medium">{stats?.years_since ?? 10} anos</span> de experiência
-                no mercado imobiliário e <span className="text-gold font-medium">duas décadas</span>{" "}
-                de engenharia civil, ofereço um serviço de consultoria especializado a quem procura
-                comprar, vender ou arrendar o seu próximo imóvel.
-              </p>
-              <p>
-                A minha formação em engenharia civil dá-me um olhar técnico pouco comum no mercado
-                imobiliário: avalio a construção, o estado do imóvel e o seu potencial real, não
-                apenas a sua apresentação. Junto a isso, o acompanhamento próximo e transparente
-                que caracteriza o meu trabalho, do primeiro contacto à escritura.
-              </p>
-              <p>
-                Represento a Keller Williams Portugal, a maior rede imobiliária do mundo, o que me
-                permite oferecer aos meus clientes o alcance de uma rede internacional com o
-                cuidado de um serviço verdadeiramente pessoal.
-              </p>
-            </div>
-            <Link
-              to="/imoveis"
-              className="mt-10 inline-block border border-gold text-gold px-8 py-3 text-sm tracking-wide hover:bg-gold hover:text-ink transition-colors"
-            >
-              Ver Imóveis
-            </Link>
+      <section className="mx-auto max-w-7xl px-6 py-24 md:px-8 md:py-40">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-[7fr_4fr] md:gap-24">
+          <ScrollWords text={STANDFIRST} />
 
-            {stats && (
-              <div className="mt-12 grid grid-cols-3 gap-6 border-t border-ink/10 pt-10 max-w-md">
-                <Spec label="Imóveis em venda" value={stats.number_of_properties} size="lg" center animate />
-                <Spec label="Imóveis vendidos" value={stats.properties_sold} size="lg" center animate />
-                <Spec label="Anos de experiência" value={`${stats.years_since}+`} size="lg" center animate />
-              </div>
-            )}
+          <Reveal delay={100} className="md:pt-3">
+            <p className="leading-relaxed text-stone">{KW_TEXT}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link
+                to="/imoveis"
+                className="inline-block border border-gold px-8 py-3 text-sm tracking-wide text-gold-deep transition-colors hover:bg-gold hover:text-ink"
+              >
+                Ver imóveis
+              </Link>
+              {stats && (
+                <p className="font-mono text-xs uppercase tracking-widest text-stone">
+                  {stats.properties_sold} imóveis vendidos
+                </p>
+              )}
+            </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 md:px-8 py-24 md:py-36">
-        <Reveal className="text-center mb-14 md:mb-20">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-4">
-            Como trabalho
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl">Três princípios que guiam cada negócio.</h2>
-        </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16">
-          {VALUES.map((v, i) => (
-            <Reveal key={v.title} delay={i * 100} className="text-center">
-              <TickRule className="w-10 mx-auto mb-8" />
-              <p className="font-display text-xl text-gold mb-5">{v.title}</p>
-              <p className="text-sm text-stone leading-relaxed">{v.text}</p>
-            </Reveal>
-          ))}
+      <section className="mx-auto max-w-7xl px-6 pb-24 md:px-8 md:pb-40">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[4fr_8fr] md:gap-20">
+          <Reveal>
+            <h2 className="font-display text-3xl leading-[1.1] md:sticky md:top-32 md:text-4xl">
+              Três princípios que guiam cada negócio.
+            </h2>
+          </Reveal>
+          <div>
+            {VALUES.map((v, i) => (
+              <ValueRow key={v.title} value={v} index={i} />
+            ))}
+            <DrawnRule delay={VALUES.length * 120} />
+          </div>
         </div>
       </section>
 
-      <section className="bg-charcoal py-24 md:py-32">
-        <Reveal className="text-center mb-14 md:mb-20">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold-soft uppercase mb-4">
-            Distinções
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl text-paper">Prémios e Reconhecimentos.</h2>
-        </Reveal>
-
-        <div className="mx-auto max-w-2xl px-6 md:px-8">
-          {AWARDS.map((award, i) => (
-            <Reveal
-              key={award.title}
-              delay={i * 80}
-              className="flex items-baseline gap-6 py-7 border-t border-paper/10 last:border-b"
-            >
-              <span className="font-mono text-lg text-gold-soft w-12 shrink-0">{award.count}</span>
-              <span className="font-display text-2xl text-paper">{award.title}</span>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
+      <AwardsSection />
+      <ContactCta />
       <Footer />
     </div>
   );
