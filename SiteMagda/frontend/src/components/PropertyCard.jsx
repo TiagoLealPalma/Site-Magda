@@ -13,7 +13,9 @@ export default function PropertyCard({ property, featured = false, fillHeight = 
       <img
         src={coverImage(property)}
         alt={property.name}
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        className={`absolute inset-0 h-full w-full object-cover transition-[transform,filter] duration-700 ease-out group-hover:scale-105 ${
+          property.status === "reserved" ? "saturate-[.3] group-hover:saturate-100" : ""
+        }`}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
 

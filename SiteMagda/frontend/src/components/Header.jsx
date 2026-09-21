@@ -17,6 +17,13 @@ export default function Header() {
     setMenuOpen(false);
   }, [pathname]);
 
+  // Lets sticky page elements (e.g. the listing filters) ride up to the top
+  // edge while the header is tucked away, and sit under it when it returns.
+  useEffect(() => {
+    document.body.classList.toggle("header-hidden", hidden && !menuOpen);
+    return () => document.body.classList.remove("header-hidden");
+  }, [hidden, menuOpen]);
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {

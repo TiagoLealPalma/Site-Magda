@@ -212,3 +212,35 @@ body.is-scrolling .property-card {
     animation: none;
   }
 }
+
+/* A single gold hairline sweeping along a rail: the listing page's loading
+   state, so waiting reads as the site working rather than as an empty page. */
+@keyframes rule-scan {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}
+
+.rule-scan {
+  width: 38%;
+  animation: rule-scan 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule-scan {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+
+.filter-float {
+  top: 6rem;
+}
+
+body.header-hidden .filter-float {
+  top: 1.25rem;
+}

@@ -178,7 +178,10 @@ Buttons, badges, and cards share one restrained, precise personality: flat, shar
 - **Mobile treatment:** a two-bar hamburger (no third bar) that rotates into an X, opening a full-screen charcoal overlay with large display-type links, cross-faded in.
 
 ### Status Badges (signature component)
-Small, sharp-cornered, solid-fill mono labels (`text-[11px] uppercase tracking-widest`) — never an outline or icon-based badge. The available state renders no badge at all (see The Absence-as-Status Rule); "Brevemente" gets a solid gold fill with ink text, "Reservado" a solid rust fill with paper text.
+A sharp-cornered paper plate (`text-[11px] uppercase tracking-[0.22em]`, mono, ink text) led by a small square marker: hollow gold for "Brevemente" (not yet), solid rust for "Reservado" (taken). The plate reads on any photo without a colored fill. The available state renders no badge at all (see The Absence-as-Status Rule). A reserved listing's photo is also desaturated until hovered, so the status is felt before it is read.
+
+### Floating Filter Plate
+The listing filters rest on the page as plain underlined fields. Once they scroll out of view, the same controls return as a floating plate: frosted white (`white/85`, heavy `backdrop-blur`), sharp corners, no shadow, riding just under the header with a gap above it (or near the top edge while the header is tucked away). The gold carries the detail: a gold hairline border, small gold crop marks at the four corners, gold dimension ticks between fields, gold focus, and the count in Deep Gold. It is deliberately light: it passes over navy listing cards and must never read as one of them. It leaves again when the listings end.
 
 ## Do's and Don'ts
 
