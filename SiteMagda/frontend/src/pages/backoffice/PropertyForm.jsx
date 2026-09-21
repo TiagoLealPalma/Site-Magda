@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { adminApi } from "../../api/adminClient";
+import ListingCard from "../../components/ListingCard";
+import PropertyDetailView from "../../components/PropertyDetailView";
+import ScaledPreview from "../../components/backoffice/ScaledPreview";
+import { LangOverride } from "../../i18n";
 
 const EMPTY = {
   name: "",
+  name_en: "",
   price: "",
   description: "",
   address: "",
@@ -32,6 +37,9 @@ export default function PropertyForm() {
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [previewLang, setPreviewLang] = useState("pt");
+  const [pending, setPending] = useState([]); // photos chosen before the property exists
+  const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -39,6 +47,7 @@ export default function PropertyForm() {
     adminApi.getProperty(id).then((data) => {
       setForm({
         name: data.name ?? "",
+        name_en: data.name_en ?? "",
         price: data.price ?? "",
         description: data.description ?? "",
         address: data.address ?? "",
@@ -79,6 +88,8 @@ export default function PropertyForm() {
         navigate("/backoffice/imoveis");
       } else {
         const created = await adminApi.createProperty(payload);
+        await Promise.allSettled(pending.map((p) => adminApi.uploadImage(created.id, p.file)));
+        pending.forEach((p) => URL.revokeObjectURL(p.url));
         navigate(`/backoffice/imoveis/${created.id}`);
       }
     } catch (err) {
@@ -88,12 +99,31 @@ export default function PropertyForm() {
     }
   }
 
-  async function handleUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const image = await adminApi.uploadImage(id, file);
-    setImages((imgs) => [...imgs, image]);
-    fileInputRef.current.value = "";
+  // Editing: photos upload straight away. Creating: they wait here (and show
+  // in the previews) until the property exists, then upload on save.
+  async function addFiles(fileList) {
+    const files = [...fileList].filter((f) => f.type.startsWith("image/"));
+    if (!files.length) return;
+    if (isEditing) {
+      for (const file of files) {
+        const image = await adminApi.uploadImage(id, file);
+        setImages((imgs) => [...imgs, image]);
+      }
+    } else {
+      setPending((list) => [
+        ...list,
+        ...files.map((file) => ({ id: `${file.name}-${file.lastModified}-${Math.random()}`, file, url: URL.createObjectURL(file) })),
+      ]);
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removePending(pid) {
+    setPending((list) => {
+      const gone = list.find((p) => p.id === pid);
+      if (gone) URL.revokeObjectURL(gone.url);
+      return list.filter((p) => p.id !== pid);
+    });
   }
 
   async function handleDeleteImage(imageId) {
@@ -103,16 +133,35 @@ export default function PropertyForm() {
 
   if (loading) return <p className="text-sm text-stone">A carregar…</p>;
 
+  const photos = isEditing ? images : pending.map((p) => ({ id: p.id, url: p.url }));
+
+  // The public card, fed straight from the form so it updates as Magda types.
+  const preview = {
+    id: id ?? 0,
+    ...form,
+    price: form.price || null,
+    bedrooms: form.bedrooms === "" ? null : form.bedrooms,
+    bathrooms: form.bathrooms === "" ? null : form.bathrooms,
+    liquid_area: form.liquid_area || null,
+    construction_date: form.construction_date || null,
+    name: form.name || "Nome do imóvel",
+    address: form.address || "Morada",
+    images: photos,
+  };
+
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-6xl 2xl:max-w-none">
       <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-2">Imóveis</p>
       <h1 className="font-display text-3xl text-ink mb-10">
         {isEditing ? "Editar imóvel." : "Novo imóvel."}
       </h1>
 
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_24rem] xl:grid-cols-[minmax(0,1fr)_30rem] xl:gap-16 2xl:grid-cols-[minmax(0,40rem)_24rem_minmax(0,1fr)]">
+      <div className="min-w-0 max-w-3xl">
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Field label="Nome" value={form.name} onChange={(v) => setField("name", v)} required />
+          <Field label="Nome (inglês, opcional)" value={form.name_en} onChange={(v) => setField("name_en", v)} />
           <Field label="Preço (€)" type="number" value={form.price} onChange={(v) => setField("price", v)} />
           <div>
             <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
@@ -152,6 +201,62 @@ export default function PropertyForm() {
           />
         </div>
 
+        <div>
+          <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-3">
+            Fotos
+          </label>
+          {photos.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+              {photos.map((img, i) => (
+                <div key={img.id} className="relative group aspect-square overflow-hidden bg-charcoal">
+                  <img src={img.url} alt="" className="h-full w-full object-cover" />
+                  {i === 0 && (
+                    <span className="absolute left-2 top-2 bg-paper px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-ink">
+                      Capa
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => (isEditing ? handleDeleteImage(img.id) : removePending(img.id))}
+                    className="absolute inset-0 bg-ink/60 text-paper text-sm opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+                  >
+                    {isEditing ? "Apagar" : "Remover"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <label
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              addFiles(e.dataTransfer.files);
+            }}
+            className={`flex cursor-pointer flex-col items-center justify-center gap-1 border border-dashed px-6 py-8 text-center transition-colors ${
+              dragging ? "border-gold bg-gold/10" : "border-ink/25 bg-white hover:border-gold"
+            }`}
+          >
+            <span className="text-sm text-ink">Arraste fotos para aqui ou clique para escolher</span>
+            <span className="text-xs text-stone">
+              A primeira foto é a capa.
+              {!isEditing && " Ficam guardadas quando carregar em Guardar."}
+            </span>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => addFiles(e.target.files)}
+              className="sr-only"
+            />
+          </label>
+        </div>
+
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button
@@ -163,28 +268,49 @@ export default function PropertyForm() {
         </button>
       </form>
 
-      {isEditing && (
-        <div className="mt-14">
-          <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-4">
-            Fotos
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-            {images.map((img) => (
-              <div key={img.id} className="relative group aspect-square overflow-hidden bg-charcoal">
-                <img src={img.url} alt="" className="h-full w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => handleDeleteImage(img.id)}
-                  className="absolute inset-0 bg-ink/60 text-paper text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  Apagar
-                </button>
-              </div>
+      </div>
+
+      {/* Below 2xl the two previews stack in one column (card, then page);
+          on very wide screens the wrapper vanishes and they sit side by side. */}
+      <div className="min-w-0 space-y-12 lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto 2xl:contents">
+      <aside className="max-w-[24rem] 2xl:sticky 2xl:top-8 2xl:self-start" aria-label="Pré-visualização do cartão">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-stone">Pré-visualização</p>
+          <div role="group" aria-label="Idioma da pré-visualização" className="flex border border-ink/15">
+            {["pt", "en"].map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setPreviewLang(code)}
+                aria-pressed={previewLang === code}
+                className={`px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                  previewLang === code ? "bg-ink text-paper" : "text-stone hover:text-ink"
+                }`}
+              >
+                {code}
+              </button>
             ))}
           </div>
-          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
         </div>
-      )}
+        <LangOverride lang={previewLang}>
+          <ListingCard property={preview} preview />
+        </LangOverride>
+        <p className="mt-4 text-xs leading-relaxed text-stone">
+          É assim que o cartão aparece na página de imóveis, e atualiza enquanto escreve.
+          {" A foto de capa é a primeira da lista."}
+        </p>
+      </aside>
+
+      <aside className="min-w-0 max-w-3xl 2xl:sticky 2xl:top-8 2xl:max-h-[calc(100vh-4rem)] 2xl:max-w-none 2xl:self-start 2xl:overflow-y-auto" aria-label="Pré-visualização da página do imóvel">
+        <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-stone">Página do imóvel</p>
+        <ScaledPreview>
+          <LangOverride lang={previewLang}>
+            <PropertyDetailView property={preview} preview />
+          </LangOverride>
+        </ScaledPreview>
+      </aside>
+      </div>
+      </div>
     </div>
   );
 }
