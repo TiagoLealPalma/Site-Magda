@@ -90,6 +90,12 @@ export default function Header() {
 
   return (
     <>
+    <a
+      href="#main"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-paper focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
+    >
+      {t("nav.skip")}
+    </a>
     <header
       className="fixed inset-x-0 z-50 bg-charcoal/90 backdrop-blur-sm"
       style={{ top: hidden && !menuOpen ? "-88px" : "0px", transition: "top 300ms ease" }}

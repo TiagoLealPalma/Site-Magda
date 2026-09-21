@@ -4,6 +4,8 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import { useScrollingClass } from "./hooks/useScrollingClass";
 import { LangProvider } from "./i18n";
 import LanguageSuggestion from "./components/LanguageSuggestion";
+import SeoManager from "./seo/SeoManager";
+import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import Properties from "./pages/Properties";
@@ -26,6 +28,7 @@ export default function App() {
       <ScrollToTop />
       {!isBackoffice && <WhatsAppButton />}
       {!isBackoffice && <LanguageSuggestion />}
+      <SeoManager />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre" element={<Sobre />} />
@@ -52,6 +55,8 @@ export default function App() {
           <Route path="imoveis/:id" element={<PropertyForm />} />
           <Route path="contactos" element={<LeadsAdmin />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </LangProvider>
   );

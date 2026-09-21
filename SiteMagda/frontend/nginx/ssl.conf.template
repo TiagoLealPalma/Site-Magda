@@ -1,3 +1,21 @@
+# --- SEO / performance (http context) -------------------------------------
+# The URL the SPA shell was asked for, reduced to a safe path so it can be
+# handed to the SEO fragments below. Anything odd (dot-dot, encoded dots or
+# slashes, unexpected characters) falls back to "/".
+map $request_uri $seo_path {
+    default /;
+    "~\.\."          /;
+    "~*%2[ef]"       /;
+    "~^(?<p>/[A-Za-z0-9/_.%~-]*)(\?.*)?$" $p;
+}
+
+gzip on;
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 5;
+gzip_min_length 1024;
+gzip_types text/plain text/css text/xml application/xml application/json application/javascript application/xml+rss image/svg+xml font/ttf font/otf;
+
 server {
     listen 80;
     server_name ${DOMAIN};
@@ -9,6 +27,7 @@ server {
 
 server {
     listen 443 ssl;
+    http2 on;
     server_name ${DOMAIN};
 
     ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
@@ -16,12 +35,42 @@ server {
 
     client_max_body_size 20M;
 
+    # Crawler files come from Django (they depend on the database).
+    location = /robots.txt {
+        proxy_pass http://web:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /sitemap.xml {
+        proxy_pass http://web:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # HTML fragments included into index.html via SSI (subrequests only).
+    location /_seo/ {
+        internal;
+        proxy_pass http://web:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # The API and Django admin are not pages: keep them out of search results
+    # while leaving them fetchable, since the pages render from /api/.
     location /api/ {
         proxy_pass http://web:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        add_header X-Robots-Tag "noindex, nofollow" always;
     }
 
     location /admin/ {
@@ -30,18 +79,35 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        add_header X-Robots-Tag "noindex, nofollow" always;
     }
 
     location /static/ {
         alias /app/staticfiles/;
+        expires 7d;
+        add_header Cache-Control "public";
     }
 
     location /media/ {
         alias /app/media/;
+        expires 30d;
+        add_header Cache-Control "public";
     }
 
+    # Vite output is content-hashed: cache forever.
+    location /assets/ {
+        root /usr/share/nginx/html;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # The SPA shell. `ssi on` lets it pull per-URL <head> tags and a crawlable
+    # <noscript> body from Django, so the very first response already has the
+    # right title, description, canonical, hreflang, Open Graph and JSON-LD.
     location / {
         root /usr/share/nginx/html;
+        ssi on;
         try_files $uri /index.html;
+        add_header Cache-Control "no-cache";
     }
 }

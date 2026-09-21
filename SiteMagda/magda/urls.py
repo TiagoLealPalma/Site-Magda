@@ -1,17 +1,23 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework.routers import DefaultRouter
 
-from . import admin_views, auth_views, views
+from . import admin_views, auth_views, seo_views, views
 
 admin_router = DefaultRouter()
 admin_router.register('properties', admin_views.PropertyAdminViewSet, basename='admin-property')
 
 urlpatterns = [
+    path('robots.txt', seo_views.robots_txt, name='robots'),
+    path('sitemap.xml', seo_views.sitemap_xml, name='sitemap'),
+    re_path(r'^_seo/head(?P<page>/.*)?$', seo_views.head_fragment, name='seo_head'),
+    re_path(r'^_seo/body(?P<page>/.*)?$', seo_views.body_fragment, name='seo_body'),
+
     path('api/properties/', views.PropertyListAPIView.as_view(), name='api_properties'),
     path('api/properties/<int:property_id>/', views.PropertyDetailAPIView.as_view(), name='api_property_detail'),
     path('api/stats/', views.SiteStatsAPIView.as_view(), name='api_stats'),
+    path('api/seo/', seo_views.meta_json, name='api_seo'),
     path('api/leads/', views.LeadCreateAPIView.as_view(), name='api_leads'),
 
     path('api/auth/csrf/', auth_views.CsrfView.as_view(), name='api_auth_csrf'),

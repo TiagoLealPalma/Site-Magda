@@ -6,6 +6,7 @@ export default {
     contact: "Contacto",
     openMenu: "Abrir menu",
     closeMenu: "Fechar menu",
+    skip: "Saltar para o conteúdo",
     switchLabel: "Mudar para português",
     langName: "Português",
   },
@@ -185,6 +186,12 @@ export default {
     descriptionNote: "",
     interested: "Interessado?",
     interestedIn: "Tenho interesse em: {name}",
+  },
+  notFound: {
+    title: "Esta página não existe.",
+    text: "O endereço pode ter mudado ou o imóvel já não está disponível.",
+    home: "Voltar ao início",
+    properties: "Ver imóveis",
   },
   language: {
     suggestion: "Este site também está disponível em português.",

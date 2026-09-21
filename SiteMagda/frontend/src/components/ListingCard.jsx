@@ -4,6 +4,7 @@ import StatusBadge from "./StatusBadge";
 import { coverImage, formatPrice } from "../utils/format";
 import { useLang, localizedProperty } from "../i18n";
 import { specRows, SpecLedger } from "../pages/imoveis/shared";
+import { propertyParam } from "../seo/slug";
 
 // The listing card of the Imóveis page. In `preview` mode (the backoffice
 // form) it renders the same markup without linking anywhere or animating in,
@@ -33,25 +34,29 @@ export default function ListingCard({ property: raw, index = 0, preview = false 
         )}
         <StatusBadge status={property.status} className="absolute left-4 top-4" />
       </div>
-      <div className="bg-charcoal p-6 text-paper">
+      <div className="flex flex-1 flex-col bg-charcoal p-6 text-paper">
         <p className="font-mono text-2xl tabular-nums text-gold-soft">{formatPrice(property.price, lang)}</p>
-        <h3 className="mt-3 font-display text-xl leading-snug">{property.name}</h3>
-        <p className="mt-1 font-mono text-xs uppercase tracking-widest text-paper/70">{property.address}</p>
-        <div className="relative my-5 h-px overflow-hidden bg-paper/15">
-          <span className="absolute inset-0 origin-left scale-x-0 bg-gold-soft transition-transform duration-700 ease-out group-hover:scale-x-100" />
+        {/* Every card reserves two title lines and clamps longer names, so a
+            row of cards shares one height and one rhythm whatever the name. */}
+        <h3 className="mt-3 line-clamp-2 min-h-[2.75em] font-display text-xl leading-snug">{property.name}</h3>
+        <p className="mt-1 truncate font-mono text-xs uppercase tracking-widest text-paper/70">{property.address}</p>
+        <div className="mt-auto pt-5">
+          <div className="relative mb-5 h-px overflow-hidden bg-paper/15">
+            <span className="absolute inset-0 origin-left scale-x-0 bg-gold-soft transition-transform duration-700 ease-out group-hover:scale-x-100" />
+          </div>
+          <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" />
         </div>
-        <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" />
       </div>
     </>
   );
 
-  if (preview) return <div className="group block">{card}</div>;
+  if (preview) return <div className="group flex h-full flex-col">{card}</div>;
 
   return (
-    <Reveal delay={(index % 3) * 100}>
+    <Reveal delay={(index % 3) * 100} className="h-full">
       <Link
-        to={path("property", { id: property.id })}
-        className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+        to={path("property", { id: propertyParam(property, lang) })}
+        className="group flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
       >
         {card}
       </Link>

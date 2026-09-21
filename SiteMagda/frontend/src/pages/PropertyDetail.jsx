@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Lightbox from "../components/Lightbox";
 import PropertyDetailView from "../components/PropertyDetailView";
+import NotFound from "./NotFound";
+import { propertyIdFromParam } from "../seo/slug";
 import { getProperty } from "../api/client";
 import { PLACEHOLDER_IMAGE } from "../utils/format";
 import { useLang, localizedProperty } from "../i18n";
@@ -20,10 +22,17 @@ export default function PropertyDetail() {
   useEffect(() => {
     setProperty(null);
     setError(false);
-    getProperty(id)
+    const propertyId = propertyIdFromParam(id);
+    if (propertyId === null) {
+      setError("notfound");
+      return;
+    }
+    getProperty(propertyId)
       .then(setProperty)
-      .catch(() => setError(true));
+      .catch((err) => setError(String(err.message).startsWith("404") ? "notfound" : true));
   }, [id, retryCount]);
+
+  if (error === "notfound") return <NotFound />;
 
   if (error) {
     return (
@@ -59,9 +68,11 @@ export default function PropertyDetail() {
   return (
     <div className="bg-paper">
       <Header />
+      <main id="main">
 
       <PropertyDetailView property={property} onOpenImage={setLightboxIndex} />
 
+      </main>
       <Footer />
 
       {lightboxIndex !== null && (

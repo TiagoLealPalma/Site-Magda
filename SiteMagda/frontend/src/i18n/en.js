@@ -6,6 +6,7 @@ export default {
     contact: "Contact",
     openMenu: "Open menu",
     closeMenu: "Close menu",
+    skip: "Skip to content",
     switchLabel: "Switch to English",
     langName: "English",
   },
@@ -185,6 +186,12 @@ export default {
     descriptionNote: "in Portuguese",
     interested: "Interested?",
     interestedIn: "I'm interested in: {name}",
+  },
+  notFound: {
+    title: "This page doesn't exist.",
+    text: "The address may have changed, or the property is no longer available.",
+    home: "Back to home",
+    properties: "View properties",
   },
   language: {
     suggestion: "This site is also available in English.",

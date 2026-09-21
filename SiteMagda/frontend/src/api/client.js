@@ -23,6 +23,10 @@ export function getProperty(id) {
   return request(`/properties/${id}/`);
 }
 
+export function getSeo(path) {
+  return request(`/seo/?path=${encodeURIComponent(path)}`);
+}
+
 export function getStats() {
   return request(`/stats/`);
 }

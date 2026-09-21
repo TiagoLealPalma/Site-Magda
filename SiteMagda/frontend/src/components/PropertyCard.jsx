@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLang, localizedProperty } from "../i18n";
+import { propertyParam } from "../seo/slug";
 import { coverImage, formatPrice } from "../utils/format";
 import StatusBadge from "./StatusBadge";
 
@@ -8,7 +9,7 @@ export default function PropertyCard({ property: raw, featured = false, fillHeig
   const property = localizedProperty(raw, lang);
   return (
     <Link
-      to={path("property", { id: property.id })}
+      to={path("property", { id: propertyParam(property, lang) })}
       className={`group property-card relative block overflow-hidden bg-charcoal ${
         featured ? "aspect-[4/3]" : "aspect-[3/4]"
       } ${fillHeight ? "md:aspect-auto md:h-full" : ""}`}
@@ -16,6 +17,8 @@ export default function PropertyCard({ property: raw, featured = false, fillHeig
       <img
         src={coverImage(property)}
         alt={property.name}
+        loading="lazy"
+        decoding="async"
         className={`absolute inset-0 h-full w-full object-cover transition-[transform,filter] duration-700 ease-out group-hover:scale-105 ${
           property.status === "reserved" ? "saturate-[.3] group-hover:saturate-100" : ""
         }`}

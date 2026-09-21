@@ -32,6 +32,12 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [h for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h]
 
+# Canonical origin for sitemap, canonical links and Open Graph URLs. Falls back
+# to https://$DOMAIN in production, and to the request's own host in dev.
+SITE_URL = os.environ.get('SITE_URL') or (
+    f"https://{os.environ['DOMAIN']}" if os.environ.get('DOMAIN') and os.environ.get('DOMAIN') != 'example.com' else ''
+)
+
 # The React dev server (Vite) proxies /api to this server. The browser's
 # Origin header is the Vite origin, which Django's CSRF Origin check needs
 # to trust explicitly since it differs from the host Django sees. In

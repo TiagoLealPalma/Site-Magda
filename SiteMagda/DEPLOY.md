@@ -148,3 +148,28 @@ docker compose logs -f nginx     # logs do nginx
 docker compose exec web python manage.py createsuperuser
 docker compose down              # parar tudo (mantém os volumes/dados)
 ```
+
+## SEO (depois do primeiro deploy)
+
+O site já sai com o essencial: `<title>`, descrição, `canonical`, `hreflang`
+(PT/EN), Open Graph e dados estruturados (JSON-LD) por página, tudo injetado
+pelo nginx (SSI) a partir do Django; `robots.txt` e `sitemap.xml` gerados a
+partir da base de dados; URLs com o nome do imóvel; e uma versão em texto
+simples (`<noscript>`) para quem não corre JavaScript.
+
+Para o Google e o Bing começarem a mostrar o site, é preciso fazer isto **uma
+vez**, com a tua conta (não se automatiza):
+
+1. **Google Search Console** → adicionar propriedade → *Domínio* (`DOMAIN`) →
+   validar por DNS. Depois em *Sitemaps* enviar `sitemap.xml` e, em
+   *Inspeção de URL*, pedir a indexação de `/`, `/sobre` e `/imoveis`.
+2. **Bing Webmaster Tools** → importar o site a partir da Search Console.
+3. **Google Business Profile** (Perfil da Empresa): criar/reclamar o perfil da
+   Magda Leal como consultora imobiliária, com o site e o telefone. É o que
+   mais pesa nas pesquisas locais ("consultora imobiliária + zona").
+4. Confirmar em `https://DOMAIN/robots.txt` e `https://DOMAIN/sitemap.xml` que
+   respondem, e que `SITE_URL` (ou `DOMAIN`) no `.env` é o domínio final com
+   `https://` (é daí que saem os `canonical` e o sitemap).
+
+Se o domínio tiver também `www.`, redirecionar `www` para o domínio principal
+no DNS/nginx, para não haver duas versões do site.

@@ -7,6 +7,7 @@ import Reveal from "../components/Reveal";
 import { coverImage, formatPrice } from "../utils/format";
 import { useLang, useT, localizedProperty } from "../i18n";
 import ListingCard from "../components/ListingCard";
+import { propertyParam } from "../seo/slug";
 import { getProperties } from "../api/client";
 import {
   useProperties,
@@ -52,7 +53,7 @@ function Featured({ property: raw }) {
             <SpecLedger rows={specRows(property, t)} tone="dark" />
           </div>
           <Link
-            to={path("property", { id: property.id })}
+            to={path("property", { id: propertyParam(property, lang) })}
             className="inline-block border border-gold-soft px-8 py-3 text-sm tracking-wide text-gold-soft transition-colors hover:bg-gold-soft hover:text-ink"
           >
             {t("properties.viewProperty")}
@@ -141,6 +142,7 @@ export default function Properties() {
   return (
     <div className="min-h-screen bg-paper">
       <Header />
+      <main id="main">
       <h1 className="sr-only">{t("properties.pageTitle")}</h1>
 
       {featured ? <Featured property={featured} /> : featured === null ? <FeaturedFallback /> : <div className="min-h-[92svh] bg-charcoal" />}
@@ -186,6 +188,7 @@ export default function Properties() {
       </div>
 
       <ContactBand />
+      </main>
       <Footer />
     </div>
   );

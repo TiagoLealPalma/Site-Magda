@@ -96,6 +96,7 @@ export default function Sobre() {
   return (
     <div className="bg-paper">
       <Header />
+      <main id="main">
 
       <section className="overflow-hidden bg-charcoal text-paper">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-6 pt-32 md:grid-cols-[1fr_auto] md:gap-12 md:px-8 md:pt-44 lg:gap-20">
@@ -126,6 +127,8 @@ export default function Sobre() {
             alt={t("about.photoAlt")}
             width="884"
             height="1080"
+            fetchPriority="high"
+            decoding="async"
             className="wipe-up mx-auto block w-4/5 max-w-sm md:mx-0 md:w-[19rem] lg:w-[24rem]"
             style={{
               mixBlendMode: "multiply",
@@ -177,6 +180,7 @@ export default function Sobre() {
 
       <AwardsSection />
       <ContactCta />
+      </main>
       <Footer />
     </div>
   );

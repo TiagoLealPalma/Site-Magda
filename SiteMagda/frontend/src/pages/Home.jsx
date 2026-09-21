@@ -33,6 +33,7 @@ export default function Home() {
   return (
     <div className="bg-paper">
       <Header />
+      <main id="main">
 
       {/* Hero */}
       <section className="relative bg-paper pt-32 pb-20 md:pt-40 md:pb-28">
@@ -68,8 +69,12 @@ export default function Home() {
             <div className="border border-ink/10 p-3 md:p-4 max-w-md md:max-w-none mx-auto">
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src="/static/landingpage/FotoMagda.png"
+                  src="/static/landingpage/FotoMagda.webp"
                   alt="Magda Leal"
+                  width="1080"
+                  height="1080"
+                  fetchPriority="high"
+                  decoding="async"
                   className="h-full w-full object-cover"
                   style={{ objectPosition: "center 15%" }}
                 />
@@ -201,6 +206,7 @@ export default function Home() {
         </Reveal>
       </section>
 
+      </main>
       <Footer />
     </div>
   );
