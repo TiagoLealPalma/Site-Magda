@@ -1,32 +1,48 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getProperties } from "../../api/client";
-import { WHATSAPP_HREF } from "../../components/WhatsAppButton";
+import { useWhatsappHref } from "../../components/WhatsAppButton";
+import { useLang, useT } from "../../i18n";
+import { formatPrice } from "../../utils/format";
 import Reveal from "../../components/Reveal";
 
-const BEDROOM_OPTIONS = [
-  { value: "", label: "Todos" },
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5+" },
-];
+const PRICE_STEPS = ["100000", "200000", "300000", "500000", "800000"];
 
-const PRICE_OPTIONS = [
-  { value: "", label: "Sem limite" },
-  { value: "100000", label: "Até 100.000 €" },
-  { value: "200000", label: "Até 200.000 €" },
-  { value: "300000", label: "Até 300.000 €" },
-  { value: "500000", label: "Até 500.000 €" },
-  { value: "800000", label: "Até 800.000 €" },
-];
-
-const SORT_OPTIONS = [
-  { value: "", label: "Predefinida" },
-  { value: "preco-asc", label: "Preço: menor primeiro" },
-  { value: "preco-desc", label: "Preço: maior primeiro" },
-];
+// The three dropdowns, labelled and worded in the visitor's language.
+function useSelects() {
+  const { t, lang } = useLang();
+  return [
+    [
+      "bedrooms",
+      t("filters.bedrooms"),
+      [
+        { value: "", label: t("filters.all") },
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+        { value: "3", label: "3" },
+        { value: "4", label: "4" },
+        { value: "5", label: "5+" },
+      ],
+    ],
+    [
+      "price",
+      t("filters.maxPrice"),
+      [
+        { value: "", label: t("filters.noLimit") },
+        ...PRICE_STEPS.map((v) => ({ value: v, label: t("filters.upTo", { price: formatPrice(v, lang) }) })),
+      ],
+    ],
+    [
+      "sort",
+      t("filters.sort"),
+      [
+        { value: "", label: t("filters.sortDefault") },
+        { value: "preco-asc", label: t("filters.sortAsc") },
+        { value: "preco-desc", label: t("filters.sortDesc") },
+      ],
+    ],
+  ];
+}
 
 const byPrice = (dir) => (a, b) => dir * ((Number(a.price) || 0) - (Number(b.price) || 0));
 
@@ -93,12 +109,12 @@ export function useProperties() {
   };
 }
 
-export function specRows(p) {
-  const rows = [{ label: "Tipologia", value: p.typology || (p.bedrooms ? `T${p.bedrooms}` : "—") }];
-  if (p.area) rows.push({ label: "Área", value: `${p.area} m²` });
-  if (p.liquid_area) rows.push({ label: "Área útil", value: `${p.liquid_area} m²` });
-  if (p.bathrooms) rows.push({ label: "WC", value: String(p.bathrooms) });
-  if (p.construction_date) rows.push({ label: "Ano", value: String(p.construction_date) });
+export function specRows(p, t) {
+  const rows = [{ label: t("spec.type"), value: p.typology || (p.bedrooms ? `T${p.bedrooms}` : "—") }];
+  if (p.area) rows.push({ label: t("spec.area"), value: `${p.area} m²` });
+  if (p.liquid_area) rows.push({ label: t("spec.usableArea"), value: `${p.liquid_area} m²` });
+  if (p.bathrooms) rows.push({ label: t("spec.wc"), value: String(p.bathrooms) });
+  if (p.construction_date) rows.push({ label: t("spec.year"), value: String(p.construction_date) });
   return rows;
 }
 
@@ -257,6 +273,7 @@ function Select({ id, value, onChange, options, variant = "flat" }) {
 // Search field with our own clear control (the browser's built-in one is
 // stripped) and a gold caret.
 function SearchInput({ id, value, onChange, variant = "flat" }) {
+  const t = useT();
   const ref = useRef(null);
   const fieldClass =
     variant === "flat"
@@ -272,7 +289,7 @@ function SearchInput({ id, value, onChange, variant = "flat" }) {
         enterKeyHint="search"
         autoComplete="off"
         spellCheck={false}
-        placeholder="Localização, nome…"
+        placeholder={t("filters.searchPlaceholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`w-full min-w-0 bg-transparent pr-7 text-ink caret-gold placeholder:text-stone focus:outline-none ${fieldClass}`}
@@ -280,7 +297,7 @@ function SearchInput({ id, value, onChange, variant = "flat" }) {
       {value && (
         <button
           type="button"
-          aria-label="Limpar pesquisa"
+          aria-label={t("filters.clearSearch")}
           onClick={() => {
             onChange("");
             ref.current?.focus();
@@ -295,12 +312,6 @@ function SearchInput({ id, value, onChange, variant = "flat" }) {
     </div>
   );
 }
-
-const SELECTS = [
-  ["bedrooms", "Quartos", BEDROOM_OPTIONS],
-  ["price", "Preço máximo", PRICE_OPTIONS],
-  ["sort", "Ordenar", SORT_OPTIONS],
-];
 
 function Segment({ id, label, className = "", children }) {
   return (
@@ -327,6 +338,8 @@ function Tick() {
 // fields. Light on purpose: it passes over navy listing cards and must never
 // read as one of them.
 function FloatFilters({ filters, update, clear, hasActive, count, idPrefix, className = "" }) {
+  const t = useT();
+  const selects = useSelects();
   const p = idPrefix;
   const showClear = hasActive && count !== 0;
 
@@ -335,10 +348,10 @@ function FloatFilters({ filters, update, clear, hasActive, count, idPrefix, clas
       {["-left-px -top-px border-l border-t", "-right-px -top-px border-r border-t", "-bottom-px -left-px border-b border-l", "-bottom-px -right-px border-b border-r"].map((corner) => (
         <span key={corner} aria-hidden="true" className={`pointer-events-none absolute h-2 w-2 border-gold ${corner}`} />
       ))}
-      <Segment id={`${p}-search`} label="Pesquisar" className="flex-[1.7]">
+      <Segment id={`${p}-search`} label={t("filters.search")} className="flex-[1.7]">
         <SearchInput id={`${p}-search`} value={filters.search} onChange={(v) => update({ ...filters, search: v })} variant="float" />
       </Segment>
-      {SELECTS.map(([key, label, options]) => (
+      {selects.map(([key, label, options]) => (
         <div key={key} className="flex flex-1 items-center">
           <Tick />
           <Segment id={`${p}-${key}`} label={label} className="flex-1">
@@ -354,16 +367,16 @@ function FloatFilters({ filters, update, clear, hasActive, count, idPrefix, clas
       ))}
       <Tick />
       <div className="flex min-w-[9.5rem] flex-col justify-center px-5 py-2">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-stone">Resultados</p>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-stone">{t("filters.results")}</p>
         <p aria-live="polite" className="whitespace-nowrap font-mono text-sm tabular-nums text-gold-deep">
-          {count === null ? "A carregar…" : `${count} ${count === 1 ? "imóvel" : "imóveis"}`}
+          {count === null ? t("common.loading") : `${count} ${count === 1 ? t("filters.one") : t("filters.many")}`}
           {showClear && (
             <button
               type="button"
               onClick={clear}
               className="ml-3 font-sans text-xs text-ink underline underline-offset-4 transition-colors hover:text-gold-deep"
             >
-              Limpar
+              {t("filters.clear")}
             </button>
           )}
         </p>
@@ -386,17 +399,19 @@ function FlatField({ id, label, children }) {
 // The resting state: plain underlined fields on the page, in the site's
 // mono-label voice.
 function FlatFilters({ filters, update, clear, hasActive, count, idPrefix, className = "" }) {
+  const t = useT();
+  const selects = useSelects();
   const p = idPrefix;
   const showClear = hasActive && count !== 0;
 
   return (
     <div className={`grid grid-cols-2 items-end gap-x-6 gap-y-4 md:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))_auto] md:gap-x-8 ${className}`}>
       <div className="col-span-2 md:col-span-1">
-        <FlatField id={`${p}-search`} label="Pesquisar">
+        <FlatField id={`${p}-search`} label={t("filters.search")}>
           <SearchInput id={`${p}-search`} value={filters.search} onChange={(v) => update({ ...filters, search: v })} />
         </FlatField>
       </div>
-      {SELECTS.map(([key, label, options]) => (
+      {selects.map(([key, label, options]) => (
         <FlatField key={key} id={`${p}-${key}`} label={label}>
           <Select
             id={`${p}-${key}`}
@@ -413,11 +428,11 @@ function FlatFilters({ filters, update, clear, hasActive, count, idPrefix, class
             onClick={clear}
             className="min-h-11 font-mono text-xs text-stone underline underline-offset-4 transition-colors hover:text-gold-deep"
           >
-            Limpar filtros
+            {t("filters.clearFilters")}
           </button>
         )}
         <p aria-live="polite" className="font-mono text-xs tabular-nums text-stone">
-          {count === null ? "A carregar…" : `${count} ${count === 1 ? "imóvel" : "imóveis"}`}
+          {count === null ? t("common.loading") : `${count} ${count === 1 ? t("filters.one") : t("filters.many")}`}
         </p>
       </div>
     </div>
@@ -433,49 +448,53 @@ export function FilterBar({ variant = "flat", idPrefix = "f", ...props }) {
 }
 
 export function LoadingState({ tone = "light" }) {
+  const t = useT();
   return (
     <div role="status" className="py-24 text-center">
       <div className={`relative mx-auto h-px w-40 overflow-hidden ${tone === "dark" ? "bg-paper/15" : "bg-ink/10"}`}>
         <div className="rule-scan absolute inset-y-0 left-0 bg-gold" />
       </div>
-      <p className="mt-5 font-mono text-xs uppercase tracking-widest text-stone">A carregar imóveis…</p>
+      <p className="mt-5 font-mono text-xs uppercase tracking-widest text-stone">{t("properties.loadingProperties")}</p>
     </div>
   );
 }
 
 export function ErrorState({ retry }) {
+  const t = useT();
   return (
     <div role="alert" className="py-20 text-center">
-      <p className="font-display text-2xl">Não foi possível carregar os imóveis.</p>
-      <p className="mt-3 text-sm text-stone">Verifique a sua ligação e tente novamente.</p>
+      <p className="font-display text-2xl">{t("properties.errorTitle")}</p>
+      <p className="mt-3 text-sm text-stone">{t("properties.errorText")}</p>
       <button
         type="button"
         onClick={retry}
         className="mt-8 border border-gold px-8 py-3 text-sm tracking-wide text-gold-deep transition-colors hover:bg-gold hover:text-ink"
       >
-        Tentar novamente
+        {t("common.tryAgain")}
       </button>
     </div>
   );
 }
 
 export function EmptyState({ hasActive, clear }) {
+  const t = useT();
+  const href = useWhatsappHref();
   return (
     <div className="mx-auto max-w-xl py-20 text-center">
       <p className="font-display text-3xl leading-tight md:text-4xl">
-        {hasActive ? "Nenhum imóvel com estes critérios." : "Sem imóveis disponíveis de momento."}
+        {hasActive ? t("properties.emptyFiltered") : t("properties.emptyAll")}
       </p>
       <p className="mt-4 leading-relaxed text-stone">
-        Conte-me o que procura: nem tudo o que consigo encontrar está aqui.
+        {t("properties.emptyText")}
       </p>
       <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
         <a
-          href={WHATSAPP_HREF}
+          href={href}
           target="_blank"
           rel="noreferrer"
           className="inline-block bg-gold px-8 py-3 text-sm tracking-wide text-ink transition-colors hover:bg-ink hover:text-paper"
         >
-          Falar com a Magda
+          {t("common.talkToMagda")}
         </a>
         {hasActive && (
           <button
@@ -483,7 +502,7 @@ export function EmptyState({ hasActive, clear }) {
             onClick={clear}
             className="min-h-11 border-b border-ink/25 pb-1 text-sm tracking-wide text-stone transition-colors hover:border-gold hover:text-gold-deep"
           >
-            Limpar filtros
+            {t("filters.clearFilters")}
           </button>
         )}
       </div>
@@ -492,20 +511,22 @@ export function EmptyState({ hasActive, clear }) {
 }
 
 export function ContactBand() {
+  const t = useT();
+  const href = useWhatsappHref();
   return (
     <section className="bg-charcoal py-20 text-paper md:py-28">
       <Reveal className="mx-auto max-w-3xl px-6 text-center md:px-8">
-        <h2 className="font-display text-3xl leading-[1.1] md:text-5xl">Não encontra o que procura?</h2>
+        <h2 className="font-display text-3xl leading-[1.1] md:text-5xl">{t("properties.contactTitle")}</h2>
         <p className="mx-auto mt-5 max-w-md leading-relaxed text-paper/75">
-          Conte-me o que procura; acompanho todo o processo, do primeiro contacto à escritura.
+          {t("properties.contactText")}
         </p>
         <a
-          href={WHATSAPP_HREF}
+          href={href}
           target="_blank"
           rel="noreferrer"
           className="mt-10 inline-block bg-gold px-8 py-3 text-sm tracking-wide text-ink transition-colors hover:bg-paper"
         >
-          Falar com a Magda
+          {t("common.talkToMagda")}
         </a>
       </Reveal>
     </section>

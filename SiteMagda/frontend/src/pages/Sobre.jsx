@@ -3,18 +3,14 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
+import { useLang } from "../i18n";
 import {
-  VALUES,
-  KW_TEXT,
   useSobreStats,
   usePrefersReducedMotion,
   DrawnRule,
   AwardsSection,
   ContactCta,
 } from "./sobre/shared";
-
-const STANDFIRST =
-  "A minha formação em engenharia civil dá-me um olhar técnico pouco comum no mercado imobiliário: avalio a construção, o estado do imóvel e o seu potencial real, não apenas a sua apresentação.";
 
 const clamp = (n) => Math.min(1, Math.max(0, n));
 
@@ -92,8 +88,10 @@ function ValueRow({ value, index }) {
 }
 
 export default function Sobre() {
+  const { t, path } = useLang();
   const stats = useSobreStats();
   const years = stats?.years_since ?? 10;
+  const values = t("about.values");
 
   return (
     <div className="bg-paper">
@@ -104,30 +102,28 @@ export default function Sobre() {
           <div className="pb-2 md:pb-24">
             <h1 className="font-display text-4xl leading-[1.04] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
               <span className="line-mask">
-                <span className="line-up text-balance" style={{ "--d": "300ms" }}>Duas décadas a ler edifícios.</span>
+                <span className="line-up text-balance" style={{ "--d": "300ms" }}>{t("about.heroLine1")}</span>
               </span>
               <span className="line-mask">
                 <span className="line-up text-balance italic text-gold-soft" style={{ "--d": "480ms" }}>
-                  Uma década a ler o mercado.
+                  {t("about.heroLine2")}
                 </span>
               </span>
             </h1>
 
             <p className="develop mt-8 max-w-md leading-relaxed text-paper/75" style={{ "--d": "900ms" }}>
-              Com mais de {years} anos de experiência no mercado imobiliário e duas décadas de engenharia
-              civil, ofereço um serviço de consultoria especializado a quem procura comprar, vender ou
-              arrendar o seu próximo imóvel.
+              {t("about.intro", { years })}
             </p>
 
             <div className="mt-14 max-w-md space-y-9 md:mt-16">
-              <DimLine pct={100} label="20 anos · Engenharia civil" delay={700} />
-              <DimLine pct={Math.min(100, (years / 20) * 100)} label={`${years}+ anos · Mercado imobiliário`} delay={950} />
+              <DimLine pct={100} label={t("about.dimEngineering")} delay={700} />
+              <DimLine pct={Math.min(100, (years / 20) * 100)} label={t("about.dimMarket", { years })} delay={950} />
             </div>
           </div>
 
           <img
             src="/static/landingpage/FotoMagdaSemFundo.webp"
-            alt="Magda Leal"
+            alt={t("about.photoAlt")}
             width="884"
             height="1080"
             className="wipe-up mx-auto block w-4/5 max-w-sm md:mx-0 md:w-[19rem] lg:w-[24rem]"
@@ -142,20 +138,20 @@ export default function Sobre() {
 
       <section className="mx-auto max-w-7xl px-6 py-24 md:px-8 md:py-40">
         <div className="grid grid-cols-1 gap-14 md:grid-cols-[7fr_4fr] md:gap-24">
-          <ScrollWords text={STANDFIRST} />
+          <ScrollWords text={t("about.standfirst")} />
 
           <Reveal delay={100} className="md:pt-3">
-            <p className="leading-relaxed text-stone">{KW_TEXT}</p>
+            <p className="leading-relaxed text-stone">{t("about.kw")}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
-                to="/imoveis"
+                to={path("properties")}
                 className="inline-block border border-gold px-8 py-3 text-sm tracking-wide text-gold-deep transition-colors hover:bg-gold hover:text-ink"
               >
-                Ver imóveis
+                {t("common.viewProperties")}
               </Link>
               {stats && (
                 <p className="font-mono text-xs uppercase tracking-widest text-stone">
-                  {stats.properties_sold} imóveis vendidos
+                  {t("common.soldCount", { n: stats.properties_sold })}
                 </p>
               )}
             </div>
@@ -167,14 +163,14 @@ export default function Sobre() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[4fr_8fr] md:gap-20">
           <Reveal>
             <h2 className="font-display text-3xl leading-[1.1] md:sticky md:top-32 md:text-4xl">
-              Três princípios que guiam cada negócio.
+              {t("about.principlesTitle")}
             </h2>
           </Reveal>
           <div>
-            {VALUES.map((v, i) => (
+            {values.map((v, i) => (
               <ValueRow key={v.title} value={v} index={i} />
             ))}
-            <DrawnRule delay={VALUES.length * 120} />
+            <DrawnRule delay={values.length * 120} />
           </div>
         </div>
       </section>

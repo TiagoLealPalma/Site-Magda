@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TickRule from "./TickRule";
+import { useT } from "../i18n";
 
 const VH_PER_STEP = 140; // total pinned scroll distance (vh); split evenly, this gives each
 // frame a longer, more deliberate hold before/after the crossfade instead of a quick swap
@@ -8,6 +9,8 @@ const VH_PER_STEP = 140; // total pinned scroll distance (vh); split evenly, thi
 // screen, then disappears as the rest crossfade in as a group — driven by
 // scroll position, not a timer, and short enough not to overstay its welcome.
 export default function ScrollFeedback({ featured, others }) {
+  const t = useT();
+  const note = t("testimonials.translatedNote");
   const trackRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [reducedMotion] = useState(
@@ -34,7 +37,7 @@ export default function ScrollFeedback({ featured, others }) {
     return (
       <section className="bg-paper py-24 md:py-36 border-t border-ink/10">
         <div className="mx-auto max-w-3xl px-6 md:px-8 text-center">
-          <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-10">Feedback</p>
+          <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-10">{t("testimonials.label")}{note && <span className="ml-3 normal-case tracking-normal text-stone">· {note}</span>}</p>
           <p className="font-display text-2xl md:text-3xl leading-snug text-ink">“{featured.text}”</p>
           <TickRule className="w-10 mx-auto mt-8 mb-5" />
           <p className="font-mono text-xs tracking-widest uppercase text-gold-deep">{featured.author}</p>
@@ -61,7 +64,7 @@ export default function ScrollFeedback({ featured, others }) {
       style={{ height: `${100 + VH_PER_STEP}vh` }}
     >
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
-        <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-10">Feedback</p>
+        <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-10">{t("testimonials.label")}{note && <span className="ml-3 normal-case tracking-normal text-stone">· {note}</span>}</p>
 
         <div className="relative w-full max-w-4xl min-h-[16rem] md:min-h-[20rem]">
           <div

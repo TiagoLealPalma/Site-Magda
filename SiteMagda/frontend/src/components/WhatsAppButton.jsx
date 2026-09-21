@@ -1,17 +1,23 @@
-const PHONE = "351913503048";
-const MESSAGE = "Olá Magda, gostaria de falar consigo sobre um imóvel.";
+import { useLang } from "../i18n";
 
-export const WHATSAPP_HREF = `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+const PHONE = "351913503048";
+
+// The prefilled message follows the language the visitor is reading in.
+export function useWhatsappHref() {
+  const { t } = useLang();
+  return `https://wa.me/${PHONE}?text=${encodeURIComponent(t("common.whatsappMessage"))}`;
+}
 
 export default function WhatsAppButton() {
-  const href = WHATSAPP_HREF;
+  const { t } = useLang();
+  const href = useWhatsappHref();
 
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
-      aria-label="Falar no WhatsApp"
+      aria-label={t("common.whatsappLabel")}
       className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full flex items-center justify-center bg-[#25D366] shadow-lg transition-all duration-200 hover:bg-[#20BD5A] hover:scale-110 hover:shadow-xl"
     >
       <svg viewBox="0 0 24 24" className="h-8 w-8" fill="#fff" aria-hidden="true">

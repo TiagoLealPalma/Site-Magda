@@ -1,6 +1,8 @@
 import { useEffect } from "react";
+import { useT } from "../i18n";
 
 export default function Lightbox({ images, index, onClose, onNavigate }) {
+  const t = useT();
   useEffect(() => {
     function onKey(e) {
       if (e.key === "Escape") onClose();
@@ -18,7 +20,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
     >
       <button
         onClick={onClose}
-        aria-label="Fechar"
+        aria-label={t("lightbox.close")}
         className="absolute top-6 right-8 text-paper/70 hover:text-gold-soft text-3xl leading-none"
       >
         ×
@@ -29,7 +31,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
           e.stopPropagation();
           onNavigate((index - 1 + images.length) % images.length);
         }}
-        aria-label="Anterior"
+        aria-label={t("lightbox.previous")}
         className="absolute left-6 text-paper/60 hover:text-gold-soft text-4xl px-3"
       >
         ‹
@@ -37,7 +39,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
 
       <img
         src={images[index].url}
-        alt="Imagem do imóvel"
+        alt={t("lightbox.imageAlt")}
         onClick={(e) => e.stopPropagation()}
         className="max-h-[85vh] max-w-[85vw] object-contain"
       />
@@ -47,7 +49,7 @@ export default function Lightbox({ images, index, onClose, onNavigate }) {
           e.stopPropagation();
           onNavigate((index + 1) % images.length);
         }}
-        aria-label="Seguinte"
+        aria-label={t("lightbox.next")}
         className="absolute right-6 text-paper/60 hover:text-gold-soft text-4xl px-3"
       >
         ›

@@ -2,22 +2,8 @@ import { useEffect, useState } from "react";
 import Reveal from "../../components/Reveal";
 import { useReveal } from "../../hooks/useReveal";
 import { getStats } from "../../api/client";
-import { WHATSAPP_HREF } from "../../components/WhatsAppButton";
-
-export const VALUES = [
-  {
-    title: "Rigor Técnico",
-    text: "Uma leitura de engenheira sobre cada imóvel, para que decida com toda a informação, não apenas com a primeira impressão.",
-  },
-  {
-    title: "Acompanhamento Próximo",
-    text: "Disponibilidade real do primeiro contacto à escritura, com resposta rápida em cada etapa do processo.",
-  },
-  {
-    title: "Confiança",
-    text: "Transparência em cada negociação, para que a relação continue muito depois de as chaves mudarem de mãos.",
-  },
-];
+import { useWhatsappHref } from "../../components/WhatsAppButton";
+import { useT } from "../../i18n";
 
 export const AWARDS = [
   { count: "3×", title: "Top 10 Mega Teams" },
@@ -26,9 +12,6 @@ export const AWARDS = [
   { count: "1×", title: "Prata KW Abaco" },
   { count: "9×", title: "Capper" },
 ];
-
-export const KW_TEXT =
-  "Represento a Keller Williams Portugal, a maior rede imobiliária do mundo, o que me permite oferecer aos meus clientes o alcance de uma rede internacional com o cuidado de um serviço verdadeiramente pessoal.";
 
 export function useSobreStats() {
   const [stats, setStats] = useState(null);
@@ -97,10 +80,11 @@ function AwardRow({ award, index }) {
 }
 
 export function AwardsSection() {
+  const t = useT();
   return (
     <section className="bg-charcoal py-24 md:py-32">
       <Reveal className="text-center mb-14 md:mb-20 px-6">
-        <h2 className="font-display text-3xl md:text-5xl text-paper">Prémios e reconhecimentos.</h2>
+        <h2 className="font-display text-3xl md:text-5xl text-paper">{t("about.awardsTitle")}</h2>
       </Reveal>
 
       <div className="mx-auto max-w-2xl px-6 md:px-8">
@@ -114,20 +98,22 @@ export function AwardsSection() {
 }
 
 export function ContactCta() {
+  const t = useT();
+  const href = useWhatsappHref();
   return (
     <section className="bg-paper py-24 md:py-36">
       <Reveal className="mx-auto max-w-3xl px-6 text-center md:px-8">
-        <h2 className="font-display text-3xl leading-[1.08] sm:text-4xl md:text-5xl">Vamos falar do seu imóvel.</h2>
+        <h2 className="font-display text-3xl leading-[1.08] sm:text-4xl md:text-5xl">{t("about.ctaTitle")}</h2>
         <p className="mx-auto mt-5 max-w-md leading-relaxed text-stone">
-          Conte-me o que procura; acompanho todo o processo, do primeiro contacto à escritura.
+          {t("about.ctaText")}
         </p>
         <a
-          href={WHATSAPP_HREF}
+          href={href}
           target="_blank"
           rel="noreferrer"
           className="mt-10 inline-block bg-gold px-8 py-3 text-sm tracking-wide text-ink transition-colors hover:bg-ink hover:text-paper"
         >
-          Falar com a Magda
+          {t("common.talkToMagda")}
         </a>
       </Reveal>
     </section>

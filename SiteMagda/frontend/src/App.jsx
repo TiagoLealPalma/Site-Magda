@@ -2,6 +2,8 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { useScrollingClass } from "./hooks/useScrollingClass";
+import { LangProvider } from "./i18n";
+import LanguageSuggestion from "./components/LanguageSuggestion";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import Properties from "./pages/Properties";
@@ -20,14 +22,20 @@ export default function App() {
   useScrollingClass();
 
   return (
-    <>
+    <LangProvider>
       <ScrollToTop />
       {!isBackoffice && <WhatsAppButton />}
+      {!isBackoffice && <LanguageSuggestion />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/imoveis" element={<Properties />} />
         <Route path="/imoveis/:id" element={<PropertyDetail />} />
+
+        <Route path="/en" element={<Home />} />
+        <Route path="/en/about" element={<Sobre />} />
+        <Route path="/en/properties" element={<Properties />} />
+        <Route path="/en/properties/:id" element={<PropertyDetail />} />
 
         <Route path="/backoffice/login" element={<Login />} />
         <Route
@@ -45,6 +53,6 @@ export default function App() {
           <Route path="contactos" element={<LeadsAdmin />} />
         </Route>
       </Routes>
-    </>
+    </LangProvider>
   );
 }

@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
+import { useLang, localizedProperty } from "../i18n";
 import { coverImage, formatPrice } from "../utils/format";
 import StatusBadge from "./StatusBadge";
 
-export default function PropertyCard({ property, featured = false, fillHeight = false }) {
+export default function PropertyCard({ property: raw, featured = false, fillHeight = false }) {
+  const { lang, path } = useLang();
+  const property = localizedProperty(raw, lang);
   return (
     <Link
-      to={`/imoveis/${property.id}`}
+      to={path("property", { id: property.id })}
       className={`group property-card relative block overflow-hidden bg-charcoal ${
         featured ? "aspect-[4/3]" : "aspect-[3/4]"
       } ${fillHeight ? "md:aspect-auto md:h-full" : ""}`}
@@ -31,7 +34,7 @@ export default function PropertyCard({ property, featured = false, fillHeight = 
           {property.address}
         </p>
         <div className="mt-2 flex items-center justify-between">
-          <p className="font-mono text-sm text-gold-soft">{formatPrice(property.price)}</p>
+          <p className="font-mono text-sm text-gold-soft">{formatPrice(property.price, lang)}</p>
           <p className="font-mono text-xs text-paper/70">
             {property.bedrooms ? `T${property.bedrooms}` : property.typology} · {property.area} m²
           </p>

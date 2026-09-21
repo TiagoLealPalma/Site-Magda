@@ -13,6 +13,9 @@ class Property(models.Model):
     ]
 
     name = models.CharField(max_length=255)
+    # Optional English name: the public site falls back to the Portuguese
+    # one when empty. Descriptions stay in Portuguese on purpose.
+    name_en = models.CharField(max_length=255, blank=True, default='')
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     description = models.TextField()
     address = models.CharField(max_length=255)
