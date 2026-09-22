@@ -36,7 +36,7 @@ export default function Home() {
       <main id="main">
 
       {/* Hero */}
-      <section className="relative bg-paper pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="relative bg-paper pt-28 pb-16 md:pt-32 md:pb-20">
         <div className="mx-auto max-w-7xl px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
           <Reveal>
             <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-5">
@@ -66,9 +66,14 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="relative max-w-md md:max-w-none mx-auto md:mr-6 lg:mr-10">
+            {/* md:w-fit + a height-driven aspect box (instead of a
+                width-driven one) keeps this portrait from outgrowing short,
+                wide viewports — a 1366×768 laptop, say — where sizing it off
+                the grid column's width instead would push it well past the
+                fold. */}
+            <div className="relative mx-auto max-w-md md:mx-0 md:ml-auto md:w-fit">
               <div className="border border-ink/10 p-3 md:p-4">
-                <div className="aspect-[4/5] overflow-hidden">
+                <div className="aspect-[4/5] md:h-[min(58vh,540px)] overflow-hidden">
                   <img
                     src="/static/landingpage/MagdaHero.webp"
                     alt="Magda Leal"
