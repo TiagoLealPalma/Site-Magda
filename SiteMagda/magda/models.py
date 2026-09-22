@@ -40,6 +40,13 @@ class Lead(models.Model):
 class Image(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to='property_images/')
+    # Lower sorts first; the first image (order, then id) is the cover shown
+    # everywhere (cards, hero). Defaults to 0 for every existing row, so nothing
+    # already saved changes position until someone picks a cover explicitly.
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
 
 
 

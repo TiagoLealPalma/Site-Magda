@@ -53,21 +53,47 @@ class PropertyAdminViewSet(viewsets.ModelViewSet):
         if not isinstance(urls, list) or not urls:
             return Response({'detail': 'Lista de imagens em falta.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        created, failed = [], 0
+        # One entry per URL, in the same order, `null` where the download
+        # failed: the caller (persisting a new listing's queued photos) relies
+        # on that alignment to know which server image is which queued one,
+        # so it can restore Magda's chosen cover order afterwards.
+        results, failed = [], 0
         for url in urls[:importer.MAX_IMPORTED_IMAGES]:
             try:
                 content = importer.download_image(url)
             except importer.ListingImportError:
                 failed += 1
+                results.append(None)
                 continue
             image = Image(property=property_obj)
             image.image.save(importer.image_filename(url), ContentFile(content), save=True)
-            created.append(image)
+            results.append(image)
 
-        return Response(
-            {'images': ImageSerializer(created, many=True, context={'request': request}).data, 'failed': failed},
-            status=status.HTTP_201_CREATED,
-        )
+        serialized = [
+            ImageSerializer(image, context={'request': request}).data if image else None
+            for image in results
+        ]
+        return Response({'images': serialized, 'failed': failed}, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'], url_path='images/order')
+    def order_images(self, request, pk=None):
+        property_obj = self.get_object()
+        image_ids = request.data.get('image_ids')
+        if not isinstance(image_ids, list) or not image_ids:
+            return Response({'detail': 'Lista de imagens em falta.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Callers always send the property's complete image id list (the
+        # chosen cover first); anything not in that list keeps its order
+        # value and sorts after, by id.
+        by_id = {image.id: image for image in property_obj.images.all()}
+        for index, image_id in enumerate(image_ids):
+            image = by_id.get(image_id)
+            if image is not None and image.order != index:
+                image.order = index
+                image.save(update_fields=['order'])
+
+        ordered = property_obj.images.all()
+        return Response(ImageSerializer(ordered, many=True, context={'request': request}).data)
 
 
 class ImageAdminDeleteView(DestroyAPIView):

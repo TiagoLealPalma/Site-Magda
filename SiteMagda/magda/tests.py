@@ -3,7 +3,7 @@ import json
 from django.test import TestCase, override_settings
 
 from . import importer, seo
-from .models import Property
+from .models import Image, Property
 
 
 @override_settings(SITE_URL='https://example.test', ALLOWED_HOSTS=['testserver'])
@@ -235,6 +235,45 @@ class ImportListingEndpointTests(TestCase):
         response = self.client.post(
             '/api/admin/properties/import/',
             {'url': 'https://www.kwportugal.pt/pt/Imovel/x'},
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 403)
+
+
+class ImageOrderTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        self.user = User.objects.create_user('imgstaffer', password='x', is_staff=True)
+        self.client.force_login(self.user)
+        self.prop = Property.objects.create(
+            name='Casa', description='desc', address='Rua X', typology='T2', area=100,
+        )
+        self.a = Image.objects.create(property=self.prop, image='property_images/a.jpg')
+        self.b = Image.objects.create(property=self.prop, image='property_images/b.jpg')
+        self.c = Image.objects.create(property=self.prop, image='property_images/c.jpg')
+
+    def test_default_order_is_upload_order(self):
+        ids = [img.id for img in self.prop.images.all()]
+        self.assertEqual(ids, [self.a.id, self.b.id, self.c.id])
+
+    def test_making_the_last_image_the_cover_reorders_the_rest(self):
+        response = self.client.post(
+            f'/api/admin/properties/{self.prop.id}/images/order/',
+            {'image_ids': [self.c.id, self.a.id, self.b.id]},
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+        returned_ids = [row['id'] for row in response.json()]
+        self.assertEqual(returned_ids, [self.c.id, self.a.id, self.b.id])
+        ids = [img.id for img in self.prop.images.all()]
+        self.assertEqual(ids, [self.c.id, self.a.id, self.b.id])
+
+    def test_order_endpoint_requires_staff(self):
+        self.client.logout()
+        response = self.client.post(
+            f'/api/admin/properties/{self.prop.id}/images/order/',
+            {'image_ids': [self.a.id]},
             content_type='application/json',
         )
         self.assertEqual(response.status_code, 403)

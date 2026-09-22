@@ -81,6 +81,7 @@ export const adminApi = {
 
   importListing: (url) => jsonRequest("/admin/properties/import/", "POST", { url }),
   importImages: (propertyId, urls) => jsonRequest(`/admin/properties/${propertyId}/images/import/`, "POST", { urls }),
+  reorderImages: (propertyId, imageIds) => jsonRequest(`/admin/properties/${propertyId}/images/order/`, "POST", { image_ids: imageIds }),
 
   listLeads: () => request("/admin/leads/"),
   deleteLead: (id) => request(`/admin/leads/${id}/`, { method: "DELETE" }),

@@ -78,22 +78,52 @@ export default function PropertyForm() {
 
   // Runs pending photos through in order, batching consecutive same-kind
   // items (dragged files upload in parallel; imported URLs go in one bulk
-  // request) so the first photo saved is still the first one Magda added,
-  // whether she dragged it in or it came from an import.
+  // request), then explicitly re-orders the saved images to match the
+  // pending list's order — the order Magda actually chose (e.g. via "Tornar
+  // capa") — since concurrent uploads can otherwise land in the database in
+  // whatever order the server happened to finish them.
   async function persistPendingImages(propertyId, list) {
+    const createdByIndex = new Array(list.length);
     let i = 0;
     while (i < list.length) {
       const remote = Boolean(list[i].remote);
+      const runStart = i;
       const run = [];
       while (i < list.length && Boolean(list[i].remote) === remote) {
         run.push(list[i]);
         i += 1;
       }
       if (remote) {
-        await adminApi.importImages(propertyId, run.map((p) => p.url)).catch(() => {});
+        const res = await adminApi.importImages(propertyId, run.map((p) => p.url)).catch(() => null);
+        (res?.images || []).forEach((image, idx) => {
+          if (image) createdByIndex[runStart + idx] = image;
+        });
       } else {
-        await Promise.allSettled(run.map((p) => adminApi.uploadImage(propertyId, p.file)));
+        const settled = await Promise.allSettled(run.map((p) => adminApi.uploadImage(propertyId, p.file)));
+        settled.forEach((result, idx) => {
+          if (result.status === "fulfilled") createdByIndex[runStart + idx] = result.value;
+        });
       }
+    }
+    const orderedIds = createdByIndex.filter(Boolean).map((image) => image.id);
+    if (orderedIds.length > 1) {
+      await adminApi.reorderImages(propertyId, orderedIds).catch(() => {});
+    }
+  }
+
+  // Moves a photo to the front — of the saved list (persists right away) or
+  // of the queued list (just reorders local state; the save step above then
+  // carries that order over once the property exists).
+  async function makeCover(photoId) {
+    if (isEditing) {
+      const orderedIds = [photoId, ...images.filter((img) => img.id !== photoId).map((img) => img.id)];
+      const updated = await adminApi.reorderImages(id, orderedIds);
+      setImages(updated);
+    } else {
+      setPending((list) => {
+        const chosen = list.find((p) => p.id === photoId);
+        return chosen ? [chosen, ...list.filter((p) => p.id !== photoId)] : list;
+      });
     }
   }
 
@@ -130,9 +160,10 @@ export default function PropertyForm() {
         setImportNote("Dados importados. Esta página não tinha fotos.");
       } else if (isEditing) {
         const res = await adminApi.importImages(id, urls);
-        setImages((imgs) => [...imgs, ...res.images]);
+        const ok = res.images.filter(Boolean);
+        setImages((imgs) => [...imgs, ...ok]);
         setImportNote(
-          res.failed ? `Dados e ${res.images.length} fotos importados (${res.failed} falharam).` : `Dados e ${res.images.length} fotos importados.`
+          res.failed ? `Dados e ${ok.length} fotos importados (${res.failed} falharam).` : `Dados e ${ok.length} fotos importados.`
         );
       } else {
         setPending((list) => [
@@ -347,15 +378,23 @@ export default function PropertyForm() {
               {photos.map((img, i) => (
                 <div key={img.id} className="relative group aspect-square overflow-hidden bg-charcoal">
                   <img src={img.url} alt="" className="h-full w-full object-cover" />
-                  {i === 0 && (
+                  {i === 0 ? (
                     <span className="absolute left-2 top-2 bg-paper px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-ink">
                       Capa
                     </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => makeCover(img.id)}
+                      className="absolute left-2 top-2 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-paper opacity-0 transition-opacity hover:bg-gold hover:text-ink group-hover:opacity-100 focus-visible:opacity-100"
+                    >
+                      Tornar capa
+                    </button>
                   )}
                   <button
                     type="button"
                     onClick={() => (isEditing ? handleDeleteImage(img.id) : removePending(img.id))}
-                    className="absolute inset-0 bg-ink/60 text-paper text-sm opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+                    className="absolute bottom-2 right-2 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-paper opacity-0 transition-opacity hover:bg-rust group-hover:opacity-100 focus-visible:opacity-100"
                   >
                     {isEditing ? "Apagar" : "Remover"}
                   </button>
@@ -380,7 +419,7 @@ export default function PropertyForm() {
           >
             <span className="text-sm text-ink">Arraste fotos para aqui ou clique para escolher</span>
             <span className="text-xs text-stone">
-              A primeira foto é a capa.
+              A primeira foto é a capa; passe o rato sobre outra e escolha "Tornar capa" para mudar.
               {!isEditing && " Ficam guardadas quando carregar em Guardar."}
             </span>
             <input

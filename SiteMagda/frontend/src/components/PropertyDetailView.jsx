@@ -22,6 +22,11 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
   const Block = preview ? Static : Reveal;
   const noPhoto = preview && !property.images?.length;
   const images = property.images?.length ? property.images : [{ url: PLACEHOLDER_IMAGE }];
+  const hasPin = property.latitude != null && property.latitude !== "" && property.longitude != null && property.longitude !== "";
+  // On the real page, no pin means no section — a "no location yet" block
+  // isn't worth a visitor's attention. The backoffice preview keeps it, as a
+  // reminder to Magda that the map is still empty.
+  const showLocation = preview || hasPin;
 
   return (
     <>
@@ -123,19 +128,21 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-20 md:px-8 md:pb-24">
-        <Block>
-          <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
-            {t("detail.location")}
-          </p>
-          <LocationMap
-            address={property.address}
-            latitude={property.latitude}
-            longitude={property.longitude}
-            preview={preview}
-          />
-        </Block>
-      </section>
+      {showLocation && (
+        <section className="mx-auto max-w-7xl px-6 pb-20 md:px-8 md:pb-24">
+          <Block>
+            <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
+              {t("detail.location")}
+            </p>
+            <LocationMap
+              address={property.address}
+              latitude={property.latitude}
+              longitude={property.longitude}
+              preview={preview}
+            />
+          </Block>
+        </section>
+      )}
 
     </>
   );
