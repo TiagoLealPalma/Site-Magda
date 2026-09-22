@@ -37,6 +37,7 @@ export default function PropertyForm() {
 
   const [form, setForm] = useState(EMPTY);
   const [images, setImages] = useState([]);
+  const [loadedPhotoIds, setLoadedPhotoIds] = useState(() => new Set());
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -76,6 +77,14 @@ export default function PropertyForm() {
 
   function setField(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  // Imported photos land in state (and the grid) as soon as the backend has
+  // stored them, but the browser still has to fetch each one — without this,
+  // that fetch shows as an empty dark tile that reads as "the import didn't
+  // bring photos" rather than "these are loading".
+  function markPhotoLoaded(photoId) {
+    setLoadedPhotoIds((s) => (s.has(photoId) ? s : new Set(s).add(photoId)));
   }
 
   // Runs pending photos through in order, batching consecutive same-kind
@@ -407,7 +416,18 @@ export default function PropertyForm() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
               {photos.map((img, i) => (
                 <div key={img.id} className="relative group aspect-square overflow-hidden bg-charcoal">
-                  <img src={img.url} alt="" className="h-full w-full object-cover" />
+                  {!loadedPhotoIds.has(img.id) && (
+                    <div className="absolute inset-0 animate-pulse bg-ink/15" />
+                  )}
+                  <img
+                    src={img.url}
+                    alt=""
+                    onLoad={() => markPhotoLoaded(img.id)}
+                    onError={() => markPhotoLoaded(img.id)}
+                    className={`h-full w-full object-cover transition-opacity duration-300 ${
+                      loadedPhotoIds.has(img.id) ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
                   {i === 0 ? (
                     <span className="absolute left-2 top-2 bg-paper px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-ink">
                       Capa
