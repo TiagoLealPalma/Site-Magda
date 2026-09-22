@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLang, localizedProperty } from "../i18n";
 import { propertyParam } from "../seo/slug";
-import { coverImage, formatPrice } from "../utils/format";
+import { coverImage, formatArea, formatPrice } from "../utils/format";
 import StatusBadge from "./StatusBadge";
 
 export default function PropertyCard({ property: raw, featured = false, fillHeight = false }) {
@@ -39,7 +39,7 @@ export default function PropertyCard({ property: raw, featured = false, fillHeig
         <div className="mt-2 flex items-center justify-between">
           <p className="font-mono text-sm text-gold-soft">{formatPrice(property.price, lang)}</p>
           <p className="font-mono text-xs text-paper/70">
-            {property.bedrooms ? `T${property.bedrooms}` : property.typology} · {property.area} m²
+            {property.bedrooms ? `T${property.bedrooms}` : property.typology} · {formatArea(property.area)} m²
           </p>
         </div>
       </div>

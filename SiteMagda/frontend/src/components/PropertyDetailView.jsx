@@ -5,7 +5,7 @@ import TickRule from "./TickRule";
 import LeadForm from "./LeadForm";
 import StatusBadge from "./StatusBadge";
 import LocationMap from "./LocationMap";
-import { formatPrice, PLACEHOLDER_IMAGE } from "../utils/format";
+import { formatArea, formatPrice, PLACEHOLDER_IMAGE } from "../utils/format";
 import { useLang } from "../i18n";
 
 // Reveal-on-scroll makes no sense in a scaled, inert preview (nothing ever
@@ -27,6 +27,9 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
   // isn't worth a visitor's attention. The backoffice preview keeps it, as a
   // reminder to Magda that the map is still empty.
   const showLocation = preview || hasPin;
+  // Descriptions stay Portuguese unless someone filled in an English one; the
+  // "in Portuguese" note only makes sense while actually showing the fallback.
+  const descriptionIsPortugueseFallback = lang === "en" && !property.description_en;
 
   return (
     <>
@@ -100,8 +103,11 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
         <Block className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
           <Spec label={t("spec.type")} value={property.typology || "—"} />
           <Spec label={t("spec.bedrooms")} value={property.bedrooms ?? "—"} />
-          <Spec label={t("spec.grossArea")} value={property.area ? `${property.area} m²` : "—"} />
-          <Spec label={t("spec.usableArea")} value={property.liquid_area ? `${property.liquid_area} m²` : "—"} />
+          <Spec label={t("spec.grossArea")} value={formatArea(property.area) ? `${formatArea(property.area)} m²` : "—"} />
+          <Spec
+            label={t("spec.usableArea")}
+            value={formatArea(property.liquid_area) ? `${formatArea(property.liquid_area)} m²` : "—"}
+          />
           <Spec label={t("spec.builtIn")} value={property.construction_date || "—"} />
           <Spec label={t("spec.address")} value={property.address} />
         </Block>
@@ -110,11 +116,11 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
           <Block className="md:col-span-2">
             <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
               {t("detail.description")}
-              {t("detail.descriptionNote") && (
+              {descriptionIsPortugueseFallback && (
                 <span className="ml-3 normal-case tracking-normal text-stone">· {t("detail.descriptionNote")}</span>
               )}
             </p>
-            <p lang="pt" className="text-stone leading-relaxed whitespace-pre-line">
+            <p lang={descriptionIsPortugueseFallback ? "pt" : lang} className="text-stone leading-relaxed whitespace-pre-line">
               {property.description || (preview ? "A descrição aparece aqui." : "")}
             </p>
           </Block>

@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { getProperties } from "../../api/client";
 import { useWhatsappHref } from "../../components/WhatsAppButton";
 import { useLang, useT } from "../../i18n";
-import { formatPrice } from "../../utils/format";
+import { formatArea, formatPrice } from "../../utils/format";
 import Reveal from "../../components/Reveal";
 
 const PRICE_STEPS = ["100000", "200000", "300000", "500000", "800000"];
@@ -111,8 +111,8 @@ export function useProperties() {
 
 export function specRows(p, t) {
   const rows = [{ label: t("spec.type"), value: p.typology || (p.bedrooms ? `T${p.bedrooms}` : "—") }];
-  if (p.area) rows.push({ label: t("spec.area"), value: `${p.area} m²` });
-  if (p.liquid_area) rows.push({ label: t("spec.usableArea"), value: `${p.liquid_area} m²` });
+  if (formatArea(p.area)) rows.push({ label: t("spec.area"), value: `${formatArea(p.area)} m²` });
+  if (formatArea(p.liquid_area)) rows.push({ label: t("spec.usableArea"), value: `${formatArea(p.liquid_area)} m²` });
   if (p.bathrooms) rows.push({ label: t("spec.wc"), value: String(p.bathrooms) });
   if (p.construction_date) rows.push({ label: t("spec.year"), value: String(p.construction_date) });
   return rows;

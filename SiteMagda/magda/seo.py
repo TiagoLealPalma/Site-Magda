@@ -35,7 +35,7 @@ DEFAULT_OG_IMAGE = '/static/landingpage/og-image.jpg'
 AGENT_PHOTO = '/static/landingpage/FotoMagda.png'
 PHONE = '+351913503048'
 SOCIALS = [
-    'https://www.instagram.com/magdalealconsultora/',
+    'https://www.instagram.com/magdalealteam/',
     'https://www.facebook.com/magdalealconsultora',
     'https://www.linkedin.com/in/magdaleal/',
 ]
@@ -156,6 +156,14 @@ def fmt_price(value, lang):
     return f'{n:,}'.replace(',', '.') + ' €'
 
 
+def fmt_area(value):
+    """A decimal area ('436.0', '87.5') without a pointless trailing .0."""
+    if value is None:
+        return ''
+    value = float(value)
+    return str(int(value)) if value.is_integer() else f'{value:.1f}'
+
+
 def clip(text, limit):
     text = re.sub(r'\s+', ' ', (text or '')).strip()
     if len(text) <= limit:
@@ -177,15 +185,16 @@ def property_copy(prop, lang):
     typology = (prop.typology or '').strip() or t['listing']
     address = prop.address
     title = clip(t['property_title'].format(name=name, typology=typology, address=address), 68)
+    source_text = prop.description_en if (lang == EN and prop.description_en) else (prop.description if lang == PT else '')
     excerpt = ''
-    if lang == PT and prop.description:
-        sentence = first_sentence(prop.description, 70)
+    if source_text:
+        sentence = first_sentence(source_text, 70)
         excerpt = sentence + ('' if sentence.endswith(('.', '!', '?', '…')) else '.') + ' '
     price = fmt_price(prop.price, lang) or '—'
 
     def describe(extra):
         return t['property_desc'].format(
-            typology=typology, area=prop.area, address=address, price=price, excerpt=extra,
+            typology=typology, area=fmt_area(prop.area), address=address, price=price, excerpt=extra,
         )
 
     # Keep the brand tail and drop the description excerpt before ever
@@ -230,15 +239,17 @@ def breadcrumbs(base, lang, trail):
 def listing_node(base, prop, lang):
     name, _, desc = property_copy(prop, lang)
     url = f'{base}{property_path(prop, lang)}'
+    translated = lang == EN and prop.description_en
+    body_text = prop.description_en if translated else prop.description
     node = {
         '@type': 'RealEstateListing',
         '@id': f'{url}#listing',
         'name': name,
         'url': url,
-        'description': clip(prop.description, 300) or desc,
-        'inLanguage': HREFLANG[PT],
+        'description': clip(body_text, 300) or desc,
+        'inLanguage': HREFLANG[EN] if translated else HREFLANG[PT],
         'address': {'@type': 'PostalAddress', 'streetAddress': prop.address, 'addressCountry': 'PT'},
-        'floorSize': {'@type': 'QuantitativeValue', 'value': prop.area, 'unitCode': 'MTK'},
+        'floorSize': {'@type': 'QuantitativeValue', 'value': float(prop.area), 'unitCode': 'MTK'},
         'provider': {'@id': f'{base}/#agent'},
     }
     if prop.latitude is not None and prop.longitude is not None:
@@ -401,9 +412,9 @@ def render_body(path, request):
     elif kind == 'property':
         name, _, _ = property_copy(prop, lang)
         labels = t['labels']
-        rows = [(labels['type'], prop.typology), (labels['area'], f'{prop.area} m²'), (labels['address'], prop.address)]
+        rows = [(labels['type'], prop.typology), (labels['area'], f'{fmt_area(prop.area)} m²'), (labels['address'], prop.address)]
         if prop.liquid_area:
-            rows.append((labels['usable'], f'{prop.liquid_area} m²'))
+            rows.append((labels['usable'], f'{fmt_area(prop.liquid_area)} m²'))
         if prop.bedrooms is not None:
             rows.append((labels['beds'], prop.bedrooms))
         if prop.bathrooms is not None:
@@ -413,9 +424,12 @@ def render_body(path, request):
         dl = ''.join(f'<dt>{escape(str(k))}</dt><dd>{escape(str(v))}</dd>' for k, v in rows)
         img = prop.images.first()
         picture = f'<img src="{escape(abs_media(base, img.image.url), quote=True)}" alt="{escape(name, quote=True)}">' if img else ''
+        translated = lang == EN and prop.description_en
+        description_text = prop.description_en if translated else prop.description
+        description_lang = 'en' if translated else 'pt'
         body = (
             f'<h1>{escape(name)}</h1><p>{escape(fmt_price(prop.price, lang))}</p>{picture}'
-            f'<dl>{dl}</dl><p lang="pt">{escape(prop.description)}</p>'
+            f'<dl>{dl}</dl><p lang="{description_lang}">{escape(description_text)}</p>'
         )
     return f'{head}<main>{body}</main>'
 

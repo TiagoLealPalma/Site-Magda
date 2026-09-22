@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -15,11 +16,12 @@ class Property(models.Model):
     ]
 
     name = models.CharField(max_length=255)
-    # Optional English name: the public site falls back to the Portuguese
-    # one when empty. Descriptions stay in Portuguese on purpose.
+    # Optional English name/description: the public site falls back to the
+    # Portuguese ones when these are empty.
     name_en = models.CharField(max_length=255, blank=True, default='')
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     description = models.TextField()
+    description_en = models.TextField(blank=True, default='')
     address = models.CharField(max_length=255)
     # Optional pin for the property-page map; left blank, no map shows.
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
@@ -27,8 +29,13 @@ class Property(models.Model):
     bedrooms = models.IntegerField(null=True, blank=True)
     bathrooms = models.IntegerField(null=True, blank=True)
     typology = models.TextField()
-    area = models.IntegerField()
-    liquid_area = models.IntegerField(null=True, blank=True)
+    # Decimal rather than integer: a real listing's m² is often fractional,
+    # and the API sanitizes (rounds) any input with more precision than this
+    # rather than rejecting it outright — see PropertyWriteSerializer.
+    area = models.DecimalField(max_digits=8, decimal_places=1, validators=[MinValueValidator(0)])
+    liquid_area = models.DecimalField(
+        max_digits=8, decimal_places=1, null=True, blank=True, validators=[MinValueValidator(0)]
+    )
     construction_date = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_AVAILABLE)
 

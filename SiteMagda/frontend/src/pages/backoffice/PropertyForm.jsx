@@ -11,6 +11,7 @@ const EMPTY = {
   name_en: "",
   price: "",
   description: "",
+  description_en: "",
   address: "",
   latitude: "",
   longitude: "",
@@ -56,6 +57,7 @@ export default function PropertyForm() {
         name_en: data.name_en ?? "",
         price: data.price ?? "",
         description: data.description ?? "",
+        description_en: data.description_en ?? "",
         address: data.address ?? "",
         latitude: data.latitude ?? "",
         longitude: data.longitude ?? "",
@@ -302,7 +304,7 @@ export default function PropertyForm() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Field label="Nome" value={form.name} onChange={(v) => setField("name", v)} required />
           <Field label="Nome (inglês, opcional)" value={form.name_en} onChange={(v) => setField("name_en", v)} />
-          <Field label="Preço (€)" type="number" value={form.price} onChange={(v) => setField("price", v)} />
+          <Field label="Preço (€)" type="number" step="any" min="0" value={form.price} onChange={(v) => setField("price", v)} />
           <div>
             <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
               Estado
@@ -351,8 +353,8 @@ export default function PropertyForm() {
           <Field label="Tipologia" value={form.typology} onChange={(v) => setField("typology", v)} required />
           <Field label="Quartos" type="number" value={form.bedrooms} onChange={(v) => setField("bedrooms", v)} />
           <Field label="Casas de banho" type="number" value={form.bathrooms} onChange={(v) => setField("bathrooms", v)} />
-          <Field label="Área bruta (m²)" type="number" value={form.area} onChange={(v) => setField("area", v)} required />
-          <Field label="Área útil (m²)" type="number" value={form.liquid_area} onChange={(v) => setField("liquid_area", v)} />
+          <Field label="Área bruta (m²)" type="number" step="any" min="0" value={form.area} onChange={(v) => setField("area", v)} required />
+          <Field label="Área útil (m²)" type="number" step="any" min="0" value={form.liquid_area} onChange={(v) => setField("liquid_area", v)} />
           <Field label="Construído em" type="number" value={form.construction_date} onChange={(v) => setField("construction_date", v)} />
         </div>
 
@@ -365,6 +367,19 @@ export default function PropertyForm() {
             rows={5}
             value={form.description}
             onChange={(e) => setField("description", e.target.value)}
+            className="w-full bg-white border border-ink/15 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+
+        <div>
+          <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
+            Descrição (inglês, opcional)
+          </label>
+          <textarea
+            rows={5}
+            value={form.description_en}
+            onChange={(e) => setField("description_en", e.target.value)}
+            placeholder="Se ficar vazio, o site em inglês mostra a descrição em português."
             className="w-full bg-white border border-ink/15 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors"
           />
         </div>
@@ -491,7 +506,7 @@ export default function PropertyForm() {
   );
 }
 
-function Field({ label, value, onChange, type = "text", required = false, className = "", step, placeholder, hint }) {
+function Field({ label, value, onChange, type = "text", required = false, className = "", step, min, placeholder, hint }) {
   return (
     <div className={className}>
       <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
@@ -500,6 +515,7 @@ function Field({ label, value, onChange, type = "text", required = false, classN
       <input
         type={type}
         step={step}
+        min={min}
         placeholder={placeholder}
         required={required}
         value={value}

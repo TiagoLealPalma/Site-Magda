@@ -1,5 +1,6 @@
 import json
 import os
+from decimal import Decimal
 
 from django.test import TestCase, override_settings
 
@@ -332,3 +333,84 @@ class ImageCleanupAndCompressionTests(TestCase):
         path = image.image.path
         self.prop.delete()
         self.assertFalse(os.path.exists(path))
+
+
+class AreaAndPriceSanitizingTests(TestCase):
+    """The 'sanitize' ask: typing a non-integer number, or one with more
+    decimal places than the column keeps, must round rather than 400."""
+
+    def test_write_serializer_rounds_excess_decimal_places_instead_of_rejecting(self):
+        from magda.serializers import PropertyWriteSerializer
+
+        data = {
+            'name': 'Casa', 'description': 'd', 'address': 'Rua X', 'typology': 'T2',
+            'area': 87.5678, 'liquid_area': 75.25, 'price': 250000.999,
+        }
+        serializer = PropertyWriteSerializer(data=data)
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+        self.assertEqual(serializer.validated_data['area'], Decimal('87.6'))
+        self.assertEqual(serializer.validated_data['liquid_area'], Decimal('75.3'))
+        self.assertEqual(serializer.validated_data['price'], Decimal('250001.00'))
+
+    def test_area_endpoint_accepts_and_rounds_a_decimal_value(self):
+        from django.contrib.auth import get_user_model
+
+        User = get_user_model()
+        self.client.force_login(User.objects.create_user('areastaffer', password='x', is_staff=True))
+        response = self.client.post(
+            '/api/admin/properties/',
+            {
+                'name': 'Casa Decimal', 'description': 'd', 'address': 'Rua X', 'typology': 'T2',
+                'area': '87.567', 'liquid_area': '75.25', 'price': '250000.999',
+            },
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 201, response.content)
+        data = response.json()
+        self.assertEqual(data['area'], '87.6')
+        self.assertEqual(data['liquid_area'], '75.3')
+        self.assertEqual(data['price'], '250001.00')
+
+    def test_garbage_area_still_reports_a_clear_error(self):
+        from magda.serializers import PropertyWriteSerializer
+
+        serializer = PropertyWriteSerializer(
+            data={'name': 'Casa', 'description': 'd', 'address': 'Rua X', 'typology': 'T2', 'area': 'abc'}
+        )
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('area', serializer.errors)
+
+    def test_negative_area_is_rejected(self):
+        from magda.serializers import PropertyWriteSerializer
+
+        serializer = PropertyWriteSerializer(
+            data={'name': 'Casa', 'description': 'd', 'address': 'Rua X', 'typology': 'T2', 'area': -10}
+        )
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('area', serializer.errors)
+
+
+class EnglishDescriptionTests(TestCase):
+    def setUp(self):
+        self.prop = Property.objects.create(
+            name='Casa', name_en='House', description='Descrição em português.',
+            description_en='English description.', address='Rua X', typology='T2', area=100,
+        )
+        self.prop_no_en = Property.objects.create(
+            name='Outra Casa', description='Só em português.',
+            address='Rua Y', typology='T1', area=50,
+        )
+
+    def test_json_ld_uses_the_english_description_when_present(self):
+        node = seo.listing_node('https://example.test', self.prop, seo.EN)
+        self.assertEqual(node['description'], 'English description.')
+        self.assertEqual(node['inLanguage'], 'en')
+
+    def test_json_ld_falls_back_to_portuguese_when_no_translation(self):
+        node = seo.listing_node('https://example.test', self.prop_no_en, seo.EN)
+        self.assertEqual(node['description'], 'Só em português.')
+        self.assertEqual(node['inLanguage'], 'pt-PT')
+
+    def test_meta_description_draws_from_the_english_text_when_present(self):
+        _, _, desc = seo.property_copy(self.prop, seo.EN)
+        self.assertIn('English description', desc)

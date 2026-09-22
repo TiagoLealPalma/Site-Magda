@@ -104,9 +104,13 @@ export function useT() {
   return useLang().t;
 }
 
-// Only the listing name has an English version (optional, entered in the
-// backoffice). Descriptions stay in Portuguese in both languages on purpose.
+// Name and description each have an optional English version, entered in
+// the backoffice; either one falls back to its Portuguese text when empty.
 export function localizedProperty(property, lang) {
   if (lang !== "en") return property;
-  return { ...property, name: property.name_en || property.name };
+  return {
+    ...property,
+    name: property.name_en || property.name,
+    description: property.description_en || property.description,
+  };
 }
