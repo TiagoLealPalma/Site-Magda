@@ -141,23 +141,34 @@ export default function PropertyForm() {
     setImportNote("");
     try {
       const draft = await adminApi.importListing(url);
-      setForm((f) => ({
-        ...f,
-        name: draft.name || f.name,
-        name_en: draft.name_en || f.name_en,
-        description: draft.description || f.description,
-        description_en: draft.description_en || f.description_en,
-        address: draft.address || f.address,
-        price: draft.price ?? f.price,
-        typology: draft.typology || f.typology,
-        bedrooms: draft.bedrooms ?? f.bedrooms,
-        bathrooms: draft.bathrooms ?? f.bathrooms,
-        area: draft.area ?? f.area,
-        liquid_area: draft.liquid_area ?? f.liquid_area,
-        construction_date: draft.construction_date ?? f.construction_date,
-        latitude: draft.latitude ?? f.latitude,
-        longitude: draft.longitude ?? f.longitude,
-      }));
+
+      // A fresh import replaces whatever was there before — merging with the
+      // previous form/photos is what caused fields to stick around and
+      // photos to double up when a link was imported more than once.
+      setForm({
+        ...EMPTY,
+        name: draft.name || "",
+        name_en: draft.name_en || "",
+        description: draft.description || "",
+        description_en: draft.description_en || "",
+        address: draft.address || "",
+        price: draft.price ?? "",
+        typology: draft.typology || "",
+        bedrooms: draft.bedrooms ?? "",
+        bathrooms: draft.bathrooms ?? "",
+        area: draft.area ?? "",
+        liquid_area: draft.liquid_area ?? "",
+        construction_date: draft.construction_date ?? "",
+        latitude: draft.latitude ?? "",
+        longitude: draft.longitude ?? "",
+      });
+
+      if (isEditing) {
+        await Promise.allSettled(images.map((img) => adminApi.deleteImage(img.id)));
+        setImages([]);
+      } else {
+        setPending([]);
+      }
 
       const urls = draft.images || [];
       if (!urls.length) {
@@ -165,15 +176,12 @@ export default function PropertyForm() {
       } else if (isEditing) {
         const res = await adminApi.importImages(id, urls);
         const ok = res.images.filter(Boolean);
-        setImages((imgs) => [...imgs, ...ok]);
+        setImages(ok);
         setImportNote(
           res.failed ? `Dados e ${ok.length} fotos importados (${res.failed} falharam).` : `Dados e ${ok.length} fotos importados.`
         );
       } else {
-        setPending((list) => [
-          ...list,
-          ...urls.map((u, i) => ({ id: `remote-${Date.now()}-${i}`, url: u, remote: true })),
-        ]);
+        setPending(urls.map((u, i) => ({ id: `remote-${Date.now()}-${i}`, url: u, remote: true })));
         setImportNote(`Dados e ${urls.length} fotos importados. As fotos ficam guardadas quando carregar em Guardar.`);
       }
     } catch (err) {
