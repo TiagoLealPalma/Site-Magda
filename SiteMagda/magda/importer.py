@@ -60,6 +60,22 @@ def _require_kw_url(url):
         raise ListingImportError('Este importador só suporta links de kwportugal.pt, por agora.')
 
 
+# The site's own language switcher changes nothing but the URL's first path
+# segment (.../pt/Imovel/... <-> .../en/Imovel/...) and re-renders the same
+# listing with genuinely translated copy, not machine-translated — a real
+# English name and description live at that URL, not just a relabelled UI.
+_LANGUAGES = ('pt', 'en')
+
+
+def _url_for_language(url, lang):
+    parsed = urlparse(url)
+    parts = parsed.path.split('/', 2)
+    if len(parts) < 3 or parts[1] not in _LANGUAGES:
+        return None
+    parts[1] = lang
+    return parsed._replace(path='/'.join(parts)).geturl()
+
+
 _PUSH_RE = re.compile(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', re.S)
 _LDJSON_RE = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
@@ -138,8 +154,9 @@ def _num(value):
     return value if isinstance(value, (int, float)) and value else None
 
 
-def build_draft(url):
-    _require_kw_url(url)
+def _fetch_property(url):
+    """-> (property dict, raw html). Raises ListingImportError if the page
+    doesn't carry a recognisable listing record."""
     html, _ = _fetch(url, MAX_HTML_BYTES)
     html = html.decode('utf-8', errors='replace')
 
@@ -154,14 +171,35 @@ def build_draft(url):
         data = json.loads(prop_json)
     except ValueError as exc:
         raise ListingImportError('Os dados do imóvel vieram num formato inesperado.') from exc
+    return data, html
+
+
+def build_draft(url):
+    _require_kw_url(url)
+    # Whatever language URL was pasted, the required fields always come from
+    # the Portuguese page specifically — the model's name/description are PT.
+    pt_url = _url_for_language(url, 'pt') or url
+    data, html = _fetch_property(pt_url)
 
     images = sorted(data.get('images') or [], key=lambda im: im.get('order') or 0)
     image_urls = [im['url'] for im in images if im.get('url')]
 
+    name_en, description_en = '', ''
+    en_url = _url_for_language(url, 'en')
+    if en_url and en_url != pt_url:
+        try:
+            en_data, en_html = _fetch_property(en_url)
+            name_en = (en_data.get('designation') or '').strip()
+            description_en = _extract_description(en_html)
+        except ListingImportError:
+            pass  # no English pair, or it didn't load — the PT draft still stands
+
     return {
         'source_url': url,
         'name': (data.get('designation') or '').strip(),
+        'name_en': name_en,
         'description': _extract_description(html),
+        'description_en': description_en,
         'address': _address(data),
         'price': _num(data.get('price')),
         'typology': data.get('typology') or '',

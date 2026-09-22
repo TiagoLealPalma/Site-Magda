@@ -154,6 +154,57 @@ class ListingImporterTests(TestCase):
         with self.assertRaises(importer.ListingImportError):
             importer._require_kw_url('https://example.com/imovel/1')
 
+    def _listing_html(self, designation, description):
+        import json as json_module
+
+        payload = {'property': {'idProperty': 1, 'designation': designation}}
+        escaped = json_module.dumps(payload, ensure_ascii=False, separators=(',', ':'))[1:-1].replace('"', '\\"')
+        chunk = f'self.__next_f.push([1,"{escaped}"])'
+        ldjson = json_module.dumps(
+            {'@context': 'https://schema.org', '@type': 'RealEstateListing', 'description': description},
+            ensure_ascii=False, separators=(',', ':'),
+        )
+        return f'<html><body><script>{chunk}</script><script type="application/ld+json">{ldjson}</script></body></html>'
+
+    def test_build_draft_fetches_the_english_pair_for_name_and_description(self):
+        pt_html = self._listing_html('Casa em Português', 'Descrição em português.')
+        en_html = self._listing_html('House in English', 'Description in English.')
+        original_fetch = importer._fetch
+
+        def fake_fetch(url, max_bytes):
+            html = en_html if '/en/' in url else pt_html
+            return html.encode('utf-8'), 'text/html'
+
+        importer._fetch = fake_fetch
+        try:
+            draft = importer.build_draft('https://www.kwportugal.pt/pt/Imovel/x')
+        finally:
+            importer._fetch = original_fetch
+
+        self.assertEqual(draft['name'], 'Casa em Português')
+        self.assertEqual(draft['description'], 'Descrição em português.')
+        self.assertEqual(draft['name_en'], 'House in English')
+        self.assertEqual(draft['description_en'], 'Description in English.')
+
+    def test_build_draft_still_works_when_the_english_pair_is_missing(self):
+        pt_html = self._listing_html('Casa em Português', 'Descrição em português.')
+        original_fetch = importer._fetch
+
+        def fake_fetch(url, max_bytes):
+            if '/en/' in url:
+                raise importer.ListingImportError('não encontrado')
+            return pt_html.encode('utf-8'), 'text/html'
+
+        importer._fetch = fake_fetch
+        try:
+            draft = importer.build_draft('https://www.kwportugal.pt/pt/Imovel/x')
+        finally:
+            importer._fetch = original_fetch
+
+        self.assertEqual(draft['name'], 'Casa em Português')
+        self.assertEqual(draft['name_en'], '')
+        self.assertEqual(draft['description_en'], '')
+
     def test_missing_property_chunk_is_reported_not_guessed(self):
         self.assertIsNone(importer._extract_property_chunk('<html><body>nada aqui</body></html>'))
 

@@ -144,7 +144,9 @@ export default function PropertyForm() {
       setForm((f) => ({
         ...f,
         name: draft.name || f.name,
+        name_en: draft.name_en || f.name_en,
         description: draft.description || f.description,
+        description_en: draft.description_en || f.description_en,
         address: draft.address || f.address,
         price: draft.price ?? f.price,
         typology: draft.typology || f.typology,
@@ -183,6 +185,11 @@ export default function PropertyForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!form.name.trim() || !form.description.trim()) {
+      setPreviewLang("pt");
+      setError("Preencha o nome e a descrição em português antes de guardar.");
+      return;
+    }
     setSaving(true);
     setError("");
     const payload = {
@@ -267,9 +274,13 @@ export default function PropertyForm() {
   return (
     <div className="max-w-6xl 2xl:max-w-none">
       <p className="font-mono text-xs tracking-[0.3em] text-gold uppercase mb-2">Imóveis</p>
-      <h1 className="font-display text-3xl text-ink mb-10">
-        {isEditing ? "Editar imóvel." : "Novo imóvel."}
-      </h1>
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+        <h1 className="font-display text-3xl text-ink">{isEditing ? "Editar imóvel." : "Novo imóvel."}</h1>
+        <div>
+          <LangToggle lang={previewLang} onChange={setPreviewLang} />
+          <p className="mt-1.5 text-xs text-stone">Nome, descrição e pré-visualização mudam com o idioma.</p>
+        </div>
+      </div>
 
       <div className="mb-10 max-w-3xl border border-ink/15 bg-paper-dim/50 p-5">
         <label htmlFor="import-url" className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
@@ -293,7 +304,9 @@ export default function PropertyForm() {
             {importing ? "A importar…" : "Importar"}
           </button>
         </div>
-        <p className="mt-2 text-xs text-stone">Preenche o nome, a descrição, a morada, o preço, a tipologia, as áreas e as fotos.</p>
+            <p className="mt-2 text-xs text-stone">
+          Preenche o nome e a descrição em português e (quando disponível) em inglês, a morada, o preço, a tipologia, as áreas e as fotos.
+        </p>
         {importError && <p className="mt-2 text-sm text-red-600">{importError}</p>}
         {importNote && <p className="mt-2 text-sm text-gold-deep">{importNote}</p>}
       </div>
@@ -302,8 +315,14 @@ export default function PropertyForm() {
       <div className="min-w-0 max-w-3xl">
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Field label="Nome" value={form.name} onChange={(v) => setField("name", v)} required />
-          <Field label="Nome (inglês, opcional)" value={form.name_en} onChange={(v) => setField("name_en", v)} />
+          <Field
+            label={previewLang === "en" ? "Nome (inglês, opcional)" : "Nome"}
+            value={previewLang === "en" ? form.name_en : form.name}
+            onChange={(v) => setField(previewLang === "en" ? "name_en" : "name", v)}
+            required={previewLang === "pt"}
+            hint={previewLang === "en" ? "Se ficar vazio, o site em inglês mostra o nome em português." : undefined}
+            className="sm:col-span-2"
+          />
           <Field label="Preço (€)" type="number" step="any" min="0" value={form.price} onChange={(v) => setField("price", v)} />
           <div>
             <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
@@ -360,26 +379,14 @@ export default function PropertyForm() {
 
         <div>
           <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
-            Descrição
+            {previewLang === "en" ? "Descrição (inglês, opcional)" : "Descrição"}
           </label>
           <textarea
-            required
+            required={previewLang === "pt"}
             rows={5}
-            value={form.description}
-            onChange={(e) => setField("description", e.target.value)}
-            className="w-full bg-white border border-ink/15 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
-            Descrição (inglês, opcional)
-          </label>
-          <textarea
-            rows={5}
-            value={form.description_en}
-            onChange={(e) => setField("description_en", e.target.value)}
-            placeholder="Se ficar vazio, o site em inglês mostra a descrição em português."
+            value={previewLang === "en" ? form.description_en : form.description}
+            onChange={(e) => setField(previewLang === "en" ? "description_en" : "description", e.target.value)}
+            placeholder={previewLang === "en" ? "Se ficar vazio, o site em inglês mostra a descrição em português." : undefined}
             className="w-full bg-white border border-ink/15 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors"
           />
         </div>
@@ -467,21 +474,7 @@ export default function PropertyForm() {
       <aside className="max-w-[24rem] 2xl:sticky 2xl:top-8 2xl:self-start" aria-label="Pré-visualização do cartão">
         <div className="mb-4 flex items-center justify-between">
           <p className="font-mono text-[10px] uppercase tracking-widest text-stone">Pré-visualização</p>
-          <div role="group" aria-label="Idioma da pré-visualização" className="flex border border-ink/15">
-            {["pt", "en"].map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setPreviewLang(code)}
-                aria-pressed={previewLang === code}
-                className={`px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
-                  previewLang === code ? "bg-ink text-paper" : "text-stone hover:text-ink"
-                }`}
-              >
-                {code}
-              </button>
-            ))}
-          </div>
+          <LangToggle lang={previewLang} onChange={setPreviewLang} />
         </div>
         <LangOverride lang={previewLang}>
           <ListingCard property={preview} preview />
@@ -502,6 +495,30 @@ export default function PropertyForm() {
       </aside>
       </div>
       </div>
+    </div>
+  );
+}
+
+// One PT/EN switch shared by the Nome/Descrição fields and both live
+// previews: click it once and everything on screen — what you are editing,
+// the card, the page — shows the same language, instead of juggling two
+// text boxes per field.
+function LangToggle({ lang, onChange }) {
+  return (
+    <div role="group" aria-label="Idioma" className="flex border border-ink/15">
+      {["pt", "en"].map((code) => (
+        <button
+          key={code}
+          type="button"
+          onClick={() => onChange(code)}
+          aria-pressed={lang === code}
+          className={`px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+            lang === code ? "bg-ink text-paper" : "text-stone hover:text-ink"
+          }`}
+        >
+          {code}
+        </button>
+      ))}
     </div>
   );
 }
