@@ -31,8 +31,8 @@ function Featured({ property: raw }) {
   return (
     <section className="relative flex min-h-[92svh] items-end overflow-hidden bg-charcoal text-paper">
       <div
-        className="kenburns absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('${coverImage(property)}')` }}
+        className="kenburns absolute inset-0 bg-cover"
+        style={{ backgroundImage: `url('${coverImage(property)}')`, backgroundPosition: "center 80%" }}
         role="img"
         aria-label={property.name}
       />
