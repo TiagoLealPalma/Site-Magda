@@ -79,6 +79,9 @@ export const adminApi = {
   },
   deleteImage: (imageId) => request(`/admin/images/${imageId}/`, { method: "DELETE" }),
 
+  importListing: (url) => jsonRequest("/admin/properties/import/", "POST", { url }),
+  importImages: (propertyId, urls) => jsonRequest(`/admin/properties/${propertyId}/images/import/`, "POST", { urls }),
+
   listLeads: () => request("/admin/leads/"),
   deleteLead: (id) => request(`/admin/leads/${id}/`, { method: "DELETE" }),
 };

@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, DestroyAPIView
 from rest_framework.views import APIView
 
+from django.core.files.base import ContentFile
+
+from . import importer
 from .models import Image, Lead, Property
 from .serializers import ImageSerializer, LeadSerializer, PropertyWriteSerializer
 
@@ -31,6 +34,40 @@ class PropertyAdminViewSet(viewsets.ModelViewSet):
 
         image = Image.objects.create(property=property_obj, image=image_file)
         return Response(ImageSerializer(image, context={'request': request}).data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'], url_path='import')
+    def import_listing(self, request):
+        url = (request.data.get('url') or '').strip()
+        if not url:
+            return Response({'detail': 'Indique um link.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            draft = importer.build_draft(url)
+        except importer.ListingImportError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        return Response(draft)
+
+    @action(detail=True, methods=['post'], url_path='images/import')
+    def import_images(self, request, pk=None):
+        property_obj = self.get_object()
+        urls = request.data.get('urls')
+        if not isinstance(urls, list) or not urls:
+            return Response({'detail': 'Lista de imagens em falta.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        created, failed = [], 0
+        for url in urls[:importer.MAX_IMPORTED_IMAGES]:
+            try:
+                content = importer.download_image(url)
+            except importer.ListingImportError:
+                failed += 1
+                continue
+            image = Image(property=property_obj)
+            image.image.save(importer.image_filename(url), ContentFile(content), save=True)
+            created.append(image)
+
+        return Response(
+            {'images': ImageSerializer(created, many=True, context={'request': request}).data, 'failed': failed},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class ImageAdminDeleteView(DestroyAPIView):

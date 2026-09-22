@@ -43,6 +43,10 @@ export default function PropertyForm() {
   const [pending, setPending] = useState([]); // photos chosen before the property exists
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef(null);
+  const [importUrl, setImportUrl] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [importError, setImportError] = useState("");
+  const [importNote, setImportNote] = useState("");
 
   useEffect(() => {
     if (!isEditing) return;
@@ -72,6 +76,78 @@ export default function PropertyForm() {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
+  // Runs pending photos through in order, batching consecutive same-kind
+  // items (dragged files upload in parallel; imported URLs go in one bulk
+  // request) so the first photo saved is still the first one Magda added,
+  // whether she dragged it in or it came from an import.
+  async function persistPendingImages(propertyId, list) {
+    let i = 0;
+    while (i < list.length) {
+      const remote = Boolean(list[i].remote);
+      const run = [];
+      while (i < list.length && Boolean(list[i].remote) === remote) {
+        run.push(list[i]);
+        i += 1;
+      }
+      if (remote) {
+        await adminApi.importImages(propertyId, run.map((p) => p.url)).catch(() => {});
+      } else {
+        await Promise.allSettled(run.map((p) => adminApi.uploadImage(propertyId, p.file)));
+      }
+    }
+  }
+
+  // Pre-fills the form (and queues or imports the photos) from a KW Portugal
+  // listing page. Works before or after the property exists; only Guardar
+  // persists the text fields either way, photos follow the same immediate/
+  // queued rule as drag-and-drop.
+  async function handleImport() {
+    const url = importUrl.trim();
+    if (!url) return;
+    setImporting(true);
+    setImportError("");
+    setImportNote("");
+    try {
+      const draft = await adminApi.importListing(url);
+      setForm((f) => ({
+        ...f,
+        name: draft.name || f.name,
+        description: draft.description || f.description,
+        address: draft.address || f.address,
+        price: draft.price ?? f.price,
+        typology: draft.typology || f.typology,
+        bedrooms: draft.bedrooms ?? f.bedrooms,
+        bathrooms: draft.bathrooms ?? f.bathrooms,
+        area: draft.area ?? f.area,
+        liquid_area: draft.liquid_area ?? f.liquid_area,
+        construction_date: draft.construction_date ?? f.construction_date,
+        latitude: draft.latitude ?? f.latitude,
+        longitude: draft.longitude ?? f.longitude,
+      }));
+
+      const urls = draft.images || [];
+      if (!urls.length) {
+        setImportNote("Dados importados. Esta página não tinha fotos.");
+      } else if (isEditing) {
+        const res = await adminApi.importImages(id, urls);
+        setImages((imgs) => [...imgs, ...res.images]);
+        setImportNote(
+          res.failed ? `Dados e ${res.images.length} fotos importados (${res.failed} falharam).` : `Dados e ${res.images.length} fotos importados.`
+        );
+      } else {
+        setPending((list) => [
+          ...list,
+          ...urls.map((u, i) => ({ id: `remote-${Date.now()}-${i}`, url: u, remote: true })),
+        ]);
+        setImportNote(`Dados e ${urls.length} fotos importados. As fotos ficam guardadas quando carregar em Guardar.`);
+      }
+    } catch (err) {
+      setImportError(err.body?.detail || err.message || "Não foi possível importar este link.");
+    } finally {
+      setImporting(false);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
@@ -94,8 +170,8 @@ export default function PropertyForm() {
         navigate("/backoffice/imoveis");
       } else {
         const created = await adminApi.createProperty(payload);
-        await Promise.allSettled(pending.map((p) => adminApi.uploadImage(created.id, p.file)));
-        pending.forEach((p) => URL.revokeObjectURL(p.url));
+        await persistPendingImages(created.id, pending);
+        pending.filter((p) => p.file).forEach((p) => URL.revokeObjectURL(p.url));
         navigate(`/backoffice/imoveis/${created.id}`);
       }
     } catch (err) {
@@ -161,6 +237,33 @@ export default function PropertyForm() {
       <h1 className="font-display text-3xl text-ink mb-10">
         {isEditing ? "Editar imóvel." : "Novo imóvel."}
       </h1>
+
+      <div className="mb-10 max-w-3xl border border-ink/15 bg-paper-dim/50 p-5">
+        <label htmlFor="import-url" className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
+          Importar de um link (kwportugal.pt)
+        </label>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            id="import-url"
+            type="url"
+            placeholder="https://www.kwportugal.pt/pt/Imovel/..."
+            value={importUrl}
+            onChange={(e) => setImportUrl(e.target.value)}
+            className="min-w-0 flex-1 bg-white border border-ink/15 px-4 py-2.5 text-sm focus:outline-none focus:border-gold transition-colors"
+          />
+          <button
+            type="button"
+            onClick={handleImport}
+            disabled={importing || !importUrl.trim()}
+            className="shrink-0 border border-gold text-gold-deep px-6 py-2.5 text-sm tracking-wide hover:bg-gold hover:text-ink transition-colors disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-gold-deep"
+          >
+            {importing ? "A importar…" : "Importar"}
+          </button>
+        </div>
+        <p className="mt-2 text-xs text-stone">Preenche o nome, a descrição, a morada, o preço, a tipologia, as áreas e as fotos.</p>
+        {importError && <p className="mt-2 text-sm text-red-600">{importError}</p>}
+        {importNote && <p className="mt-2 text-sm text-gold-deep">{importNote}</p>}
+      </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_24rem] xl:grid-cols-[minmax(0,1fr)_30rem] xl:gap-16 2xl:grid-cols-[minmax(0,40rem)_24rem_minmax(0,1fr)]">
       <div className="min-w-0 max-w-3xl">
