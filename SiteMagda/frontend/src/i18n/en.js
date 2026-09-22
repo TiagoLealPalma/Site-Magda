@@ -118,25 +118,25 @@ export default {
     heroLine2: "A decade reading the market.",
     intro:
       "With over {years} years of experience in real estate and two decades of civil engineering, I offer a specialised consulting service to anyone looking to buy, sell or rent their next property.",
-    dimEngineering: "20 years · Civil engineering",
+    dimEngineering: "Over 25 years · Civil engineering",
     dimMarket: "{years}+ years · Real estate",
     photoAlt: "Magda Leal",
     standfirst:
       "My civil engineering background gives me a technical eye that is rare in real estate: I assess the construction, the condition of the property and its real potential, not just how it is presented.",
-    kw: "I represent Keller Williams Portugal, the largest real estate network in the world, which lets me offer my clients the reach of an international network with the care of a truly personal service.",
+    kw: "I'm affiliated with Keller Williams Portugal, the largest real estate network in the world, which lets me offer my clients the reach of an international network with the care of a truly personal service.",
     principlesTitle: "Three principles behind every deal.",
     values: [
       {
-        title: "Technical rigour",
-        text: "An engineer's read on every property, so you decide with the full picture, not just a first impression.",
+        title: "Trust",
+        text: "Transparency in every negotiation, so the relationship carries on long after the keys change hands.",
       },
       {
         title: "Close support",
         text: "Real availability from the first contact to the deed, with a quick reply at every stage of the process.",
       },
       {
-        title: "Trust",
-        text: "Transparency in every negotiation, so the relationship carries on long after the keys change hands.",
+        title: "Technical rigour",
+        text: "An engineer's read on every property, so you decide with the full picture, not just a first impression.",
       },
     ],
     awardsTitle: "Awards and recognition.",

@@ -118,7 +118,7 @@ export default function Sobre() {
 
             <div className="mt-14 max-w-md space-y-9 md:mt-16">
               <DimLine pct={100} label={t("about.dimEngineering")} delay={700} />
-              <DimLine pct={Math.min(100, (years / 20) * 100)} label={t("about.dimMarket", { years })} delay={950} />
+              <DimLine pct={Math.min(100, (years / 25) * 100)} label={t("about.dimMarket", { years })} delay={950} />
             </div>
           </div>
 

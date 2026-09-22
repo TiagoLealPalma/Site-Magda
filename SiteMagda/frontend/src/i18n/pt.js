@@ -118,25 +118,25 @@ export default {
     heroLine2: "Uma década a ler o mercado.",
     intro:
       "Com mais de {years} anos de experiência no mercado imobiliário e duas décadas de engenharia civil, ofereço um serviço de consultoria especializado a quem procura comprar, vender ou arrendar o seu próximo imóvel.",
-    dimEngineering: "20 anos · Engenharia civil",
+    dimEngineering: "Mais de 25 anos · Engenharia civil",
     dimMarket: "{years}+ anos · Mercado imobiliário",
     photoAlt: "Magda Leal",
     standfirst:
       "A minha formação em engenharia civil dá-me um olhar técnico pouco comum no mercado imobiliário: avalio a construção, o estado do imóvel e o seu potencial real, não apenas a sua apresentação.",
-    kw: "Represento a Keller Williams Portugal, a maior rede imobiliária do mundo, o que me permite oferecer aos meus clientes o alcance de uma rede internacional com o cuidado de um serviço verdadeiramente pessoal.",
+    kw: "Associada da Keller Williams Portugal, a maior rede imobiliária do mundo, o que me permite oferecer aos meus clientes o alcance de uma rede internacional com o cuidado de um serviço verdadeiramente pessoal.",
     principlesTitle: "Três princípios que guiam cada negócio.",
     values: [
       {
-        title: "Rigor Técnico",
-        text: "Uma leitura de engenheira sobre cada imóvel, para que decida com toda a informação, não apenas com a primeira impressão.",
+        title: "Confiança",
+        text: "Transparência em cada negociação, para que a relação continue muito depois de as chaves mudarem de mãos.",
       },
       {
         title: "Acompanhamento Próximo",
         text: "Disponibilidade real do primeiro contacto à escritura, com resposta rápida em cada etapa do processo.",
       },
       {
-        title: "Confiança",
-        text: "Transparência em cada negociação, para que a relação continue muito depois de as chaves mudarem de mãos.",
+        title: "Rigor Técnico",
+        text: "Uma leitura de engenheira sobre cada imóvel, para que decida com toda a informação, não apenas com a primeira impressão.",
       },
     ],
     awardsTitle: "Prémios e reconhecimentos.",
