@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -49,4 +51,12 @@ class Image(models.Model):
         ordering = ['order', 'id']
 
 
-
+@receiver(post_delete, sender=Image)
+def delete_image_file(sender, instance, **kwargs):
+    # A FileField/ImageField never deletes its file on its own — not on
+    # instance.delete(), and not when a Property cascades into deleting its
+    # images. Without this, every deleted photo silently keeps its bytes on
+    # disk forever. Django's default storage already no-ops if the file is
+    # already gone, so this is safe to run unconditionally.
+    if instance.image:
+        instance.image.delete(save=False)

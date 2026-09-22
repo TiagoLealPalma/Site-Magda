@@ -8,9 +8,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, DestroyAPIView
 from rest_framework.views import APIView
 
-from django.core.files.base import ContentFile
-
-from . import importer
+from . import imaging, importer
 from .models import Image, Lead, Property
 from .serializers import ImageSerializer, LeadSerializer, PropertyWriteSerializer
 
@@ -32,7 +30,9 @@ class PropertyAdminViewSet(viewsets.ModelViewSet):
         if not image_file:
             return Response({'detail': 'Ficheiro "image" em falta.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        image = Image.objects.create(property=property_obj, image=image_file)
+        content, filename = imaging.compress_image(image_file, image_file.name)
+        image = Image(property=property_obj)
+        image.image.save(filename, content, save=True)
         return Response(ImageSerializer(image, context={'request': request}).data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'], url_path='import')
@@ -65,8 +65,9 @@ class PropertyAdminViewSet(viewsets.ModelViewSet):
                 failed += 1
                 results.append(None)
                 continue
+            compressed, filename = imaging.compress_image(content, importer.image_filename(url))
             image = Image(property=property_obj)
-            image.image.save(importer.image_filename(url), ContentFile(content), save=True)
+            image.image.save(filename, compressed, save=True)
             results.append(image)
 
         serialized = [

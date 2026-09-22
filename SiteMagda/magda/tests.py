@@ -1,8 +1,9 @@
 import json
+import os
 
 from django.test import TestCase, override_settings
 
-from . import importer, seo
+from . import imaging, importer, seo
 from .models import Image, Property
 
 
@@ -277,3 +278,57 @@ class ImageOrderTests(TestCase):
             content_type='application/json',
         )
         self.assertEqual(response.status_code, 403)
+
+
+class ImageCleanupAndCompressionTests(TestCase):
+    def setUp(self):
+        self.prop = Property.objects.create(
+            name='Casa', description='desc', address='Rua X', typology='T2', area=100,
+        )
+
+    def _jpeg_bytes(self, size=(4000, 3000)):
+        import io
+        from PIL import Image as PILImage
+
+        img = PILImage.new('RGB', size, color=(120, 60, 30))
+        buf = io.BytesIO()
+        img.save(buf, format='JPEG', quality=95)
+        return buf.getvalue()
+
+    def test_compress_image_shrinks_a_large_photo(self):
+        from django.core.files.base import ContentFile
+
+        raw = self._jpeg_bytes()
+        content, filename = imaging.compress_image(raw, 'foto.HEIC')
+        self.assertEqual(filename, 'foto.jpg')
+        self.assertLess(content.size, len(raw))
+
+        import io
+        from PIL import Image as PILImage
+
+        out = PILImage.open(io.BytesIO(content.read()))
+        self.assertLessEqual(max(out.size), imaging.MAX_DIMENSION)
+
+    def test_compress_image_falls_back_to_original_bytes_on_garbage_input(self):
+        content, filename = imaging.compress_image(b'not actually an image', 'weird.bin')
+        self.assertEqual(content.read(), b'not actually an image')
+        self.assertEqual(filename, 'weird.bin')
+
+    def test_deleting_an_image_removes_its_file_from_disk(self):
+        from django.core.files.base import ContentFile
+
+        image = Image(property=self.prop)
+        image.image.save('t.jpg', ContentFile(self._jpeg_bytes((100, 100))), save=True)
+        path = image.image.path
+        self.assertTrue(os.path.exists(path))
+        image.delete()
+        self.assertFalse(os.path.exists(path))
+
+    def test_deleting_a_property_removes_its_photos_from_disk(self):
+        from django.core.files.base import ContentFile
+
+        image = Image(property=self.prop)
+        image.image.save('t2.jpg', ContentFile(self._jpeg_bytes((100, 100))), save=True)
+        path = image.image.path
+        self.prop.delete()
+        self.assertFalse(os.path.exists(path))
