@@ -87,7 +87,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="hidden sm:block absolute -bottom-8 -left-8 md:-left-10 w-28 md:w-32 lg:w-36 border border-ink/10 bg-paper p-2 shadow-[0_12px_30px_-10px_rgba(0,0,0,0.25)]">
+              {/* Kept visible down to phone width: without it, the mono
+                  primary photo has nothing to break it up once the second
+                  accent (md:) and the collage's width also disappear — it
+                  reads as a flat grayscale hero rather than the layered,
+                  warm-accented look the desktop view has. */}
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-8 sm:-left-8 md:-left-10 w-20 sm:w-28 md:w-32 lg:w-36 border border-ink/10 bg-paper p-1.5 sm:p-2 shadow-[0_12px_30px_-10px_rgba(0,0,0,0.25)]">
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src="/static/landingpage/MagdaHeroAccent1.webp"
