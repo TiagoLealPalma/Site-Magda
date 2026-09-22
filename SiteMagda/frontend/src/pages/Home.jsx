@@ -66,18 +66,48 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="border border-ink/10 p-3 md:p-4 max-w-md md:max-w-none mx-auto">
-              <div className="aspect-[4/5] overflow-hidden">
-                <img
-                  src="/static/landingpage/FotoMagda.webp"
-                  alt="Magda Leal"
-                  width="1080"
-                  height="1080"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="h-full w-full object-cover"
-                  style={{ objectPosition: "center 15%" }}
-                />
+            <div className="relative max-w-md md:max-w-none mx-auto md:mr-6 lg:mr-10">
+              <div className="border border-ink/10 p-3 md:p-4">
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img
+                    src="/static/landingpage/MagdaHero.webp"
+                    alt="Magda Leal"
+                    width="1067"
+                    height="1600"
+                    fetchPriority="high"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: "center 20%" }}
+                  />
+                </div>
+              </div>
+
+              <div className="hidden sm:block absolute -bottom-8 -left-8 md:-left-10 w-28 md:w-32 lg:w-36 border border-ink/10 bg-paper p-2 shadow-[0_12px_30px_-10px_rgba(0,0,0,0.25)]">
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src="/static/landingpage/MagdaHeroAccent1.webp"
+                    alt=""
+                    width="600"
+                    height="900"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+
+              <div className="hidden md:block absolute -top-8 -right-8 lg:-right-12 w-24 lg:w-28 border border-ink/10 bg-paper p-2 shadow-[0_12px_30px_-10px_rgba(0,0,0,0.25)]">
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src="/static/landingpage/MagdaHeroAccent2.webp"
+                    alt=""
+                    width="600"
+                    height="900"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           </Reveal>
