@@ -186,6 +186,12 @@ export default {
     descriptionNote: "",
     interested: "Interessado?",
     interestedIn: "Tenho interesse em: {name}",
+    location: "Localização",
+    noPin: "Sem localização definida",
+    mapTitle: "Mapa de localização do imóvel",
+    openInMaps: "Abrir no Google Maps",
+    copyAddress: "Copiar",
+    copied: "Copiado!",
   },
   notFound: {
     title: "Esta página não existe.",

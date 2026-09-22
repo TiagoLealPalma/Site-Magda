@@ -4,6 +4,7 @@ import Spec from "./Spec";
 import TickRule from "./TickRule";
 import LeadForm from "./LeadForm";
 import StatusBadge from "./StatusBadge";
+import LocationMap from "./LocationMap";
 import { formatPrice, PLACEHOLDER_IMAGE } from "../utils/format";
 import { useLang } from "../i18n";
 
@@ -120,6 +121,20 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
             <LeadForm presetMessage={t("detail.interestedIn", { name: property.name })} />
           </Block>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-20 md:px-8 md:pb-24">
+        <Block>
+          <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-4">
+            {t("detail.location")}
+          </p>
+          <LocationMap
+            address={property.address}
+            latitude={property.latitude}
+            longitude={property.longitude}
+            preview={preview}
+          />
+        </Block>
       </section>
 
     </>

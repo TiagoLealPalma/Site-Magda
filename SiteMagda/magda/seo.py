@@ -241,6 +241,8 @@ def listing_node(base, prop, lang):
         'floorSize': {'@type': 'QuantitativeValue', 'value': prop.area, 'unitCode': 'MTK'},
         'provider': {'@id': f'{base}/#agent'},
     }
+    if prop.latitude is not None and prop.longitude is not None:
+        node['geo'] = {'@type': 'GeoCoordinates', 'latitude': float(prop.latitude), 'longitude': float(prop.longitude)}
     images = [abs_media(base, i.image.url) for i in prop.images.all()]
     if images:
         node['image'] = images

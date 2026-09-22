@@ -186,6 +186,12 @@ export default {
     descriptionNote: "in Portuguese",
     interested: "Interested?",
     interestedIn: "I'm interested in: {name}",
+    location: "Location",
+    noPin: "No location set yet",
+    mapTitle: "Property location map",
+    openInMaps: "Open in Google Maps",
+    copyAddress: "Copy",
+    copied: "Copied!",
   },
   notFound: {
     title: "This page doesn't exist.",

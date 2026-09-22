@@ -12,6 +12,8 @@ const EMPTY = {
   price: "",
   description: "",
   address: "",
+  latitude: "",
+  longitude: "",
   bedrooms: "",
   bathrooms: "",
   typology: "",
@@ -51,6 +53,8 @@ export default function PropertyForm() {
         price: data.price ?? "",
         description: data.description ?? "",
         address: data.address ?? "",
+        latitude: data.latitude ?? "",
+        longitude: data.longitude ?? "",
         bedrooms: data.bedrooms ?? "",
         bathrooms: data.bathrooms ?? "",
         typology: data.typology ?? "",
@@ -79,6 +83,8 @@ export default function PropertyForm() {
       bathrooms: form.bathrooms || null,
       liquid_area: form.liquid_area || null,
       construction_date: form.construction_date || null,
+      latitude: form.latitude || null,
+      longitude: form.longitude || null,
       area: Number(form.area),
     };
 
@@ -180,6 +186,34 @@ export default function PropertyForm() {
             </select>
           </div>
           <Field label="Morada" value={form.address} onChange={(v) => setField("address", v)} required className="sm:col-span-2" />
+          <Field
+            label="Latitude"
+            type="number"
+            step="any"
+            value={form.latitude}
+            onChange={(v) => setField("latitude", v)}
+            placeholder="38.532..."
+          />
+          <Field
+            label="Longitude"
+            type="number"
+            step="any"
+            value={form.longitude}
+            onChange={(v) => setField("longitude", v)}
+            placeholder="-28.629..."
+          />
+          <p className="sm:col-span-2 -mt-3 text-xs text-stone">
+            Para obter as coordenadas: abra o imóvel no{" "}
+            <a
+              href="https://www.google.com/maps"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-gold-deep"
+            >
+              Google Maps
+            </a>
+            , clique com o botão direito no local exato e copie os dois números que aparecem no topo do menu.
+          </p>
           <Field label="Tipologia" value={form.typology} onChange={(v) => setField("typology", v)} required />
           <Field label="Quartos" type="number" value={form.bedrooms} onChange={(v) => setField("bedrooms", v)} />
           <Field label="Casas de banho" type="number" value={form.bathrooms} onChange={(v) => setField("bathrooms", v)} />
@@ -315,7 +349,7 @@ export default function PropertyForm() {
   );
 }
 
-function Field({ label, value, onChange, type = "text", required = false, className = "" }) {
+function Field({ label, value, onChange, type = "text", required = false, className = "", step, placeholder, hint }) {
   return (
     <div className={className}>
       <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
@@ -323,11 +357,14 @@ function Field({ label, value, onChange, type = "text", required = false, classN
       </label>
       <input
         type={type}
+        step={step}
+        placeholder={placeholder}
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full bg-white border border-ink/15 px-4 py-2.5 text-sm focus:outline-none focus:border-gold transition-colors"
       />
+      {hint && <p className="mt-1.5 text-xs text-stone">{hint}</p>}
     </div>
   );
 }

@@ -24,6 +24,7 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = [
             'id', 'name', 'name_en', 'price', 'description', 'address',
+            'latitude', 'longitude',
             'bedrooms', 'bathrooms', 'typology', 'area',
             'liquid_area', 'construction_date', 'status', 'images',
         ]
@@ -48,6 +49,7 @@ class PropertyWriteSerializer(serializers.ModelSerializer):
         model = Property
         fields = [
             'id', 'name', 'name_en', 'price', 'description', 'address',
+            'latitude', 'longitude',
             'bedrooms', 'bathrooms', 'typology', 'area',
             'liquid_area', 'construction_date', 'status', 'images',
         ]
