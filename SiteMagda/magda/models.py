@@ -42,7 +42,7 @@ class Property(models.Model):
 class Lead(models.Model):
     name = models.CharField(max_length=255,)
     email = models.EmailField(null=True, blank=True)
-    phone = models.CharField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 

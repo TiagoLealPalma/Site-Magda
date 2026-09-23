@@ -77,6 +77,7 @@ export default function LeadForm({ presetMessage = "" }) {
           </label>
           <input
             id="lead-phone"
+            required
             type="tel"
             placeholder={t("lead.phone")}
             value={form.phone}

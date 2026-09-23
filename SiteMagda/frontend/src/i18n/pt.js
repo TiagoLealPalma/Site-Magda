@@ -54,7 +54,7 @@ export default {
   lead: {
     name: "Nome",
     email: "Email",
-    phone: "Telefone (opcional)",
+    phone: "Telefone",
     phoneLabel: "Telefone",
     message: "O que procura?",
     submit: "Solicitar Contacto",
