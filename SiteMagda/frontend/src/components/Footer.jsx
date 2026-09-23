@@ -23,8 +23,8 @@ export default function Footer() {
         />
         <FooterColumn
           title={t("footer.social")}
-          links={[
-            { label: "Instagram", href: "https://www.instagram.com/magdalealconsultora/" },
+          links={[     
+            { label: "Instagram", href: "https://www.instagram.com/magdalealteam/" },
             { label: "Facebook", href: "https://www.facebook.com/magdalealconsultora" },
             { label: "LinkedIn", href: "https://www.linkedin.com/in/magdaleal/?originalSubdomain=pt" },
           ]}
