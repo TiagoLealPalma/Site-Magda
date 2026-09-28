@@ -157,14 +157,16 @@ export function specRows(p, t) {
 
 // Labelled mono figures separated by hairline dividers: the site's "ledger"
 // voice, so a listing reads as data before it reads as a photo.
-export function SpecLedger({ rows, tone = "light", className = "" }) {
+// `compact` keeps every figure on one line (cards), so the ledger sits at the
+// same height on every card whatever it holds.
+export function SpecLedger({ rows, tone = "light", compact = false, className = "" }) {
   const divider = tone === "dark" ? "border-paper/15" : "border-ink/15";
   const value = tone === "dark" ? "text-paper" : "text-ink";
   const label = tone === "dark" ? "text-paper/60" : "text-stone";
   return (
-    <dl className={`flex flex-wrap gap-y-4 ${className}`}>
+    <dl className={`flex ${compact ? "flex-nowrap" : "flex-wrap gap-y-4"} ${className}`}>
       {rows.map((r) => (
-        <div key={r.label} className={`mr-5 border-r pr-5 last:mr-0 last:border-r-0 last:pr-0 ${divider}`}>
+        <div key={r.label} className={`border-r last:mr-0 last:border-r-0 last:pr-0 ${compact ? "mr-3 pr-3" : "mr-5 pr-5"} ${divider}`}>
           <dd className={`font-mono text-sm tabular-nums ${value}`}>{r.value}</dd>
           <dt className={`mt-1 text-[11px] uppercase tracking-widest ${label}`}>{r.label}</dt>
         </div>

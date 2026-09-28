@@ -38,19 +38,20 @@ export default function ListingCard({ property: raw, index = 0, preview = false 
       </div>
       <div className="flex flex-1 flex-col bg-charcoal p-6 text-paper">
         <p className="font-mono text-2xl tabular-nums text-gold-soft">{formatPrice(property.price, lang, isRent(property))}</p>
-        {/* Every card reserves two title lines and clamps longer names, so a
-            row of cards shares one height and one rhythm whatever the name. */}
-        <h3 className="mt-3 line-clamp-2 min-h-[2.75em] font-display text-xl leading-snug">{property.name}</h3>
-        <p className="mt-1 truncate font-mono text-xs uppercase tracking-widest text-paper/70">{property.address}</p>
-        <div className="mt-auto pt-5">
+        {/* Title and address read as one intro block, kept tight together and
+            apart from the technical ledger below. The block reserves room for
+            a two-line title, so a row of cards shares one height whatever the
+            name; the spare space falls under the address, not between it and
+            the title. */}
+        <div className="mt-3 min-h-[4.75rem]">
+          <h3 className="line-clamp-2 font-display text-xl leading-snug">{property.name}</h3>
+          <p className="mt-1 truncate font-mono text-xs uppercase tracking-widest text-paper/70">{property.address}</p>
+        </div>
+        <div className="mt-auto pt-6">
           <div className="relative mb-5 h-px overflow-hidden bg-paper/15">
             <span className="absolute inset-0 origin-left scale-x-0 bg-gold-soft transition-transform duration-700 ease-out group-hover:scale-x-100" />
           </div>
-          {/* Four figures wrap onto a second line in a narrow card; reserving
-              two lines keeps the rule above at the same height on every card. */}
-          <div className="min-h-[5.5rem]">
-            <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" />
-          </div>
+          <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" compact />
         </div>
       </div>
     </>
