@@ -9,12 +9,12 @@ export function formatPrice(value, lang = "pt", rent = false) {
   return new Intl.NumberFormat("pt-PT", { maximumFractionDigits: 0 }).format(n) + " €" + (rent ? "/mês" : "");
 }
 
-// Areas come from the API as a decimal-precision string (e.g. "87.0" or
-// "87.5"); this drops a trailing ".0" without dropping a real fraction.
+// Areas come from the API as a decimal-precision string (e.g. "87.5"); they
+// are shown as whole square metres.
 export function formatArea(value) {
   if (value === null || value === undefined || value === "") return null;
   const n = Number(value);
-  return Number.isNaN(n) ? null : n % 1 === 0 ? String(n) : n.toFixed(1);
+  return Number.isNaN(n) ? null : String(Math.round(n));
 }
 
 export const PLACEHOLDER_IMAGE = "/static/properties/placeholder.jpg";

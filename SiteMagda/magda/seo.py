@@ -157,11 +157,10 @@ def fmt_price(value, lang, rent=False):
 
 
 def fmt_area(value):
-    """A decimal area ('436.0', '87.5') without a pointless trailing .0."""
+    """A decimal area ('436.0', '87.5') shown as whole square metres."""
     if value is None:
         return ''
-    value = float(value)
-    return str(int(value)) if value.is_integer() else f'{value:.1f}'
+    return str(int(float(value) + 0.5))
 
 
 def clip(text, limit):

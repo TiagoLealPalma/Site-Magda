@@ -46,7 +46,11 @@ export default function ListingCard({ property: raw, index = 0, preview = false 
           <div className="relative mb-5 h-px overflow-hidden bg-paper/15">
             <span className="absolute inset-0 origin-left scale-x-0 bg-gold-soft transition-transform duration-700 ease-out group-hover:scale-x-100" />
           </div>
-          <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" />
+          {/* Four figures wrap onto a second line in a narrow card; reserving
+              two lines keeps the rule above at the same height on every card. */}
+          <div className="min-h-[5.5rem]">
+            <SpecLedger rows={specRows(property, t).slice(0, 4)} tone="dark" />
+          </div>
         </div>
       </div>
     </>
