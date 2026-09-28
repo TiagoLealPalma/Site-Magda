@@ -7,11 +7,37 @@ import { formatArea, formatPrice } from "../../utils/format";
 import Reveal from "../../components/Reveal";
 
 const PRICE_STEPS = ["100000", "200000", "300000", "500000", "800000"];
+const CATEGORY_PARAMS = ["housing", "commercial", "land"];
+const RENT_STEPS = ["500", "750", "1000", "1500", "2000"];
+
+// URL value <-> API value for the buy/rent switch.
+const TYPE_PARAM = { venda: "sale", arrendar: "rent" };
+const TYPE_TO_PARAM = { sale: "venda", rent: "arrendar" };
 
 // The three dropdowns, labelled and worded in the visitor's language.
-function useSelects() {
+function useSelects(filters) {
   const { t, lang } = useLang();
+  const rent = filters.type === "rent";
   return [
+    [
+      "category",
+      t("category.label"),
+      [
+        { value: "", label: t("filters.all") },
+        { value: "housing", label: t("category.housing") },
+        { value: "commercial", label: t("category.commercial") },
+        { value: "land", label: t("category.land") },
+      ],
+    ],
+    [
+      "type",
+      t("listing.type"),
+      [
+        { value: "", label: t("filters.all") },
+        { value: "sale", label: t("listing.sale") },
+        { value: "rent", label: t("listing.rentFilter") },
+      ],
+    ],
     [
       "bedrooms",
       t("filters.bedrooms"),
@@ -26,10 +52,13 @@ function useSelects() {
     ],
     [
       "price",
-      t("filters.maxPrice"),
+      rent ? t("listing.maxRent") : t("filters.maxPrice"),
       [
         { value: "", label: t("filters.noLimit") },
-        ...PRICE_STEPS.map((v) => ({ value: v, label: t("filters.upTo", { price: formatPrice(v, lang) }) })),
+        ...(rent ? RENT_STEPS : PRICE_STEPS).map((v) => ({
+          value: v,
+          label: t("filters.upTo", { price: formatPrice(v, lang, rent) }),
+        })),
       ],
     ],
     [
@@ -53,6 +82,8 @@ export function useProperties() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({
     search: searchParams.get("search") || "",
+    type: TYPE_PARAM[searchParams.get("tipo")] || "",
+    category: CATEGORY_PARAMS.includes(searchParams.get("categoria")) ? searchParams.get("categoria") : "",
     bedrooms: searchParams.get("bedrooms") || "",
     price: searchParams.get("price") || "",
     sort: searchParams.get("ordem") || "",
@@ -61,12 +92,17 @@ export function useProperties() {
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  const hasActive = Boolean(filters.search || filters.bedrooms || filters.price);
+  const hasActive = Boolean(filters.search || filters.type || filters.category || filters.bedrooms || filters.price);
 
   function update(next) {
+    // Sale and rent prices live on different scales, so a cap set for one
+    // never carries over to the other.
+    if (next.type !== filters.type) next = { ...next, price: "" };
     setFilters(next);
     const params = {};
     if (next.search) params.search = next.search;
+    if (next.category) params.categoria = next.category;
+    if (next.type) params.tipo = TYPE_TO_PARAM[next.type];
     if (next.bedrooms) params.bedrooms = next.bedrooms;
     if (next.price) params.price = next.price;
     if (next.sort) params.ordem = next.sort;
@@ -74,14 +110,14 @@ export function useProperties() {
   }
 
   function clear() {
-    update({ ...filters, search: "", bedrooms: "", price: "" });
+    update({ ...filters, search: "", type: "", category: "", bedrooms: "", price: "" });
   }
 
   useEffect(() => {
     let live = true;
     setError(false);
     const id = setTimeout(() => {
-      getProperties({ search: filters.search, bedrooms: filters.bedrooms, price: filters.price })
+      getProperties({ search: filters.search, type: filters.type, category: filters.category, bedrooms: filters.bedrooms, price: filters.price })
         .then((d) => live && setData(d))
         .catch(() => live && setError(true));
     }, 200);
@@ -89,7 +125,7 @@ export function useProperties() {
       live = false;
       clearTimeout(id);
     };
-  }, [filters.search, filters.bedrooms, filters.price, attempt]);
+  }, [filters.search, filters.type, filters.category, filters.bedrooms, filters.price, attempt]);
 
   const properties = useMemo(() => {
     if (!data) return null;
@@ -111,6 +147,7 @@ export function useProperties() {
 
 export function specRows(p, t) {
   const rows = [{ label: t("spec.type"), value: p.typology || (p.bedrooms ? `T${p.bedrooms}` : "—") }];
+  if (p.category && p.category !== "housing") rows.push({ label: t("category.label"), value: t(`category.${p.category}`) });
   if (formatArea(p.area)) rows.push({ label: t("spec.area"), value: `${formatArea(p.area)} m²` });
   if (formatArea(p.liquid_area)) rows.push({ label: t("spec.usableArea"), value: `${formatArea(p.liquid_area)} m²` });
   if (p.bathrooms) rows.push({ label: t("spec.wc"), value: String(p.bathrooms) });
@@ -339,7 +376,7 @@ function Tick() {
 // read as one of them.
 function FloatFilters({ filters, update, clear, hasActive, count, idPrefix, className = "" }) {
   const t = useT();
-  const selects = useSelects();
+  const selects = useSelects(filters);
   const p = idPrefix;
   const showClear = hasActive && count !== 0;
 
@@ -400,12 +437,12 @@ function FlatField({ id, label, children }) {
 // mono-label voice.
 function FlatFilters({ filters, update, clear, hasActive, count, idPrefix, className = "" }) {
   const t = useT();
-  const selects = useSelects();
+  const selects = useSelects(filters);
   const p = idPrefix;
   const showClear = hasActive && count !== 0;
 
   return (
-    <div className={`grid grid-cols-2 items-end gap-x-6 gap-y-4 md:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))_auto] md:gap-x-8 ${className}`}>
+    <div className={`grid grid-cols-2 items-end gap-x-6 gap-y-4 md:grid-cols-[minmax(0,1.6fr)_repeat(5,minmax(0,1fr))_auto] md:gap-x-8 ${className}`}>
       <div className="col-span-2 md:col-span-1">
         <FlatField id={`${p}-search`} label={t("filters.search")}>
           <SearchInput id={`${p}-search`} value={filters.search} onChange={(v) => update({ ...filters, search: v })} />

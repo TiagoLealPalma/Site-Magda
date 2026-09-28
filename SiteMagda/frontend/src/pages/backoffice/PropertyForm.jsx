@@ -7,6 +7,9 @@ import ScaledPreview from "../../components/backoffice/ScaledPreview";
 import { LangOverride } from "../../i18n";
 
 const EMPTY = {
+  listing_type: "sale",
+  category: "housing",
+  featured: false,
   name: "",
   name_en: "",
   price: "",
@@ -54,6 +57,9 @@ export default function PropertyForm() {
     if (!isEditing) return;
     adminApi.getProperty(id).then((data) => {
       setForm({
+        listing_type: data.listing_type ?? "sale",
+        category: data.category ?? "housing",
+        featured: Boolean(data.featured),
         name: data.name ?? "",
         name_en: data.name_en ?? "",
         price: data.price ?? "",
@@ -340,7 +346,47 @@ export default function PropertyForm() {
             hint={previewLang === "en" ? "Se ficar vazio, o site em inglês mostra o nome em português." : undefined}
             className="sm:col-span-2"
           />
-          <Field label="Preço (€)" type="number" step="any" min="0" value={form.price} onChange={(v) => setField("price", v)} />
+          <label className="flex items-center gap-3 text-sm sm:col-span-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.featured}
+              onChange={(e) => setField("featured", e.target.checked)}
+              className="h-4 w-4 accent-gold"
+            />
+            Imóvel em destaque na página de imóveis
+            <span className="text-xs text-stone">(só um; escolher este retira o destaque ao anterior. Sem nenhum, aparece o mais caro.)</span>
+          </label>
+          <div>
+            <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">Tipo de imóvel</label>
+            <select
+              value={form.category}
+              onChange={(e) => setField("category", e.target.value)}
+              className="w-full bg-white border border-ink/15 px-4 py-2.5 text-sm focus:outline-none focus:border-gold transition-colors"
+            >
+              <option value="housing">Habitacional</option>
+              <option value="commercial">Comercial/Serviços</option>
+              <option value="land">Terreno</option>
+            </select>
+          </div>
+          <div>
+            <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">Tipo de negócio</label>
+            <select
+              value={form.listing_type}
+              onChange={(e) => setField("listing_type", e.target.value)}
+              className="w-full bg-white border border-ink/15 px-4 py-2.5 text-sm focus:outline-none focus:border-gold transition-colors"
+            >
+              <option value="sale">Venda</option>
+              <option value="rent">Arrendamento</option>
+            </select>
+          </div>
+          <Field
+            label={form.listing_type === "rent" ? "Renda mensal (€/mês)" : "Preço (€)"}
+            type="number"
+            step="any"
+            min="0"
+            value={form.price}
+            onChange={(v) => setField("price", v)}
+          />
           <div>
             <label className="block font-mono text-[10px] uppercase tracking-widest text-stone mb-2">
               Estado

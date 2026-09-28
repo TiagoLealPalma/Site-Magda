@@ -23,7 +23,9 @@ export default function Home() {
   useEffect(() => {
     getProperties()
       .then((data) => {
-        const byPriceDesc = [...data].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+        const byPriceDesc = [...data].sort(
+          (a, b) => Number(b.featured) - Number(a.featured) || (Number(b.price) || 0) - (Number(a.price) || 0)
+        );
         setProperties(byPriceDesc.slice(0, 6));
       })
       .catch(() => setProperties([]));
@@ -143,7 +145,7 @@ export default function Home() {
                 delay={200}
                 className="mt-16 md:mt-20 grid grid-cols-3 gap-6 md:gap-8 border-t border-ink/10 pt-10"
               >
-                <Spec label={t("home.forSale")} value={stats.number_of_properties} size="lg" center animate />
+                <Spec label={t("home.forSale")} value={stats.properties_for_sale ?? stats.number_of_properties} size="lg" center animate />
                 <Spec label={t("home.sold")} value={stats.properties_sold} size="lg" center animate />
                 <Spec label={t("home.yearsLabel")} value={`${stats.years_since}+`} size="lg" center animate />
               </Reveal>

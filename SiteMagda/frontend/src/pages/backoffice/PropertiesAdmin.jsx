@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { adminApi } from "../../api/adminClient";
-import { formatPrice } from "../../utils/format";
+import { formatPrice, isRent } from "../../utils/format";
 
 const STATUS_LABELS = {
   available: "Disponível",
@@ -61,7 +61,7 @@ export default function PropertiesAdmin() {
             >
               <span className="block text-sm text-ink font-medium md:font-normal">{p.name}</span>
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone md:hidden">
-                <span className="font-mono">{formatPrice(p.price)}</span>
+                <span className="font-mono">{formatPrice(p.price, "pt", isRent(p))}</span>
                 <span>·</span>
                 <span>{p.typology}</span>
                 <span>·</span>
@@ -69,7 +69,7 @@ export default function PropertiesAdmin() {
                 <span>·</span>
                 <span>{STATUS_LABELS[p.status] || p.status}</span>
               </div>
-              <span className="hidden md:inline font-mono text-sm text-stone">{formatPrice(p.price)}</span>
+              <span className="hidden md:inline font-mono text-sm text-stone">{formatPrice(p.price, "pt", isRent(p))}</span>
               <span className="hidden md:inline text-sm text-stone">{p.typology}</span>
               <span className="hidden md:inline font-mono text-sm text-stone">{p.images.length}</span>
               <span className="hidden md:inline text-sm text-stone">{STATUS_LABELS[p.status] || p.status}</span>

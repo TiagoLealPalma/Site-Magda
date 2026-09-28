@@ -25,10 +25,10 @@ class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = [
-            'id', 'name', 'name_en', 'price', 'description', 'description_en', 'address',
+            'id', 'name', 'name_en', 'listing_type', 'category', 'price', 'description', 'description_en', 'address',
             'latitude', 'longitude',
             'bedrooms', 'bathrooms', 'typology', 'area',
-            'liquid_area', 'construction_date', 'status', 'images',
+            'liquid_area', 'construction_date', 'status', 'featured', 'images',
         ]
 
 
@@ -71,10 +71,10 @@ class PropertyWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = [
-            'id', 'name', 'name_en', 'price', 'description', 'description_en', 'address',
+            'id', 'name', 'name_en', 'listing_type', 'category', 'price', 'description', 'description_en', 'address',
             'latitude', 'longitude',
             'bedrooms', 'bathrooms', 'typology', 'area',
-            'liquid_area', 'construction_date', 'status', 'images',
+            'liquid_area', 'construction_date', 'status', 'featured', 'images',
         ]
 
     def to_internal_value(self, data):

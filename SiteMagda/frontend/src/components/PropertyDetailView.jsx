@@ -5,7 +5,7 @@ import TickRule from "./TickRule";
 import LeadForm from "./LeadForm";
 import StatusBadge from "./StatusBadge";
 import LocationMap from "./LocationMap";
-import { formatArea, formatPrice, PLACEHOLDER_IMAGE } from "../utils/format";
+import { formatArea, formatPrice, isRent, PLACEHOLDER_IMAGE } from "../utils/format";
 import { useLang } from "../i18n";
 
 // Reveal-on-scroll makes no sense in a scaled, inert preview (nothing ever
@@ -78,7 +78,7 @@ export default function PropertyDetailView({ property, preview = false, onOpenIm
           <h1 className="font-display text-3xl sm:text-4xl md:text-6xl leading-snug md:leading-tight text-paper mt-5 max-w-2xl">
             {property.name}
           </h1>
-          <p className="font-mono text-lg md:text-xl text-gold-soft mt-3">{formatPrice(property.price, lang)}</p>
+          <p className="font-mono text-lg md:text-xl text-gold-soft mt-3">{formatPrice(property.price, lang, isRent(property))}</p>
         </div>
       </section>
 

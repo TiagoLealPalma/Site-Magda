@@ -15,7 +15,26 @@ class Property(models.Model):
         (STATUS_RESERVED, 'Reservado'),
     ]
 
+    LISTING_SALE = 'sale'
+    LISTING_RENT = 'rent'
+    LISTING_CHOICES = [
+        (LISTING_SALE, 'Venda'),
+        (LISTING_RENT, 'Arrendamento'),
+    ]
+
+    CATEGORY_HOUSING = 'housing'
+    CATEGORY_COMMERCIAL = 'commercial'
+    CATEGORY_LAND = 'land'
+    CATEGORY_CHOICES = [
+        (CATEGORY_HOUSING, 'Habitacional'),
+        (CATEGORY_COMMERCIAL, 'Comercial/Serviços'),
+        (CATEGORY_LAND, 'Terreno'),
+    ]
+
     name = models.CharField(max_length=255)
+    category = models.CharField(max_length=12, choices=CATEGORY_CHOICES, default=CATEGORY_HOUSING)
+    # Sale or rent. For rentals, `price` is the monthly rent.
+    listing_type = models.CharField(max_length=10, choices=LISTING_CHOICES, default=LISTING_SALE)
     # Optional English name/description: the public site falls back to the
     # Portuguese ones when these are empty.
     name_en = models.CharField(max_length=255, blank=True, default='')
@@ -38,6 +57,14 @@ class Property(models.Model):
     )
     construction_date = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_AVAILABLE)
+    # The one listing pinned as the hero on the properties page. With none
+    # selected the site falls back to the most expensive available sale.
+    featured = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.featured:
+            Property.objects.exclude(pk=self.pk).filter(featured=True).update(featured=False)
 
 class Lead(models.Model):
     name = models.CharField(max_length=255,)

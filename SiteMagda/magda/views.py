@@ -19,11 +19,19 @@ class PropertyListAPIView(ListAPIView):
         search = request.GET.get('search', '')
         bedrooms = request.GET.get('bedrooms', '')
         price = request.GET.get('price', '')
+        listing_type = request.GET.get('type', '')
+        category = request.GET.get('category', '')
 
         if search:
             by_name = properties.filter(name__icontains=search)
             by_address = properties.filter(address__icontains=search)
             properties = by_name | by_address
+
+        if listing_type in (Property.LISTING_SALE, Property.LISTING_RENT):
+            properties = properties.filter(listing_type=listing_type)
+
+        if category in dict(Property.CATEGORY_CHOICES):
+            properties = properties.filter(category=category)
 
         if bedrooms:
             if bedrooms != '5':
@@ -50,6 +58,8 @@ class SiteStatsAPIView(APIView):
     def get(self, request):
         return Response({
             'number_of_properties': Property.objects.count(),
+            'properties_for_sale': Property.objects.filter(listing_type=Property.LISTING_SALE).count(),
+            'properties_for_rent': Property.objects.filter(listing_type=Property.LISTING_RENT).count(),
             'years_since': date.today().year - 2015,
             'properties_sold': 250,
         })

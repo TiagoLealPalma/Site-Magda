@@ -16,9 +16,9 @@ export default function Footer() {
         <FooterColumn
           title={t("footer.properties")}
           links={[
-            { label: t("footer.buy"), to: path("properties") },
+            { label: t("footer.buy"), to: path("properties") + "?tipo=venda" },
             { label: t("footer.sell"), to: path("properties") },
-            { label: t("footer.rent"), to: path("properties") },
+            { label: t("footer.rent"), to: path("properties") + "?tipo=arrendar" },
           ]}
         />
         <FooterColumn

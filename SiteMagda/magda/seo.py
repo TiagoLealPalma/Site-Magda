@@ -51,8 +51,8 @@ TEXT = {
         'home_desc': 'Consultora imobiliária Keller Williams e engenheira civil. Compre, venda ou arrende com rigor técnico e acompanhamento próximo, da primeira visita à escritura.',
         'about_title': 'Sobre Magda Leal | Engenharia Civil e Imobiliário',
         'about_desc': 'Duas décadas de engenharia civil e mais de dez anos no imobiliário. Conheça a consultora Keller Williams que avalia a construção, o estado e o potencial real de cada imóvel.',
-        'properties_title': 'Imóveis à venda em Portugal | Magda Leal',
-        'properties_desc': 'Imóveis à venda selecionados por Magda Leal, consultora Keller Williams: preço, tipologia, áreas e ano de construção de cada imóvel.',
+        'properties_title': 'Imóveis para comprar e arrendar em Portugal | Magda Leal',
+        'properties_desc': 'Imóveis para venda e arrendamento selecionados por Magda Leal, consultora Keller Williams: preço, tipologia, áreas e ano de construção de cada imóvel.',
         'property_title': '{name} | {typology} em {address}',
         'property_desc': '{typology} com {area} m² em {address}, {price}. {excerpt}Com Magda Leal, consultora Keller Williams Portugal.',
         'notfound_title': 'Página não encontrada | Magda Leal',
@@ -76,8 +76,8 @@ TEXT = {
         'home_desc': 'Keller Williams real estate consultant and civil engineer. Buy, sell or rent with technical rigour and close support, from the first viewing to the deed.',
         'about_title': 'About Magda Leal | Civil Engineer & Real Estate Consultant',
         'about_desc': 'Two decades of civil engineering and over ten years in real estate. Meet the Keller Williams consultant who assesses the construction, condition and real potential of every property.',
-        'properties_title': 'Properties for sale in Portugal | Magda Leal',
-        'properties_desc': 'Properties for sale selected by Magda Leal, Keller Williams consultant: price, type, areas and year built for every listing.',
+        'properties_title': 'Properties for sale and to rent in Portugal | Magda Leal',
+        'properties_desc': 'Properties for sale and to rent selected by Magda Leal, Keller Williams consultant: price, type, areas and year built for every listing.',
         'property_title': '{name} | {typology} in {address}',
         'property_desc': '{typology} of {area} m² in {address}, {price}. {excerpt}With Magda Leal, Keller Williams Portugal consultant.',
         'notfound_title': 'Page not found | Magda Leal',
@@ -147,13 +147,13 @@ def resolve_page(path):
 
 # ---------------------------------------------------------------- copy
 
-def fmt_price(value, lang):
+def fmt_price(value, lang, rent=False):
     if value is None:
         return ''
     n = int(value)
     if lang == EN:
-        return f'€{n:,}'
-    return f'{n:,}'.replace(',', '.') + ' €'
+        return f'€{n:,}' + ('/month' if rent else '')
+    return f'{n:,}'.replace(',', '.') + ' €' + ('/mês' if rent else '')
 
 
 def fmt_area(value):
@@ -190,7 +190,7 @@ def property_copy(prop, lang):
     if source_text:
         sentence = first_sentence(source_text, 70)
         excerpt = sentence + ('' if sentence.endswith(('.', '!', '?', '…')) else '.') + ' '
-    price = fmt_price(prop.price, lang) or '—'
+    price = fmt_price(prop.price, lang, prop.listing_type == Property.LISTING_RENT) or '—'
 
     def describe(extra):
         return t['property_desc'].format(
@@ -265,6 +265,12 @@ def listing_node(base, prop, lang):
         node['yearBuilt'] = prop.construction_date
     if prop.price is not None:
         offer = {'@type': 'Offer', 'price': int(prop.price), 'priceCurrency': 'EUR', 'url': url}
+        if prop.listing_type == Property.LISTING_RENT:
+            offer['businessFunction'] = 'http://purl.org/goodrelations/v1#LeaseOut'
+            offer['priceSpecification'] = {
+                '@type': 'UnitPriceSpecification', 'price': int(prop.price), 'priceCurrency': 'EUR',
+                'unitCode': 'MON', 'referenceQuantity': {'@type': 'QuantitativeValue', 'value': 1, 'unitCode': 'MON'},
+            }
         if prop.status == Property.STATUS_AVAILABLE:
             offer['availability'] = 'https://schema.org/InStock'
         elif prop.status == Property.STATUS_COMING_SOON:
@@ -428,7 +434,7 @@ def render_body(path, request):
         description_text = prop.description_en if translated else prop.description
         description_lang = 'en' if translated else 'pt'
         body = (
-            f'<h1>{escape(name)}</h1><p>{escape(fmt_price(prop.price, lang))}</p>{picture}'
+            f'<h1>{escape(name)}</h1><p>{escape(fmt_price(prop.price, lang, prop.listing_type == Property.LISTING_RENT))}</p>{picture}'
             f'<dl>{dl}</dl><p lang="{description_lang}">{escape(description_text)}</p>'
         )
     return f'{head}<main>{body}</main>'
@@ -437,7 +443,7 @@ def render_body(path, request):
 def property_list(lang):
     items = ''.join(
         f'<li><a href="{property_path(p, lang)}">{escape(p.name_en if lang == EN and p.name_en else p.name)}</a>'
-        f' — {escape(p.address)} — {escape(fmt_price(p.price, lang))}</li>'
+        f' — {escape(p.address)} — {escape(fmt_price(p.price, lang, p.listing_type == Property.LISTING_RENT))}</li>'
         for p in Property.objects.order_by('-id')
     )
     return f'<ul>{items}</ul>' if items else ''

@@ -23,6 +23,20 @@ export default {
     coming_soon: "Coming soon",
     reserved: "Reserved",
   },
+  category: {
+    label: "Property type",
+    housing: "Residential",
+    commercial: "Commercial/Services",
+    land: "Land",
+  },
+  listing: {
+    rent: "For rent",
+    type: "Type",
+    sale: "Buy",
+    rentFilter: "Rent",
+    maxRent: "Max rent",
+    price: "Rent",
+  },
   spec: {
     type: "Type",
     bedrooms: "Bedrooms",

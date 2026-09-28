@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StatusBadge from "../components/StatusBadge";
 import Reveal from "../components/Reveal";
-import { coverImage, formatPrice } from "../utils/format";
+import { coverImage, formatPrice, isRent } from "../utils/format";
 import { useLang, useT, localizedProperty } from "../i18n";
 import ListingCard from "../components/ListingCard";
 import { propertyParam } from "../seo/slug";
@@ -21,7 +21,10 @@ import {
 } from "./imoveis/shared";
 
 function pickFeatured(list) {
-  const byPrice = [...list].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+  const chosen = list.find((p) => p.featured);
+  if (chosen) return chosen;
+  const sales = list.filter((p) => !isRent(p));
+  const byPrice = [...(sales.length ? sales : list)].sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
   return byPrice.find((p) => p.status === "available") || byPrice[0] || null;
 }
 
@@ -49,7 +52,7 @@ function Featured({ property: raw }) {
         </h2>
         <div className="develop mt-8 flex flex-wrap items-end justify-between gap-x-12 gap-y-8" style={{ "--d": "900ms" }}>
           <div className="flex flex-wrap items-end gap-x-12 gap-y-6">
-            <p className="font-mono text-2xl tabular-nums text-gold-soft md:text-3xl">{formatPrice(property.price, lang)}</p>
+            <p className="font-mono text-2xl tabular-nums text-gold-soft md:text-3xl">{formatPrice(property.price, lang, isRent(property))}</p>
             <SpecLedger rows={specRows(property, t)} tone="dark" />
           </div>
           <Link

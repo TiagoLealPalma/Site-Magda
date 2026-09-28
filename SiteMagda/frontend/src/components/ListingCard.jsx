@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import Reveal from "./Reveal";
 import StatusBadge from "./StatusBadge";
-import { coverImage, formatPrice } from "../utils/format";
+import ListingTypeBadge from "./ListingTypeBadge";
+import { coverImage, formatPrice, isRent } from "../utils/format";
 import { useLang, localizedProperty } from "../i18n";
 import { specRows, SpecLedger } from "../pages/imoveis/shared";
 import { propertyParam } from "../seo/slug";
@@ -33,9 +34,10 @@ export default function ListingCard({ property: raw, index = 0, preview = false 
           />
         )}
         <StatusBadge status={property.status} className="absolute left-4 top-4" />
+        <ListingTypeBadge property={property} className="absolute right-4 top-4" />
       </div>
       <div className="flex flex-1 flex-col bg-charcoal p-6 text-paper">
-        <p className="font-mono text-2xl tabular-nums text-gold-soft">{formatPrice(property.price, lang)}</p>
+        <p className="font-mono text-2xl tabular-nums text-gold-soft">{formatPrice(property.price, lang, isRent(property))}</p>
         {/* Every card reserves two title lines and clamps longer names, so a
             row of cards shares one height and one rhythm whatever the name. */}
         <h3 className="mt-3 line-clamp-2 min-h-[2.75em] font-display text-xl leading-snug">{property.name}</h3>

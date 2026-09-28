@@ -23,6 +23,20 @@ export default {
     coming_soon: "Brevemente",
     reserved: "Reservado",
   },
+  category: {
+    label: "Tipo de imóvel",
+    housing: "Habitacional",
+    commercial: "Comercial/Serviços",
+    land: "Terreno",
+  },
+  listing: {
+    rent: "Arrendamento",
+    type: "Tipo",
+    sale: "Comprar",
+    rentFilter: "Arrendar",
+    maxRent: "Renda máxima",
+    price: "Renda",
+  },
   spec: {
     type: "Tipologia",
     bedrooms: "Quartos",
