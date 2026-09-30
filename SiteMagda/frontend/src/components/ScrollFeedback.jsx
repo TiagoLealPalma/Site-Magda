@@ -12,7 +12,11 @@ export default function ScrollFeedback({ featured, others }) {
   const t = useT();
   const note = t("testimonials.translatedNote");
   const trackRef = useRef(null);
+  const boxRef = useRef(null);
+  const othersRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  // how far the second frame's grid spills past the fixed-height box (small screens)
+  const [spill, setSpill] = useState(0);
   const [reducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -32,6 +36,22 @@ export default function ScrollFeedback({ featured, others }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    function measure() {
+      const box = boxRef.current;
+      const grid = othersRef.current;
+      if (!box || !grid) return;
+      const last = grid.lastElementChild;
+      if (!last) return;
+      const gap = last.getBoundingClientRect().bottom - box.getBoundingClientRect().bottom;
+      setSpill(Math.max(0, Math.round(gap)));
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [reducedMotion, others]);
 
   if (reducedMotion) {
     return (
@@ -66,7 +86,7 @@ export default function ScrollFeedback({ featured, others }) {
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
         <p className="font-mono text-xs tracking-[0.3em] text-gold-deep uppercase mb-10">{t("testimonials.label")}{note && <span className="ml-3 normal-case tracking-normal text-stone">· {note}</span>}</p>
 
-        <div className="relative w-full max-w-4xl min-h-[16rem] md:min-h-[20rem]">
+        <div ref={boxRef} className="relative w-full max-w-4xl min-h-[16rem] md:min-h-[20rem]">
           <div
             className="absolute inset-0 flex flex-col items-center justify-start text-center transition-opacity duration-500 ease-out"
             style={{ opacity: activeIndex === 0 ? 1 : 0, pointerEvents: activeIndex === 0 ? "auto" : "none" }}
@@ -80,6 +100,7 @@ export default function ScrollFeedback({ featured, others }) {
           </div>
 
           <div
+            ref={othersRef}
             className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 content-center transition-opacity duration-500 ease-out"
             style={{ opacity: activeIndex === 1 ? 1 : 0, pointerEvents: activeIndex === 1 ? "auto" : "none" }}
             aria-hidden={activeIndex !== 1}
@@ -95,7 +116,10 @@ export default function ScrollFeedback({ featured, others }) {
           </div>
         </div>
 
-        <div className="mt-10 flex items-center gap-2">
+        <div
+          className="mt-10 flex items-center gap-2 transition-transform duration-500 ease-out"
+          style={{ transform: activeIndex === 1 ? `translateY(${spill}px)` : "none" }}
+        >
           <span className={`h-1.5 transition-all duration-300 ${activeIndex === 0 ? "w-6 bg-gold" : "w-1.5 bg-ink/15"}`} />
           <span className={`h-1.5 transition-all duration-300 ${activeIndex === 1 ? "w-6 bg-gold" : "w-1.5 bg-ink/15"}`} />
         </div>
