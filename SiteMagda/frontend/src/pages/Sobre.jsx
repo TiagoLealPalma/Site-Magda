@@ -123,10 +123,10 @@ export default function Sobre() {
           </div>
 
           <img
-            src="/static/landingpage/FotoMagdaSemFundo.webp"
+            src="/static/landingpage/FotoMagdaSobre.webp"
             alt={t("about.photoAlt")}
-            width="884"
-            height="1080"
+            width="852"
+            height="1280"
             fetchPriority="high"
             decoding="async"
             className="wipe-up mx-auto block w-4/5 max-w-sm md:mx-0 md:w-[19rem] lg:w-[24rem]"
