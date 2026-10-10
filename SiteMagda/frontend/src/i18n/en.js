@@ -50,10 +50,6 @@ export default {
   },
   footer: {
     blurb: "Keller Williams real estate consultant. Civil engineering applied to finding your next home.",
-    properties: "Properties",
-    buy: "Buy",
-    sell: "Sell",
-    rent: "Rent",
     social: "Social",
     kw: "Keller Williams",
     press: "Press",

@@ -50,10 +50,6 @@ export default {
   },
   footer: {
     blurb: "Consultora imobiliária Keller Williams. Engenharia civil aplicada à procura da sua próxima casa.",
-    properties: "Imóveis",
-    buy: "Comprar",
-    sell: "Vender",
-    rent: "Arrendar",
     social: "Redes Sociais",
     kw: "Keller Williams",
     press: "Imprensa",
