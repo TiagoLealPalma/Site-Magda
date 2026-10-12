@@ -31,7 +31,7 @@ PROPERTY_PATTERN = {
     EN: re.compile(r'^/en/properties/(\d+)(?:-[^/]*)?$'),
 }
 
-DEFAULT_OG_IMAGE = '/static/landingpage/og-image.jpg'
+DEFAULT_OG_IMAGE = '/static/landingpage/og-image-v2.jpg'
 AGENT_PHOTO = '/static/landingpage/FotoMagda.png'
 PHONE = '+351913503048'
 SOCIALS = [
